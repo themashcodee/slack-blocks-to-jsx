@@ -15,6 +15,13 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/themashcodee/slack-block-kit/issues"
+  },
+  "homepage": "https://github.com/themashcodee/slack-block-kit#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/themashcodee"
+  },
   "scripts": {
     "build": "tsup ./src/index.ts --format cjs,esm --dts",
     "release": "pnpm run build && changeset publish",
