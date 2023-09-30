@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { ImageBlock } from "../../types"
-import NextImage from "next/image"
 
 type ImageProps = {
 	data: ImageBlock
@@ -53,10 +52,12 @@ export const Image = (props: ImageProps) => {
 
 			{showImage && (
 				<div className="rounded-md overflow-hidden relative max-w-max">
-					<NextImage
+					<img
 						src={image_url}
-						width={image_width || 400}
-						height={image_height || 300}
+						style={{
+							width: image_width || 400,
+							height: image_height || 300,
+						}}
 						alt={alt_text}
 					/>
 				</div>

@@ -1,5 +1,4 @@
 import { Block } from "./types"
-import Image from "next/image"
 import { Header } from "./header"
 import { getBlockComponent } from "./components"
 import { BlockWrapper } from "./block-wrapper"
@@ -18,13 +17,7 @@ export const Message = (props: Props) => {
 	return (
 		<section className="flex gap-2 w-full max-w-[600px] slack-message">
 			<div className="shrink-0">
-				<Image
-					src={logo}
-					width={48}
-					height={48}
-					className="w-9 h-9"
-					alt={name}
-				/>
+				<img src={logo} className="w-9 h-9" alt={name} />
 			</div>
 			<div className="flex flex-col w-full">
 				<Header name={name} time={time} />
