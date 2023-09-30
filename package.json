@@ -16,12 +16,9 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "bugs": {
-    "url": "https://github.com/themashcodee/slack-block-kit/issues"
+    "url": "https://github.com/themashcodee/slack-blocks-to-jsx/issues"
   },
-  "homepage": "https://github.com/themashcodee/slack-block-kit#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/themashcodee"
-  },
+  "homepage": "https://github.com/themashcodee/slack-blocks-to-jsx#readme",
   "scripts": {
     "build": "tsup ./src/index.ts --format cjs,esm --dts",
     "release": "pnpm run build && changeset publish",

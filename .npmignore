@@ -3,3 +3,5 @@ src
 .github
 pnpm-lock.yaml
 tsconfig.json
+.env
+.DS_Store
