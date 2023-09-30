@@ -1,5 +1,11 @@
 # slack-blocks-to-jsx
 
+## 0.0.4
+
+### Patch Changes
+
+- c8d42a6: minor fix in emoji formating
+
 ## 0.0.3
 
 ### Patch Changes
