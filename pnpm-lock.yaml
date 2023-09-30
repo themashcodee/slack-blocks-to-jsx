@@ -534,7 +534,7 @@ packages:
   /@types/react-dom/17.0.0:
     resolution: {integrity: sha512-lUqY7OlkF/RbNtD5nIq7ot8NquXrdFrjSOR6+w9a9RFQevGi1oZO1dcJbXMeONAPKtZ2UrZOEJ5UOCVsxbLk/g==}
     dependencies:
-      '@types/react': 18.2.23
+      '@types/react': 17.0.0
     dev: true
 
   /@types/react/17.0.0:
@@ -542,18 +542,6 @@ packages:
     dependencies:
       '@types/prop-types': 15.7.7
       csstype: 3.1.2
-    dev: true
-
-  /@types/react/18.2.23:
-    resolution: {integrity: sha512-qHLW6n1q2+7KyBEYnrZpcsAmU/iiCh9WGCKgXvMxx89+TYdJWRjZohVIo9XTcoLhfX3+/hP0Pbulu3bCZQ9PSA==}
-    dependencies:
-      '@types/prop-types': 15.7.7
-      '@types/scheduler': 0.16.4
-      csstype: 3.1.2
-    dev: true
-
-  /@types/scheduler/0.16.4:
-    resolution: {integrity: sha512-2L9ifAGl7wmXwP4v3pN4p2FLhD0O1qsJpvKmNin5VA8+UvNVb447UDaAEV6UdrkA+m/Xs58U1RFps44x6TFsVQ==}
     dev: true
 
   /@types/semver/7.5.3:
