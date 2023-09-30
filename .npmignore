@@ -5,3 +5,4 @@ pnpm-lock.yaml
 tsconfig.json
 .env
 .DS_Store
+.prettierrc
