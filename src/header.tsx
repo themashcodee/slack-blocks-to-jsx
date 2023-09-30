@@ -1,4 +1,3 @@
-import React from "react"
 import { dateToTime } from "./utils"
 
 type Props = {

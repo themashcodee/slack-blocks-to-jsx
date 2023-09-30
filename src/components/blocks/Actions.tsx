@@ -1,4 +1,3 @@
-import React from "react"
 import { ActionsBlock } from "../../types"
 import { ButtonElement, StaticSelectElement } from "../elements"
 

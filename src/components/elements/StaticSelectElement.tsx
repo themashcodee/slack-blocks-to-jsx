@@ -1,5 +1,5 @@
-import React, { ReactNode, useEffect, useState } from "react"
-import type { StaticSelectElement as StaticSelectElementType } from "@/slack/types"
+import { useEffect, useState } from "react"
+import type { StaticSelectElement as StaticSelectElementType } from "../../types"
 import { TextObject } from "./TextObject"
 
 type TextObjectProps = {

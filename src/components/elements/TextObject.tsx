@@ -1,6 +1,5 @@
-import React from "react"
-import type { TextObject as TextObjectType } from "@/slack/types"
-import { parseEmojis, parseMrkdwn } from "@/slack/utils"
+import type { TextObject as TextObjectType } from "../../types"
+import { parseEmojis, parseMrkdwn } from "../../utils"
 
 type TextObjectProps = {
 	data: TextObjectType

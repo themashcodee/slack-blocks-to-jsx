@@ -1,4 +1,3 @@
-import React from "react"
 import { SectionBlock } from "../../types"
 import Image from "next/image"
 import { TextObject } from "../elements"

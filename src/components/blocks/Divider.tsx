@@ -1,4 +1,3 @@
-import React from "react"
 import { DividerBlock } from "../../types"
 
 type DividerProps = {

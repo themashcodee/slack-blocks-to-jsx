@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { ImageBlock } from "../../types"
 import NextImage from "next/image"
 

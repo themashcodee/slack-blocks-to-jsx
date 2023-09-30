@@ -8,5 +8,7 @@ const missing_emojis: {
 }
 
 export const parseEmojis = (text: string) => {
-	return emojify(text, (name) => missing_emojis[name] ?? `:${name}:`)
+	return emojify(text, {
+		fallback: (name) => missing_emojis[name] ?? `:${name}:`,
+	})
 }

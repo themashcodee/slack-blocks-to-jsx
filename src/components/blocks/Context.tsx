@@ -1,4 +1,3 @@
-import React from "react"
 import { ContextBlock } from "../../types"
 import { ImageElement, TextObject } from "../elements"
 

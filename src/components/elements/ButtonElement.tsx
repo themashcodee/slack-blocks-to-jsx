@@ -1,5 +1,4 @@
-import React from "react"
-import type { ButtonElement as ButtonElementType } from "@/slack/types"
+import type { ButtonElement as ButtonElementType } from "../../types"
 import { TextObject } from "./TextObject"
 
 type TextObjectProps = {

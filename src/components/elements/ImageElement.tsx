@@ -1,7 +1,4 @@
-import React from "react"
-import type { ImageElement as ImageElementType } from "@/slack/types"
-import { parseEmojis, parseMrkdwn } from "@/slack/utils"
-import Image from "next/image"
+import type { ImageElement as ImageElementType } from "../../types"
 
 type ImageElementProps = {
 	data: ImageElementType
@@ -12,12 +9,10 @@ export const ImageElement = (props: ImageElementProps) => {
 
 	return (
 		<div className="relative w-6 h-[25.25px]">
-			<Image
+			<img
 				src={image_url}
-				height={20}
-				width={20}
-				className="w-5 h-5 object-cover rounded-[2px] overflow-hidden"
 				alt={alt_text}
+				className="w-5 h-5 rounded-[2px] overflow-hidden"
 			/>
 		</div>
 	)

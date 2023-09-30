@@ -1,4 +1,3 @@
-import React from "react"
 import { Block } from "./types"
 import Image from "next/image"
 import { Header } from "./header"
