@@ -1,8 +1,11 @@
-src
 .changeset
 .github
-pnpm-lock.yaml
-tsconfig.json
+node_modules
+src
 .env
-.DS_Store
 .prettierrc
+CHANELOG.md
+pnpm-lock.yaml
+tailwind.config.js
+tsconfig.json
+.DS_Store

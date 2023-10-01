@@ -2,7 +2,6 @@ import { Block } from "./types";
 import { Header } from "./header";
 import { getBlockComponent } from "./components";
 import { BlockWrapper } from "./block-wrapper";
-import "./global.css";
 
 type Props = {
   theme?: "light" | "dark";
@@ -10,16 +9,19 @@ type Props = {
   logo: string;
   name: string;
   time?: Date;
+  className?: string;
+  style?: React.CSSProperties;
 };
 
 export const Message = (props: Props) => {
-  const { theme = "light", blocks, logo, name, time = new Date() } = props;
+  const { theme = "light", blocks, logo, name, time = new Date(), className = "", style } = props;
 
   return (
-    <section className="flex gap-2 w-full max-w-[600px] slack-message">
+    <section className={`flex gap-2 w-full max-w-[600px] slack-message ${className}`} style={style}>
       <div className="shrink-0">
         <img src={logo} className="w-9 h-9" alt={name} />
       </div>
+
       <div className="flex flex-col w-full">
         <Header name={name} time={time} />
 
