@@ -1,0 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.slack-message {
+  font-family: "Open Sans", sans-serif !important;
+  white-space: pre-wrap !important;
+}
+
+.slack-message code {
+  @apply text-xs leading-[18px] px-[3px] pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04];
+}
