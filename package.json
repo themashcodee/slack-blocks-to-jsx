@@ -21,10 +21,12 @@
   "homepage": "https://github.com/themashcodee/slack-blocks-to-jsx#readme",
   "scripts": {
     "build": "tsup ./src/index.ts --format cjs,esm --dts && npm run build:tailwind",
-    "release": "pnpm run build && changeset publish",
-    "lint": "tsc",
     "build:tailwind": "npx tailwindcss -i ./src/style.css -o ./dist/style.css --minify",
-    "new-version": "pnpm changeset"
+    "dev": "tsup ./src/index.ts --format cjs,esm --dts --watch",
+    "dev:tailwind": "npx tailwindcss -i ./src/style.css -o ./dist/style.css --watch",
+    "new-version": "pnpm changeset",
+    "lint": "tsc",
+    "release": "pnpm run build && changeset publish"
   },
   "dependencies": {
     "html-react-parser": "^4.2.2",
