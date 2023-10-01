@@ -1,5 +1,11 @@
 # slack-blocks-to-jsx
 
+## 0.0.7
+
+### Patch Changes
+
+- 78da930: Fix css build structure, export typescript types and remove tailwind from npm build
+
 ## 0.0.6
 
 ### Patch Changes
