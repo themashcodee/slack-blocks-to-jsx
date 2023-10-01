@@ -1,5 +1,11 @@
 # slack-blocks-to-jsx
 
+## 0.0.5
+
+### Patch Changes
+
+- 87a3113: Setup tailwindcss n add build script for it
+
 ## 0.0.4
 
 ### Patch Changes
