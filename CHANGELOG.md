@@ -1,5 +1,11 @@
 # slack-blocks-to-jsx
 
+## 0.0.6
+
+### Patch Changes
+
+- 5fa6e84: Allow react and react dom to be 17 or 18
+
 ## 0.0.5
 
 ### Patch Changes
