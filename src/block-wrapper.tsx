@@ -1,11 +1,11 @@
-import { ReactNode } from "react"
+import { ReactNode } from "react";
 
 type Props = {
-	children: ReactNode
-}
+  children: ReactNode;
+};
 
 export const BlockWrapper = (props: Props) => {
-	const { children } = props
+  const { children } = props;
 
-	return <div className="text-base break-words font-normal">{children}</div>
-}
+  return <div className="text-base break-words font-normal">{children}</div>;
+};
