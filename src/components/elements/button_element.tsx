@@ -1,5 +1,5 @@
 import type { ButtonElement as ButtonElementType } from "../../types";
-import { TextObject } from "./text-object";
+import { TextObject } from "./text_object";
 
 type TextObjectProps = {
   data: ButtonElementType;

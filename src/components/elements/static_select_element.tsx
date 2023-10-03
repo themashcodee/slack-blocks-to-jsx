@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { StaticSelectElement as StaticSelectElementType } from "../../types";
-import { TextObject } from "./text-object";
+import { TextObject } from "./text_object";
 
 type TextObjectProps = {
   data: StaticSelectElementType;

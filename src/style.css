@@ -11,3 +11,31 @@
 .slack-message code {
   @apply text-xs leading-[18px] px-[3px] pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04];
 }
+
+.slack_code {
+  @apply block;
+}
+
+.slack_inline_code {
+  @apply inline-block;
+}
+
+.slack_bold {
+  /*  */
+}
+
+.slack_strikethrough {
+  /*  */
+}
+
+.slack_italics {
+  /*  */
+}
+
+.slack_blockquote {
+  @apply block;
+}
+
+.slack_inline_blockquote {
+  @apply inline-block;
+}

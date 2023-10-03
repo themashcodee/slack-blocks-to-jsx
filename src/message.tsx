@@ -1,7 +1,7 @@
 import { Block } from "./types";
 import { Header } from "./header";
 import { getBlockComponent } from "./components";
-import { BlockWrapper } from "./block-wrapper";
+import { BlockWrapper } from "./block_wrapper";
 
 type Props = {
   theme?: "light" | "dark";
