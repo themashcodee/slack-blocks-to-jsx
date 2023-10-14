@@ -11,9 +11,5 @@ export const formatMessageTime = (timestamp: Date) => {
 export const dateToTime = (timestamp: Date) => {
   const date = new Date(timestamp);
 
-  return date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: false,
-  });
+  return date.toTimeString().slice(0, 5);
 };

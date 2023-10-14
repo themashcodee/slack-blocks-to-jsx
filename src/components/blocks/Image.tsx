@@ -13,7 +13,10 @@ export const Image = (props: ImageProps) => {
   return (
     <div id={block_id} className="my-2 flex flex-col gap-2">
       <div className="text-black-secondary text-small flex gap-1 items-center">
-        {image_bytes && `(${Math.round(image_bytes / 1000)} kB)`}
+        <span>
+          {alt_text}
+          {image_bytes && ` (${Math.round(image_bytes / 1000)} kB)`}
+        </span>
 
         <button className="w-[15px] h-[15px]" onClick={() => setShowImage((prev) => !prev)}>
           <svg

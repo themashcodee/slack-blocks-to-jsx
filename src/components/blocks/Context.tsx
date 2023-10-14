@@ -11,15 +11,12 @@ export const Context = (props: ContextProps) => {
   return (
     <div
       id={block_id}
-      className="my-1 text-primary flex w-full text-black-primary flex-wrap items-center"
+      className="my-1 text-primary flex w-full text-black-primary flex-wrap items-center overflow-hidden"
     >
-      {elements.map((element, i) => {
+      {elements.slice(0, 10).map((element, i) => {
         if (element.type !== "image") {
           return (
-            <span
-              className="text-black-secondary text-small h-[25.25px] pr-3 flex items-center"
-              key={i}
-            >
+            <span className="text-black-secondary text-small pr-3 flex items-center" key={i}>
               <TextObject data={element} />
             </span>
           );

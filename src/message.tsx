@@ -25,12 +25,14 @@ export const Message = (props: Props) => {
       <div className="flex flex-col w-full">
         <Header name={name} time={time} />
 
-        {blocks.map((block, i) => {
-          const element = getBlockComponent(block);
-          if (!element) return null;
+        <div>
+          {blocks.map((block, i) => {
+            const element = getBlockComponent(block);
+            if (!element) return null;
 
-          return <BlockWrapper key={i}>{element}</BlockWrapper>;
-        })}
+            return <BlockWrapper key={i}>{element}</BlockWrapper>;
+          })}
+        </div>
       </div>
     </section>
   );

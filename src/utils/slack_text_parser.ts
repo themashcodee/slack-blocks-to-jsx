@@ -113,8 +113,8 @@ const utility = {
 const patterns = {
   inline_code_opening: '<code class="slack_inline_code">',
   inline_code_closing: "</code>",
-  code_opening: '<code class="slack_code">',
-  code_closing: "</code>",
+  code_opening: '<pre class="slack_code">',
+  code_closing: "</pre>",
   bold_opening: '<strong class="slack_bold">',
   bold_closing: "</strong>",
   strikethrough_opening: '<del class="slack_strikethrough">',
@@ -188,29 +188,7 @@ export const slack_text_parser = (text: string, options: ConvertMarkdownOptions)
 };
 
 const parse_markdown = (text: string) => {
-  let expandedTextAndWindows: ReplaceInWindowsOutput = { text: text, windows: [[0, text.length]] };
-
-  expandedTextAndWindows = replace_characters({
-    text: expandedTextAndWindows.text,
-    delimiter: "```",
-    replacementOpeningLiteral: patterns.code_opening,
-    replacementClosingLiteral: patterns.code_closing,
-    closedTagWindows: expandedTextAndWindows.windows,
-    options: {
-      partitionWindowOnMatch: true,
-      replaceNewlines: true,
-    },
-  });
-  expandedTextAndWindows = replace_characters({
-    text: expandedTextAndWindows.text,
-    delimiter: "`",
-    replacementOpeningLiteral: patterns.inline_code_opening,
-    replacementClosingLiteral: patterns.inline_code_closing,
-    closedTagWindows: expandedTextAndWindows.windows,
-    options: {
-      partitionWindowOnMatch: true,
-    },
-  });
+  let expandedTextAndWindows: ReplaceCharactersOutput = { text: text, windows: [[0, text.length]] };
 
   expandedTextAndWindows = replace_characters({
     text: expandedTextAndWindows.text,
@@ -248,6 +226,28 @@ const parse_markdown = (text: string) => {
 
   expandedTextAndWindows = replace_characters({
     text: expandedTextAndWindows.text,
+    delimiter: "```",
+    replacementOpeningLiteral: patterns.code_opening,
+    replacementClosingLiteral: patterns.code_closing,
+    closedTagWindows: expandedTextAndWindows.windows,
+    options: {
+      partitionWindowOnMatch: true,
+      replaceNewlines: true,
+    },
+  });
+  expandedTextAndWindows = replace_characters({
+    text: expandedTextAndWindows.text,
+    delimiter: "`",
+    replacementOpeningLiteral: patterns.inline_code_opening,
+    replacementClosingLiteral: patterns.inline_code_closing,
+    closedTagWindows: expandedTextAndWindows.windows,
+    options: {
+      partitionWindowOnMatch: true,
+    },
+  });
+
+  expandedTextAndWindows = replace_characters({
+    text: expandedTextAndWindows.text,
     delimiter: "&gt;&gt;&gt;",
     replacementOpeningLiteral: patterns.blockquote_opening,
     replacementClosingLiteral: patterns.blockquote_closing,
@@ -276,7 +276,7 @@ const parse_markdown = (text: string) => {
   return expandedTextAndWindows.text;
 };
 
-type ReplaceInWindowsInput = {
+type ReplaceCharactersInput = {
   text: string;
   delimiter: Delimiter;
   replacementOpeningLiteral: string;
@@ -294,12 +294,12 @@ type ReplaceInWindowsInput = {
   tagWindowOffset?: number;
 };
 
-type ReplaceInWindowsOutput = {
+type ReplaceCharactersOutput = {
   text: string;
   windows: [Window];
 };
 
-const replace_characters = (input: ReplaceInWindowsInput): ReplaceInWindowsOutput => {
+const replace_characters = (input: ReplaceCharactersInput): ReplaceCharactersOutput => {
   const {
     closedTagWindows,
     delimiter,
@@ -399,10 +399,10 @@ const replace_characters = (input: ReplaceInWindowsInput): ReplaceInWindowsOutpu
       const textAfterDelimiter = text.slice(afterDelimitersIndex);
 
       const openingReplacementString = `${
-        spacePadded ? openingMatch.openingCapturedWhitespace : ""
+        spacePadded ? openingMatch.openingCapturedWhitespace || " " : ""
       }${replacementOpeningLiteral}`;
       const closingReplacementString = `${replacementClosingLiteral}${
-        spacePadded ? closingMatch.closingCapturedWhitespace : ""
+        spacePadded ? closingMatch.closingCapturedWhitespace || " " : ""
       }${asymmetric ? closingMatch[0] : ""}`;
 
       const textBetweenDelimiters = text.slice(

@@ -8,20 +8,20 @@
   white-space: pre-wrap !important;
 }
 
-.slack-message code {
-  @apply text-xs leading-[18px] px-[3px] pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04];
-}
-
 .slack_code {
-  @apply block;
+  @apply block p-2 text-xs leading-[1.5] whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] w-full my-1;
 }
 
 .slack_inline_code {
-  @apply inline-block;
+  @apply inline-block text-xs leading-[1.5] px-[3px] pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04];
+}
+
+.slack_bold code {
+  @apply font-semibold;
 }
 
 .slack_bold {
-  /*  */
+  @apply font-semibold;
 }
 
 .slack_strikethrough {
