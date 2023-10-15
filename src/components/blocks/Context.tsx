@@ -1,5 +1,6 @@
 import { ContextBlock } from "../../types";
-import { ImageElement, TextObject } from "../elements";
+import { TextObject } from "../composition_objects";
+import { ImageElement } from "../elements";
 
 type ContextProps = {
   data: ContextBlock;

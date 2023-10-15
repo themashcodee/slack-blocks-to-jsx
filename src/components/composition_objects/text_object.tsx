@@ -8,6 +8,8 @@ type TextObjectProps = {
 export const TextObject = (props: TextObjectProps) => {
   const { type, text, emoji, verbatim = false } = props.data;
 
+  // TODO: HANDLE VERBATIM
+
   const emoji_parsed =
     type == "mrkdwn" ? parseEmojis(text) : emoji === false ? text : parseEmojis(text);
 

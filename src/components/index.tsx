@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Block } from "../types";
+import { Block, Element } from "../types";
 
 import {
   Divider,
@@ -13,9 +13,12 @@ import {
   RichText,
   Video,
 } from "./blocks";
+import { ButtonElement } from "./elements";
 
 export const getBlockComponent = (block: Block): ReactNode => {
+  // ✅ DONE
   if (block.type === "divider") return <Divider data={block} />;
+  // ✅ DONE
   if (block.type === "section") return <Section data={block} />;
   if (block.type === "image") return <Image data={block} />;
   if (block.type === "context") return <Context data={block} />;
@@ -25,6 +28,34 @@ export const getBlockComponent = (block: Block): ReactNode => {
   if (block.type === "input") return <Input data={block} />;
   if (block.type === "video") return <Video data={block} />;
   if (block.type === "rich_text") return <RichText data={block} />;
+
+  return null;
+};
+
+export const getElementComponent = (element: Element): ReactNode => {
+  // ✅ PARTIALLY DONE
+  if (element.type === "button") return <ButtonElement data={element} />;
+  if (element.type === "checkboxes") return null;
+  if (element.type === "datepicker") return null;
+  if (element.type === "datetimepicker") return null;
+  if (element.type === "email_text_input") return null;
+  if (element.type === "image") return null;
+  if (element.type === "multi_static_select") return null;
+  if (element.type === "multi_external_select") return null;
+  if (element.type === "multi_users_select") return null;
+  if (element.type === "multi_conversations_select") return null;
+  if (element.type === "multi_channels_select") return null;
+  if (element.type === "number_input") return null;
+  if (element.type === "overflow") return null;
+  if (element.type === "plain_text_input") return null;
+  if (element.type === "radio_buttons") return null;
+  if (element.type === "static_select") return null;
+  if (element.type === "external_select") return null;
+  if (element.type === "users_select") return null;
+  if (element.type === "conversations_select") return null;
+  if (element.type === "channels_select") return null;
+  if (element.type === "timepicker") return null;
+  if (element.type === "url_text_input") return null;
 
   return null;
 };

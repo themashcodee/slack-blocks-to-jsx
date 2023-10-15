@@ -1,5 +1,6 @@
+import { getElementComponent } from "..";
 import { SectionBlock } from "../../types";
-import { TextObject } from "../elements";
+import { TextObject } from "../composition_objects";
 
 type SectionProps = {
   data: SectionBlock;
@@ -7,6 +8,8 @@ type SectionProps = {
 
 export const Section = (props: SectionProps) => {
   const { accessory, fields, text, block_id } = props.data;
+
+  const element = accessory ? getElementComponent(accessory) : null;
 
   return (
     <div id={block_id} className="mt-2 mb-1 text-primary flex w-full text-black-primary">
@@ -24,16 +27,7 @@ export const Section = (props: SectionProps) => {
         </div>
       </div>
 
-      {/* HANDLE OTHER ACCESORIES */}
-      {accessory && accessory.type === "image" && (
-        <div className="ml-2 mb-1 relative shrink-0">
-          <img
-            src={accessory.image_url}
-            alt={accessory.alt_text}
-            className="w-[88px] h-[88px] object-cover ml-1 rounded-[8px] overflow-hidden"
-          />
-        </div>
-      )}
+      {element && <div className="ml-2 mb-1 relative shrink-0">{element}</div>}
     </div>
   );
 };
