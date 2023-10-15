@@ -52,12 +52,13 @@ export type OptionObject = {
   /**
    * A {@link https://api.slack.com/reference/block-kit/composition-objects#text ***plain_text***-only text object} that defines a line of descriptive text shown below the ***text*** field beside the radio button. Maximum length for the ***text*** object within this field is 75 characters.
    */
-  description?: TextObject<"plain_text">;
+  description?: TextObject;
   /**
    * A URL to load in the user's browser when the option is clicked. **The url attribute is only available in** {@link https://api.slack.com/reference/block-kit/block-elements#overflow overflow menus}. Maximum length for this field is 3000 characters. If you're using ***url***, you'll still receive an {@link https://api.slack.com/interactivity/handling#payloads interaction payload} and will need to {@link https://api.slack.com/interactivity/handling#acknowledgment_response send an acknowledgement response}.
    */
   url?: string;
 };
+export type OptionObjectWithoutUrl = Omit<OptionObject, "url">;
 
 export type OptionGroupObject = {
   /**

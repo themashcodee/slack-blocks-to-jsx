@@ -6,6 +6,7 @@ import {
   OptionObject,
   Style,
   TextObject,
+  OptionObjectWithoutUrl,
 } from ".";
 
 export type Element =
@@ -79,7 +80,7 @@ export type CheckboxesElement = {
   /**
    * An array of {@link https://api.slack.com/reference/block-kit/composition-objects#option option objects}. A maximum of 10 options are allowed.
    */
-  options: OptionObject[];
+  options: OptionObjectWithoutUrl[];
   /**
    * An array of {@link https://api.slack.com/reference/block-kit/composition-objects#option option objects} that exactly matches one or more of the options within options. These options will be selected when the checkbox group initially loads.
    */

@@ -8,7 +8,7 @@ type TextObjectProps = {
 export const ButtonElement = (props: TextObjectProps) => {
   const { text, action_id, url, style, accessibility_label } = props.data;
 
-  // TODO: ADD COMFIRM DIALOG
+  // TODO: ADD CONFIRM DIALOG
 
   return (
     <button
