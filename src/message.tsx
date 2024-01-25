@@ -33,7 +33,7 @@ export const Message = (props: Props) => {
 
   return (
     <section
-      className={`flex gap-2 w-full max-w-[600px] slack-message relative ${className}`}
+      className={`flex gap-2 w-full max-w-[600px] slack_blocks_to_jsx relative ${className}`}
       style={style}
     >
       {showBlockKitDebug && (

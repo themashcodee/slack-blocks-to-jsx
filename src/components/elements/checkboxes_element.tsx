@@ -23,7 +23,7 @@ export const CheckboxesElement = (props: TextObjectProps) => {
   }, [focus_on_load]);
 
   return (
-    <div id={action_id} className="my-1 flex w-full">
+    <div id={action_id} className="my-1 flex w-full slack_blocks_to_jsx__checkboxes">
       <fieldset className="flex flex-col gap-2">
         {options.map((option, i) => {
           const { text, value, description } = option;

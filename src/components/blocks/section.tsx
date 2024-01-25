@@ -16,7 +16,7 @@ export const Section = (props: SectionProps) => {
   return (
     <div
       id={block_id}
-      className={`mt-2 mb-1 text-primary flex w-full text-black-primary ${
+      className={`mt-2 mb-1 text-primary slack_blocks_to_jsx__section flex w-full text-black-primary ${
         is_stacked ? "flex-col" : ""
       }`}
     >

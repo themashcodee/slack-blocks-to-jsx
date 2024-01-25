@@ -9,7 +9,10 @@ export const Actions = (props: ActionsProps) => {
   const { elements, block_id } = props.data;
 
   return (
-    <div id={block_id} className="mb-2 text-primary flex w-full text-black-primary items-center">
+    <div
+      id={block_id}
+      className="mb-2 text-primary flex w-full text-black-primary items-center slack_blocks_to_jsx__actions"
+    >
       <div className="flex flex-wrap">
         {elements.map((element, i) => {
           if (element.type === "button") {

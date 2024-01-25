@@ -14,7 +14,7 @@ export const ButtonElement = (props: TextObjectProps) => {
     <button
       id={action_id}
       aria-label={accessibility_label}
-      className={`px-2 pt-0 pb-[1px] text-small h-[28px] min-w-[56px] border rounded whitespace-nowrap font-semibold ${
+      className={`px-2 pt-0 pb-[1px] text-small h-[28px] min-w-[56px] border rounded whitespace-nowrap font-semibold slack_blocks_to_jsx__button ${
         style === "primary"
           ? "border-green-primary.3 text-green-primary"
           : style === "danger"

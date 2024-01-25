@@ -12,7 +12,7 @@ export const Context = (props: ContextProps) => {
   return (
     <div
       id={block_id}
-      className="my-1 text-primary flex w-full text-black-primary flex-wrap items-center overflow-hidden"
+      className="my-1 text-primary flex w-full text-black-primary flex-wrap items-center overflow-hidden slack_blocks_to_jsx__context"
     >
       {elements.slice(0, 10).map((element, i) => {
         if (element.type !== "image") {
