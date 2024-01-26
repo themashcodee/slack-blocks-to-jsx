@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+	important:"#slack_blocks_to_jsx",
 	content: [
 		"./src/**/*.{js,ts,jsx,tsx,mdx}",
 	],
