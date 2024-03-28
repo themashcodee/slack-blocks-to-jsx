@@ -13,7 +13,7 @@ import {
   RichText,
   Video,
 } from "./blocks";
-import { ButtonElement, CheckboxesElement, ImageElement } from "./elements";
+import { ButtonElement, CheckboxesElement, ImageElement, PlaintTextInput } from "./elements";
 
 export const getBlockComponent = (block: Block): ReactNode => {
   // ✅ DONE
@@ -25,6 +25,7 @@ export const getBlockComponent = (block: Block): ReactNode => {
   if (block.type === "actions") return <Actions data={block} />;
   if (block.type === "file") return <File data={block} />;
   if (block.type === "header") return <Header data={block} />;
+  // ✅ PARTIALLY DONE
   if (block.type === "input") return <Input data={block} />;
   if (block.type === "video") return <Video data={block} />;
   if (block.type === "rich_text") return <RichText data={block} />;
@@ -39,6 +40,8 @@ export const getElementComponent = (element: Element): ReactNode => {
   if (element.type === "checkboxes") return <CheckboxesElement data={element} />;
   // ✅ DONE
   if (element.type === "image") return <ImageElement data={element} />;
+  // ✅ PARTIALLY DONE
+  if (element.type === "plain_text_input") return <PlaintTextInput data={element} />;
 
   //
   if (element.type === "datepicker") return null;
@@ -51,7 +54,6 @@ export const getElementComponent = (element: Element): ReactNode => {
   if (element.type === "multi_channels_select") return null;
   if (element.type === "number_input") return null;
   if (element.type === "overflow") return null;
-  if (element.type === "plain_text_input") return null;
   if (element.type === "radio_buttons") return null;
   if (element.type === "static_select") return null;
   if (element.type === "external_select") return null;

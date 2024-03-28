@@ -9,3 +9,4 @@ pnpm-lock.yaml
 tailwind.config.js
 tsconfig.json
 .DS_Store
+postcss.config.js
