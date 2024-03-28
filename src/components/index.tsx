@@ -13,7 +13,7 @@ import {
   RichText,
   Video,
 } from "./blocks";
-import { ButtonElement, CheckboxesElement } from "./elements";
+import { ButtonElement, CheckboxesElement, ImageElement } from "./elements";
 
 export const getBlockComponent = (block: Block): ReactNode => {
   // ✅ DONE
@@ -37,10 +37,13 @@ export const getElementComponent = (element: Element): ReactNode => {
   if (element.type === "button") return <ButtonElement data={element} />;
   // ✅ PARTIALLY DONE, CONFIRM MODAL NOT IMPLEMENTED
   if (element.type === "checkboxes") return <CheckboxesElement data={element} />;
+  // ✅ DONE
+  if (element.type === "image") return <ImageElement data={element} />;
+
+  //
   if (element.type === "datepicker") return null;
   if (element.type === "datetimepicker") return null;
   if (element.type === "email_text_input") return null;
-  if (element.type === "image") return null;
   if (element.type === "multi_static_select") return null;
   if (element.type === "multi_external_select") return null;
   if (element.type === "multi_users_select") return null;
