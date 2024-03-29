@@ -10,3 +10,7 @@
    `import type { Block } from "slack-blocks-to-jsx"`
 
    `const blocks: Block[] = [...your slack blocks]`
+
+   `<Message time={new Date()} name="Your Company" logo="https://commons.wikimedia.org/wiki/File:Google_%22G%22_logo.svg" blocks={blocks} />`
+
+Note: This library is under development, if you need any functionality and it is not working/available yet in the library please raise an issue [here](https://github.com/themashcodee/slack-blocks-to-jsx/issues). I will try to fix it asap :).

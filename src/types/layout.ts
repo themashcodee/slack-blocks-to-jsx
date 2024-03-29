@@ -8,6 +8,7 @@ import {
   PlainTextInputElement,
   RadioButtonsElement,
   StaticSelectElement,
+  UsersSelectElement,
 } from ".";
 
 export type Block =
@@ -187,7 +188,8 @@ export type InputBlock = {
     | RadioButtonsElement
     | StaticSelectElement
     | MultiStaticSelectElement
-    | DatePickerElement;
+    | DatePickerElement
+    | UsersSelectElement;
   /**
    * A boolean that indicates whether or not the use of elements in this block should dispatch a {@link https://api.slack.com/reference/interaction-payloads/block-actions ***block_actions*** payload}. Defaults to false.
    */

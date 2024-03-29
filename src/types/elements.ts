@@ -529,6 +529,16 @@ export type UsersSelectElement = {
    * A {@link https://api.slack.com/reference/block-kit/composition-objects#text ***plain_text*** only text object} that defines the placeholder text shown on the menu. Maximum length for the text in this field is 150 characters.
    */
   placeholder?: TextObject<"plain_text">;
+  /**
+   * This is custom property for you to pass the list of people to show in the select menu. (This is not a part of the official Slack API)
+   */
+  people: {
+    id: string;
+    name: string;
+    image: string;
+    online: boolean;
+    sleeping: boolean;
+  }[];
 };
 
 export type ConversationsSelectElement = {

@@ -32,6 +32,7 @@ module.exports = {
 				green: {
 					primary: "rgb(0, 122, 90)",
 					"primary.3": "rgba(0, 122, 90, 0.3)",
+					secondary:"rgb(32, 162, 113)"
 				},
 			},
 			fontSize: {

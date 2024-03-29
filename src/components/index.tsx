@@ -13,7 +13,13 @@ import {
   RichText,
   Video,
 } from "./blocks";
-import { ButtonElement, CheckboxesElement, ImageElement, PlaintTextInput } from "./elements";
+import {
+  ButtonElement,
+  CheckboxesElement,
+  ImageElement,
+  PlaintTextInput,
+  UsersSelectElement,
+} from "./elements";
 
 export const getBlockComponent = (block: Block): ReactNode => {
   // ✅ DONE
@@ -42,6 +48,8 @@ export const getElementComponent = (element: Element): ReactNode => {
   if (element.type === "image") return <ImageElement data={element} />;
   // ✅ PARTIALLY DONE
   if (element.type === "plain_text_input") return <PlaintTextInput data={element} />;
+  // ✅ PARTIALLY DONE
+  if (element.type === "users_select") return <UsersSelectElement data={element} />;
 
   //
   if (element.type === "datepicker") return null;
@@ -57,7 +65,6 @@ export const getElementComponent = (element: Element): ReactNode => {
   if (element.type === "radio_buttons") return null;
   if (element.type === "static_select") return null;
   if (element.type === "external_select") return null;
-  if (element.type === "users_select") return null;
   if (element.type === "conversations_select") return null;
   if (element.type === "channels_select") return null;
   if (element.type === "timepicker") return null;
