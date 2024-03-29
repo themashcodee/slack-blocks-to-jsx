@@ -18,7 +18,11 @@ export const Image = (props: ImageProps) => {
           {image_bytes && ` (${Math.round(image_bytes / 1000)} kB)`}
         </span>
 
-        <button className="w-[15px] h-[15px]" onClick={() => setShowImage((prev) => !prev)}>
+        <button
+          type="button"
+          className="w-[15px] h-[15px]"
+          onClick={() => setShowImage((prev) => !prev)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fillRule="evenodd"

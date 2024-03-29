@@ -83,7 +83,7 @@ export const UsersSelectElement = (props: TextObjectProps) => {
                     )}
 
                     {!option.online && (
-                      <div className="w-[9px] h-[9px] rounded-full border-[1.5px] shrink-0 border-black-secondary"></div>
+                      <div className="w-[9px] h-[9px] rounded-full border-[1.5px] shrink-0 border-black-secondary group-hover:border-white-primary"></div>
                     )}
 
                     {option.sleeping && (
@@ -93,7 +93,9 @@ export const UsersSelectElement = (props: TextObjectProps) => {
                     )}
                   </div>
 
-                  <div className="text-black-primary">{option.name}</div>
+                  <div className="text-black-primary group-hover:text-white-primary">
+                    {option.name}
+                  </div>
                 </button>
               );
             })}
@@ -125,6 +127,7 @@ export const UsersSelectElement = (props: TextObjectProps) => {
       )}
 
       <button
+        type="button"
         className="absolute right-1 top-1/2 flex justify-center items-center w-5 -translate-y-1/2 text-black-secondary z-10 h-full"
         id="static_select_dropdown_button"
         onClick={() => {

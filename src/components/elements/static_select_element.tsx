@@ -105,6 +105,7 @@ export const StaticSelectElement = (props: TextObjectProps) => {
       )}
 
       <button
+        type="button"
         className="absolute right-1 top-1/2 flex justify-center items-center w-5 -translate-y-1/2 text-black-secondary z-10 h-full"
         id="static_select_dropdown_button"
         onClick={() => {
