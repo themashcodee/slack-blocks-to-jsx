@@ -535,7 +535,7 @@ export type UsersSelectElement = {
   people: {
     id: string;
     name: string;
-    image: string;
+    image: null | string;
     online: boolean;
     sleeping: boolean;
   }[];

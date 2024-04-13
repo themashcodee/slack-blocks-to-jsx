@@ -15,9 +15,6 @@ export const UsersSelectElement = (props: TextObjectProps) => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      console.log({ target });
-
-      console.log(target.id);
 
       if (
         target.id !== "static_select_popup" &&
@@ -66,7 +63,18 @@ export const UsersSelectElement = (props: TextObjectProps) => {
                     setSelected(option.id);
                   }}
                 >
-                  <img src={option.image} alt={option.name} className="w-5 h-5 rounded-md" />
+                  {option.image && (
+                    <img
+                      src={option.image}
+                      alt={option.name}
+                      className="w-5 h-5 rounded-md overflow-hidden"
+                    />
+                  )}
+                  {!option.image && (
+                    <div className="w-5 h-5 rounded-md overflow-hidden bg-gray-300 text-black-primary font-semibold flex items-center justify-center">
+                      <span>{option.name[0] || ""}</span>
+                    </div>
+                  )}
 
                   <TextObject
                     data={{
