@@ -2,6 +2,8 @@
 
 ### How to use
 
+Playground - https://slack-block-to-jsx-playground.vercel.app/
+
 1. Install the Library
 2. Import the CSS file in your entry point file `import "slack-blocks-to-jsx/dist/style.css"`
 3. Import the component and use it `import { Message } from "slack-blocks-to-jsx"`
