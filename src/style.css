@@ -301,5 +301,27 @@
     @apply inline-block;
   }
 
+  & blockquote {
+    position: relative;
+    padding-left: 16px;
+  }
+
+  & blockquote::before {
+    background: rgb(221, 221, 221);
+    content: "";
+    border-radius: 8px;
+    width: 4px;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  & .slack_user {
+    color: rgb(18, 100, 163);
+    background: rgb(29, 155, 209, 0.1);
+  }
+
   /* #endregion */
 }
