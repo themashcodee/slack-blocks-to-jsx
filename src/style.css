@@ -321,6 +321,15 @@
   & .slack_user {
     color: rgb(18, 100, 163);
     background: rgb(29, 155, 209, 0.1);
+    user-select: none;
+    cursor: pointer;
+  }
+
+  & .slack_channel {
+    color: rgb(18, 100, 163);
+    background: rgb(29, 155, 209, 0.1);
+    user-select: none;
+    cursor: pointer;
   }
 
   /* #endregion */

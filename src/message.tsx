@@ -2,6 +2,8 @@ import { Block } from "./types";
 import { Header } from "./header";
 import { getBlockComponent } from "./components";
 import { BlockWrapper } from "./block_wrapper";
+import { useGlobalData } from "./store";
+import { useEffect } from "react";
 
 type Props = {
   /**
@@ -19,6 +21,16 @@ type Props = {
   className?: string;
   style?: React.CSSProperties;
   unstyled?: boolean;
+  data?: {
+    users?: {
+      id: string;
+      name: string;
+    }[];
+    channels?: {
+      id: string;
+      name: string;
+    }[];
+  };
 };
 
 export const Message = (props: Props) => {
@@ -31,7 +43,15 @@ export const Message = (props: Props) => {
     style,
     showBlockKitDebug = false,
     unstyled = false,
+    data = {},
   } = props;
+
+  const { setChannels, setUsers } = useGlobalData();
+
+  useEffect(() => {
+    if (data.users) setUsers(data.users);
+    if (data.channels) setChannels(data.channels);
+  }, [data]);
 
   return (
     <div id="slack_blocks_to_jsx">
