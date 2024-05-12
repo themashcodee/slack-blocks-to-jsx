@@ -18,6 +18,7 @@ type Props = {
   time?: Date;
   className?: string;
   style?: React.CSSProperties;
+  unstyled?: boolean;
 };
 
 export const Message = (props: Props) => {
@@ -29,12 +30,15 @@ export const Message = (props: Props) => {
     className = "",
     style,
     showBlockKitDebug = false,
+    unstyled = false,
   } = props;
 
   return (
     <div id="slack_blocks_to_jsx">
       <section
-        className={`flex gap-2 w-full max-w-[600px] slack_blocks_to_jsx relative ${className}`}
+        className={`flex gap-2 w-full max-w-[600px] slack_blocks_to_jsx relative ${
+          unstyled ? "styles_disabled" : "styles_enabled"
+        } ${className}`}
         style={style}
       >
         {showBlockKitDebug && (

@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
 @tailwind utilities;
 
-.slack_blocks_to_jsx {
+.slack_blocks_to_jsx.styles_enabled {
   font-family: "Open Sans", sans-serif !important;
   white-space: pre-wrap !important;
 
@@ -324,4 +324,8 @@
   }
 
   /* #endregion */
+}
+
+.slack_blocks_to_jsx.styles_disabled > * {
+  all: unset !important;
 }
