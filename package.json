@@ -32,7 +32,6 @@
     "html-react-parser": "^4.2.2",
     "node-emoji": "^2.1.0",
     "slack-markdown": "^0.3.0",
-    "xregexp": "^5.1.1",
     "zustand": "^4.5.2"
   },
   "peerDependencies": {
