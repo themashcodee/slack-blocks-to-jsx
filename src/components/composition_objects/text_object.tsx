@@ -10,7 +10,7 @@ type TextObjectProps = {
 export const TextObject = (props: TextObjectProps) => {
   const { type, text, emoji, verbatim = false } = props.data;
   const { className = "" } = props;
-  const { channels, users } = useGlobalData();
+  const { channels, users, hooks } = useGlobalData();
 
   // TODO: HANDLE VERBATIM
 
@@ -23,13 +23,13 @@ export const TextObject = (props: TextObjectProps) => {
   if (type === "plain_text")
     return (
       <div className={className}>
-        {slack_text_to_jsx(emoji_parsed, { markdown: false, users, channels })}
+        {slack_text_to_jsx(emoji_parsed, { markdown: false, users, channels, hooks })}
       </div>
     );
 
   return (
     <div className={className}>
-      {slack_text_to_jsx(emoji_parsed, { markdown: true, users, channels })}
+      {slack_text_to_jsx(emoji_parsed, { markdown: true, users, channels, hooks })}
     </div>
   );
 };

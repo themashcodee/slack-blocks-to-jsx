@@ -2,7 +2,7 @@ import { Block } from "./types";
 import { Header } from "./header";
 import { getBlockComponent } from "./components";
 import { BlockWrapper } from "./block_wrapper";
-import { useGlobalData } from "./store";
+import { GlobalStore, useGlobalData } from "./store";
 import { useEffect } from "react";
 
 type Props = {
@@ -22,15 +22,10 @@ type Props = {
   style?: React.CSSProperties;
   unstyled?: boolean;
   data?: {
-    users?: {
-      id: string;
-      name: string;
-    }[];
-    channels?: {
-      id: string;
-      name: string;
-    }[];
+    users?: GlobalStore["users"];
+    channels?: GlobalStore["channels"];
   };
+  hooks?: GlobalStore["hooks"];
 };
 
 export const Message = (props: Props) => {
@@ -44,13 +39,15 @@ export const Message = (props: Props) => {
     showBlockKitDebug = false,
     unstyled = false,
     data = {},
+    hooks = {},
   } = props;
 
-  const { setChannels, setUsers } = useGlobalData();
+  const { setChannels, setUsers, setHooks } = useGlobalData();
 
   useEffect(() => {
     if (data.users) setUsers(data.users);
     if (data.channels) setChannels(data.channels);
+    if (hooks) setHooks(hooks);
   }, [data]);
 
   return (
