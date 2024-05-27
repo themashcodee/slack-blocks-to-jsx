@@ -21,6 +21,7 @@ module.exports = {
 				},
 				gray: {
 					primary: "rgb(221,221,221)",
+					secondary: "rgb(246,246,246)",
 				},
 				red: {
 					primary: " rgb(224, 30, 90)",
@@ -28,6 +29,7 @@ module.exports = {
 				},
 				blue: {
 					primary: "rgb(18,100,163)",
+					secondary: "rgb(11, 76, 140)"
 				},
 				green: {
 					primary: "rgb(0, 122, 90)",

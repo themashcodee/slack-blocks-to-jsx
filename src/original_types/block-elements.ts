@@ -346,32 +346,46 @@ export interface FileInput extends ActionBlockElement<"file_input"> {
 
 // https://api.slack.com/changelog/2019-09-what-they-see-is-what-you-get-and-more-and-less
 
-export type RichTextBlockSubElement = BlockElement<
-  "rich_text_list" | "rich_text_preformatted" | "rich_text_quote" | "rich_text_section"
->;
+export type RichTextBlockSubElement =
+  | RichTextList
+  | RichTextPreformatted
+  | RichTextQuote
+  | RichTextSection;
 
-export interface RichTextList extends RichTextBlockSubElement {
+export type RichTextList = {
   type: "rich_text_list";
-  style?: "bullet" | "ordered";
-  indent?: number;
+  style: "bullet" | "ordered";
+  /**
+   * The number of spaces to indent this block. It must be a number between 0 and 8.
+   */
+  indent?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   offset?: number;
-  border?: number;
-  elements: RichTextBlockSubElement[];
-}
-export interface RichTextPreformatted extends RichTextBlockSubElement {
+  /**
+   * 0 or 1 (default 0) - if 1, a border is drawn on the left side of the block.
+   */
+  border?: 0 | 1;
+  elements: RichTextSection[];
+};
+export type RichTextPreformatted = {
   type: "rich_text_preformatted";
   elements: AnyRichTextSectionElement[];
-  border?: number;
-}
-export interface RichTextQuote extends RichTextBlockSubElement {
+  /**
+   * 0 or 1 (default 0) - if 1, a border is drawn on the left side of the block.
+   */
+  border?: 0 | 1;
+};
+export type RichTextQuote = {
   type: "rich_text_quote";
   elements: AnyRichTextSectionElement[];
-  border?: number;
-}
-export interface RichTextSection extends RichTextBlockSubElement {
+  /**
+   * 0 or 1 (default 0) - if 1, a border is drawn on the left side of the block.
+   */
+  border?: 0 | 1;
+};
+export type RichTextSection = {
   type: "rich_text_section";
   elements: AnyRichTextSectionElement[];
-}
+};
 
 export type AnyRichTextBlockElement =
   | RichTextList

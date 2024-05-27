@@ -10,6 +10,7 @@ import {
   StaticSelectElement,
   UsersSelectElement,
 } from ".";
+import { AnyRichTextBlockElement } from "../original_types";
 
 export type Block =
   | ActionsBlock
@@ -315,4 +316,12 @@ export type RichTextBlock = {
    * A ***rich_text*** block is a formatted, structured representation of text. It is the output of the Slack client's WYSIWYG composer, so all messages sent by end-users will have this format. You can use this block to create your own formatted text in Block Kit Builder or include user-defined formatted text in your Block Kit payload. You might encounter ***rich_text*** blocks in message payloads coming from our APIs, as a built-in type in the next-generation Slack platform, or as output of the ***rich_text_input*** block.
    */
   type: "rich_text";
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated. Maximum length for this field is 255 characters. ***block_id*** should be unique for each message and each iteration of a message. If a message is updated, use a new ***block_id***.
+   */
+  block_id?: string;
+  /**
+   * An array of rich text objects - rich_text_section, rich_text_list, rich_text_preformatted, and rich_text_quote. See your specific desired element below for more details.
+   */
+  elements: AnyRichTextBlockElement[];
 };
