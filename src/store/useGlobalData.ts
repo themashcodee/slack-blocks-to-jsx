@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { create } from "zustand";
 
 type User = {
@@ -11,18 +12,18 @@ type Channel = {
 };
 
 type Hooks = {
-  user?: (data: User) => string;
-  channel?: (data: Channel) => string;
-  atChannel?: (data: { name: string }) => string;
-  usergroup?: (data: Channel) => string;
-  atEveryone?: (data: { name: string }) => string;
-  atHere?: (data: { name: string }) => string;
+  user?: (data: User) => ReactNode;
+  channel?: (data: Channel) => ReactNode;
+  atChannel?: () => ReactNode;
+  atEveryone?: () => ReactNode;
+  atHere?: () => ReactNode;
+  usergroup?: (data: Channel) => ReactNode;
   date?: (data: {
     timestamp: string;
     format: string;
     link?: string | undefined;
     fallback: string;
-  }) => string;
+  }) => ReactNode;
 };
 
 type Data = {

@@ -14,16 +14,24 @@ export const RichTextSectionUser = (props: Props) => {
   const label = user?.name || user_id;
 
   return (
-    <span
+    <div
       data-user-id={user_id}
       className={`
+        inline-block
         slack_user
         ${style?.italic ? "italic" : ""}
         ${style?.strike ? "line-through" : ""}
         ${style?.bold ? "font-medium" : ""}
       `}
     >
-      @{label}
-    </span>
+      {hooks.user
+        ? hooks.user(
+            user || {
+              id: user_id,
+              name: label,
+            },
+          )
+        : `@${label}`}
+    </div>
   );
 };

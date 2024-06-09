@@ -26,7 +26,9 @@ export const getBlockComponent = (block: Block): ReactNode => {
   if (block.type === "divider") return <Divider data={block} />;
   // ✅ DONE
   if (block.type === "section") return <Section data={block} />;
+  // ✅ DONE
   if (block.type === "image") return <Image data={block} />;
+  // ✅ DONE
   if (block.type === "context") return <Context data={block} />;
   if (block.type === "actions") return <Actions data={block} />;
   if (block.type === "file") return <File data={block} />;
@@ -34,6 +36,7 @@ export const getBlockComponent = (block: Block): ReactNode => {
   // ✅ PARTIALLY DONE
   if (block.type === "input") return <Input data={block} />;
   if (block.type === "video") return <Video data={block} />;
+  // ✅ DONE
   if (block.type === "rich_text") return <RichText data={block} />;
 
   return null;

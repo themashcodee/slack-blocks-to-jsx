@@ -14,16 +14,24 @@ export const RichTextSectionChannel = (props: Props) => {
   const label = channel?.name || channel_id;
 
   return (
-    <span
+    <div
       data-channel-id={channel_id}
       className={`
+        inline-block
         slack_channel
         ${style?.italic ? "italic" : ""}
         ${style?.strike ? "line-through" : ""}
         ${style?.bold ? "font-medium" : ""}
       `}
     >
-      #{label}
-    </span>
+      {hooks.user
+        ? hooks.user(
+            channel || {
+              id: channel_id,
+              name: label,
+            },
+          )
+        : `#${label}`}
+    </div>
   );
 };

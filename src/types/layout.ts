@@ -10,7 +10,7 @@ import {
   StaticSelectElement,
   UsersSelectElement,
 } from ".";
-import { AnyRichTextBlockElement } from "../original_types";
+import { RichTextBlockElement } from "../original_types";
 
 export type Block =
   | ActionsBlock
@@ -323,5 +323,5 @@ export type RichTextBlock = {
   /**
    * An array of rich text objects - rich_text_section, rich_text_list, rich_text_preformatted, and rich_text_quote. See your specific desired element below for more details.
    */
-  elements: AnyRichTextBlockElement[];
+  elements: RichTextBlockElement[];
 };

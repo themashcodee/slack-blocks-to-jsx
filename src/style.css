@@ -332,6 +332,20 @@
     cursor: pointer;
   }
 
+  & .slack_broadcast {
+    color: rgb(29, 28, 29);
+    background: rgba(255, 198, 0, 0.18);
+    font-weight: 600;
+  }
+
+  & .slack_blocks_to_jsx__line_break {
+    display: block;
+  }
+  & .slack_blocks_to_jsx__line_break_not_first {
+    display: block;
+    height: 8px;
+  }
+
   /* #endregion */
 }
 

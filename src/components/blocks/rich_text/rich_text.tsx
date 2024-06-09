@@ -1,7 +1,6 @@
-import { AnyRichTextBlockElement, AnyRichTextSectionElement } from "../../../original_types";
+import { RichTextBlockElement } from "../../../original_types";
 import { RichTextBlock } from "../../../types";
-import { RichTextSectionChannel } from "./rich_text_section_channel";
-import { RichTextSectionUser } from "./rich_text_section_user";
+import { RichTextSectionElement } from "./rich_text_section";
 
 type RichTextProps = {
   data: RichTextBlock;
@@ -11,7 +10,7 @@ export const RichText = (props: RichTextProps) => {
   const { elements, block_id } = props.data;
 
   return (
-    <div id={block_id}>
+    <div id={block_id} className="slack_blocks_to_jsx__rich_text">
       {elements.map((element, i) => {
         return <Element key={`${element.type}__${i}`} element={element} />;
       })}
@@ -20,7 +19,7 @@ export const RichText = (props: RichTextProps) => {
 };
 
 type ElementProps = {
-  element: AnyRichTextBlockElement;
+  element: RichTextBlockElement;
 };
 
 const Element = (props: ElementProps) => {
@@ -120,9 +119,11 @@ const Element = (props: ElementProps) => {
   }
 
   if (element.type === "rich_text_section") {
+    const { elements } = element;
+
     return (
       <div className="inline-block">
-        {element.elements.map((el, i) => {
+        {elements.map((el, i) => {
           return <RichTextSectionElement key={`${el.type}__${i}`} element={el} />;
         })}
       </div>
@@ -130,56 +131,4 @@ const Element = (props: ElementProps) => {
   }
 
   return null;
-};
-
-type RichTextSectionElementProps = {
-  element: AnyRichTextSectionElement;
-};
-
-const RichTextSectionElement = (props: RichTextSectionElementProps) => {
-  const { element } = props;
-
-  if (element.type === "text") {
-    return (
-      <span
-        className={`
-            ${element.style?.italic ? "italic" : ""}
-            ${element.style?.strike ? "line-through" : ""}
-            ${element.style?.code ? "slack_inline_code" : ""}
-            ${element.style?.bold ? "font-medium" : ""}
-          `}
-      >
-        {element.text}
-      </span>
-    );
-  }
-
-  if (element.type === "user") {
-    return <RichTextSectionUser user_id={element.user_id} style={element.style} />;
-  }
-
-  if (element.type === "channel") {
-    return <RichTextSectionChannel channel_id={element.channel_id} style={element.style} />;
-  }
-
-  if (element.type === "link") {
-    return (
-      <a
-        target="_blank"
-        rel="noreferrer noopener"
-        href={element.url}
-        className={`
-        text-blue-primary hover:underline underline-offset-4
-          ${element.style?.italic ? "italic" : ""}
-          ${element.style?.strike ? "line-through" : ""}
-          ${element.style?.code ? "slack_inline_code" : ""}
-          ${element.style?.bold ? "font-medium" : ""}
-        `}
-      >
-        {element.text}
-      </a>
-    );
-  }
-
-  return <span></span>;
 };
