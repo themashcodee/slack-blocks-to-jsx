@@ -1,5 +1,6 @@
 import { RichTextBlockElement } from "../../../original_types";
 import { RichTextBlock } from "../../../types";
+import { RichTextListWrapper } from "./rich_text_list_wrapper";
 import { RichTextSectionElement } from "./rich_text_section";
 
 type RichTextProps = {
@@ -34,7 +35,7 @@ const Element = (props: ElementProps) => {
       <div className="flex gap-2">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
-        <ul className={`list-none`}>
+        <RichTextListWrapper element={element} className={`list-none`}>
           {elements.map((el, i) => {
             return (
               <li
@@ -76,7 +77,7 @@ const Element = (props: ElementProps) => {
               </li>
             );
           })}
-        </ul>
+        </RichTextListWrapper>
       </div>
     );
   }
@@ -85,7 +86,7 @@ const Element = (props: ElementProps) => {
     const { elements, border } = element;
 
     return (
-      <div className="flex gap-2 w-full">
+      <code className="flex gap-2 w-full">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
         <pre
@@ -99,7 +100,7 @@ const Element = (props: ElementProps) => {
             return <RichTextSectionElement key={`${el.type}__${i}`} element={el} />;
           })}
         </pre>
-      </div>
+      </code>
     );
   }
 
@@ -107,14 +108,13 @@ const Element = (props: ElementProps) => {
     const { elements, border } = element;
 
     return (
-      <div className="flex gap-2">
-        <div className="w-1 rounded bg-gray-primary self-stretch"></div>
+      <blockquote className="flex gap-2">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
         {elements.map((el, i) => {
           return <RichTextSectionElement key={`${el.type}__${i}`} element={el} />;
         })}
-      </div>
+      </blockquote>
     );
   }
 

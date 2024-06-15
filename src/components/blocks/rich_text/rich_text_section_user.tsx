@@ -1,10 +1,7 @@
-import { RichTextSectionElementStyle } from "../../../original_types";
+import { RichTextSectionUser as RichTextSectionUserType } from "../../../original_types";
 import { useGlobalData } from "../../../store";
 
-type Props = {
-  user_id: string;
-  style?: RichTextSectionElementStyle;
-};
+type Props = RichTextSectionUserType;
 
 export const RichTextSectionUser = (props: Props) => {
   const { user_id, style } = props;

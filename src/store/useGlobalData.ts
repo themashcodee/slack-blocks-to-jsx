@@ -17,7 +17,8 @@ type Hooks = {
   atChannel?: () => ReactNode;
   atEveryone?: () => ReactNode;
   atHere?: () => ReactNode;
-  usergroup?: (data: Channel) => ReactNode;
+  usergroup?: (id: string) => ReactNode;
+  emoji?: (emoji_text: string) => ReactNode;
   date?: (data: {
     timestamp: string;
     format: string;
@@ -29,6 +30,7 @@ type Hooks = {
 type Data = {
   users: User[];
   channels: Channel[];
+  user_groups: Channel[];
   hooks: Hooks;
   setUsers: (users: User[]) => void;
   setChannels: (channels: Channel[]) => void;
@@ -40,6 +42,7 @@ export type GlobalStore = Data;
 const useBearStore = create<Data>((set) => ({
   users: [],
   channels: [],
+  user_groups: [],
   hooks: {},
   setUsers: (users) => set({ users }),
   setChannels: (channels) => set({ channels }),
@@ -47,11 +50,12 @@ const useBearStore = create<Data>((set) => ({
 }));
 
 export const useGlobalData = () => {
-  const { users, channels, hooks, setChannels, setUsers, setHooks } = useBearStore();
+  const { users, channels, user_groups, hooks, setChannels, setUsers, setHooks } = useBearStore();
 
   return {
     users,
     channels,
+    user_groups,
     hooks,
     setChannels,
     setUsers,

@@ -1,10 +1,7 @@
-import { RichTextSectionElementStyle } from "../../../original_types";
+import { RichTextSectionChannel as RichTextSectionChannelType } from "../../../original_types";
 import { useGlobalData } from "../../../store";
 
-type Props = {
-  channel_id: string;
-  style?: RichTextSectionElementStyle;
-};
+type Props = RichTextSectionChannelType;
 
 export const RichTextSectionChannel = (props: Props) => {
   const { channel_id, style } = props;

@@ -1,10 +1,7 @@
 import { RichTextSectionBroadcast as RichTextSectionBroadcastType } from "../../../original_types";
 import { useGlobalData } from "../../../store";
 
-type Props = {
-  range: RichTextSectionBroadcastType["range"];
-  style?: RichTextSectionBroadcastType["style"];
-};
+type Props = RichTextSectionBroadcastType;
 
 export const RichTextSectionBroadcast = (props: Props) => {
   const { range, style } = props;

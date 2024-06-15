@@ -24,6 +24,7 @@ type Props = {
   data?: {
     users?: GlobalStore["users"];
     channels?: GlobalStore["channels"];
+    user_groups?: GlobalStore["user_groups"];
   };
   hooks?: GlobalStore["hooks"];
 };

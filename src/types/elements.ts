@@ -7,6 +7,7 @@ import {
   Style,
   TextObject,
   OptionObjectWithoutUrl,
+  RichTextBlockElement,
 } from ".";
 
 export type Element =
@@ -31,7 +32,8 @@ export type Element =
   | ConversationsSelectElement
   | ChannelsSelectElement
   | TimePickerElement
-  | UrlTextInputElement;
+  | UrlTextInputElement
+  | RichTextBlockElement;
 
 export type ButtonElement = {
   type: "button";
