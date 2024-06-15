@@ -16,6 +16,7 @@ export const RichTextSectionUser = (props: Props) => {
       className={`
         inline-block
         slack_user
+        slack_blocks_to_jsx__rich_text_section_element_user
         ${style?.italic ? "italic" : ""}
         ${style?.strike ? "line-through" : ""}
         ${style?.bold ? "font-medium" : ""}

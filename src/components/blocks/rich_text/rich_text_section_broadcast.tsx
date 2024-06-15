@@ -12,6 +12,7 @@ export const RichTextSectionBroadcast = (props: Props) => {
       className={`
         inline-block
         slack_broadcast
+        slack_blocks_to_jsx__rich_text_section_element_broadcast
         ${style?.italic ? "italic" : ""}
         ${style?.strike ? "line-through" : ""}
         ${style?.bold ? "font-medium" : ""}

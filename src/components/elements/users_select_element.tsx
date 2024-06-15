@@ -42,7 +42,7 @@ export const UsersSelectElement = (props: TextObjectProps) => {
   return (
     <div
       id={action_id}
-      className="py-1 px-2 h-7 min-h-[28px] relative flex items-center justify-between rounded text-small w-[190px] border border-black-primary.3"
+      className="py-1 px-2 h-7 min-h-[28px] relative flex items-center justify-between rounded text-small w-[190px] border border-black-primary.3 slack_blocks_to_jsx__users_select_element"
       tabIndex={0}
     >
       {visible && (

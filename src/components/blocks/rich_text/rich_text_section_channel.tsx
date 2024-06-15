@@ -16,6 +16,7 @@ export const RichTextSectionChannel = (props: Props) => {
       className={`
         inline-block
         slack_channel
+        slack_blocks_to_jsx__rich_text_section_element_channel
         ${style?.italic ? "italic" : ""}
         ${style?.strike ? "line-through" : ""}
         ${style?.bold ? "font-medium" : ""}

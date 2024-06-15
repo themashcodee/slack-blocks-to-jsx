@@ -12,7 +12,7 @@ export const ImageElement = (props: ImageElementProps) => {
       <img
         src={image_url}
         alt={alt_text}
-        className="w-[88px] h-[88px] rounded-lg overflow-hidden object-cover"
+        className="w-[88px] h-[88px] rounded-lg overflow-hidden object-cover slack_blocks_to_jsx__image_element"
       />
     </div>
   );

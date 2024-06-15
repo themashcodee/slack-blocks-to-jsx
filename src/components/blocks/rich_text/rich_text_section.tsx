@@ -24,6 +24,7 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
     return (
       <span
         className={`
+              slack_blocks_to_jsx__rich_text_section_element_text
               ${style?.italic ? "italic" : ""}
               ${style?.strike ? "line-through" : ""}
               ${style?.code ? "slack_inline_code" : ""}
@@ -44,6 +45,7 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
         rel="noreferrer noopener"
         href={url}
         className={`
+            slack_blocks_to_jsx__rich_text_section_element_link
           text-blue-primary hover:underline underline-offset-4
             ${style?.italic ? "italic" : ""}
             ${style?.strike ? "line-through" : ""}

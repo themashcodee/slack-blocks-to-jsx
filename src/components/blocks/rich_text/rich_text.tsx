@@ -32,7 +32,7 @@ const Element = (props: ElementProps) => {
     // TODO: Add support for offset
 
     return (
-      <div className="flex gap-2">
+      <div className="flex gap-2 slack_blocks_to_jsx__rich_text_list_element">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
         <RichTextListWrapper element={element} className={`list-none`}>
@@ -86,7 +86,7 @@ const Element = (props: ElementProps) => {
     const { elements, border } = element;
 
     return (
-      <code className="flex gap-2 w-full">
+      <code className="flex gap-2 w-full slack_blocks_to_jsx__rich_text_preformatted_element">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
         <pre
@@ -108,7 +108,7 @@ const Element = (props: ElementProps) => {
     const { elements, border } = element;
 
     return (
-      <blockquote className="flex gap-2">
+      <blockquote className="flex gap-2 slack_blocks_to_jsx__rich_text_quote_element">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
         {elements.map((el, i) => {
@@ -122,7 +122,7 @@ const Element = (props: ElementProps) => {
     const { elements } = element;
 
     return (
-      <div className="inline-block">
+      <div className="inline-block slack_blocks_to_jsx__rich_text_section_element">
         {elements.map((el, i) => {
           return <RichTextSectionElement key={`${el.type}__${i}`} element={el} />;
         })}

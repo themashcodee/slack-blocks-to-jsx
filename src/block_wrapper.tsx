@@ -7,5 +7,9 @@ type Props = {
 export const BlockWrapper = (props: Props) => {
   const { children } = props;
 
-  return <div className="text-base break-words font-normal">{children}</div>;
+  return (
+    <div className="text-base slack_blocks_to_jsx--block_wrapper break-words font-normal">
+      {children}
+    </div>
+  );
 };

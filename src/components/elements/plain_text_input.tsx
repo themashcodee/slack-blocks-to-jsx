@@ -44,7 +44,11 @@ export const PlaintTextInput = (props: TextObjectProps) => {
   }, []);
 
   return (
-    <div id={action_id} className="relative text-small w-full" tabIndex={0}>
+    <div
+      id={action_id}
+      className="relative text-small w-full slack_blocks_to_jsx__plain_text_input_element"
+      tabIndex={0}
+    >
       {!value && placeholder && (
         <div className="absolute left-2 top-2 text-black-primary.3">
           <TextObject data={placeholder} />
