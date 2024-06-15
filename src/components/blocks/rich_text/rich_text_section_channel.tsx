@@ -1,4 +1,4 @@
-import { RichTextSectionChannel as RichTextSectionChannelType } from "../../../original_types";
+import { RichTextSectionChannel as RichTextSectionChannelType } from "../../../types";
 import { useGlobalData } from "../../../store";
 
 type Props = RichTextSectionChannelType;

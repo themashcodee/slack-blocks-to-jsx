@@ -1,4 +1,4 @@
-import { RichTextSectionEmoji as RichTextSectionEmojiType } from "../../../original_types";
+import { RichTextSectionEmoji as RichTextSectionEmojiType } from "../../../types";
 import { useGlobalData } from "../../../store";
 import { parseEmojis } from "../../../utils";
 

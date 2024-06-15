@@ -1,5 +1,5 @@
 import React, { ComponentPropsWithoutRef } from "react";
-import { RichTextList } from "../../../original_types";
+import { RichTextList } from "../../../types";
 
 type Props = ComponentPropsWithoutRef<"ul"> & {
   element: RichTextList;

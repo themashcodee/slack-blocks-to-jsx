@@ -10,7 +10,7 @@ import {
   StaticSelectElement,
   UsersSelectElement,
 } from ".";
-import { RichTextBlockElement } from "../original_types";
+import { RichTextBlockElement } from "../types";
 
 export type Block =
   | ActionsBlock

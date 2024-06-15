@@ -1,4 +1,4 @@
-import { RichTextBlockElement } from "../../../original_types";
+import { RichTextBlockElement } from "../../../types";
 import { RichTextBlock } from "../../../types";
 import { RichTextListWrapper } from "./rich_text_list_wrapper";
 import { RichTextSectionElement } from "./rich_text_section";

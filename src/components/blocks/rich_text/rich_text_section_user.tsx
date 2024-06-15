@@ -1,4 +1,4 @@
-import { RichTextSectionUser as RichTextSectionUserType } from "../../../original_types";
+import { RichTextSectionUser as RichTextSectionUserType } from "../../../types";
 import { useGlobalData } from "../../../store";
 
 type Props = RichTextSectionUserType;

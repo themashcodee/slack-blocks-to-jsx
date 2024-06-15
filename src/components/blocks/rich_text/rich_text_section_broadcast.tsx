@@ -1,4 +1,4 @@
-import { RichTextSectionBroadcast as RichTextSectionBroadcastType } from "../../../original_types";
+import { RichTextSectionBroadcast as RichTextSectionBroadcastType } from "../../../types";
 import { useGlobalData } from "../../../store";
 
 type Props = RichTextSectionBroadcastType;
