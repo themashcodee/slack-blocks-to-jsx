@@ -9,7 +9,7 @@ const missing_emojis: {
   ":thumbsup:": ":+1:",
 };
 
-export const parseEmojis = (text: string, skin_tone?: number, unicode?: string) => {
+export const parseEmojis = (text: string) => {
   // TODO: HANDLE SKINTONE AND UNICODE
 
   let emojified = text;
