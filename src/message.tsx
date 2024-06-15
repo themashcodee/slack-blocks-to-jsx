@@ -27,6 +27,10 @@ type Props = {
     user_groups?: GlobalStore["user_groups"];
   };
   hooks?: GlobalStore["hooks"];
+  /**
+   * If true, the header and the container which wraps the message will be removed and only the slack blocks will be returned.
+   */
+  withoutWrapper?: boolean;
 };
 
 export const Message = (props: Props) => {
@@ -41,6 +45,7 @@ export const Message = (props: Props) => {
     unstyled = false,
     data = {},
     hooks = {},
+    withoutWrapper = false,
   } = props;
 
   const { setChannels, setUsers, setHooks } = useGlobalData();
@@ -50,6 +55,25 @@ export const Message = (props: Props) => {
     if (data.channels) setChannels(data.channels);
     if (hooks) setHooks(hooks);
   }, [data]);
+
+  if (withoutWrapper) {
+    return (
+      <div
+        id="slack_blocks_to_jsx"
+        className={`slack_blocks_to_jsx relative flex gap-2 w-full max-w-[600px] ${
+          unstyled ? "styles_disabled" : "styles_enabled"
+        } ${className}`}
+        style={style}
+      >
+        {blocks.map((block, i) => {
+          const element = getBlockComponent(block);
+          if (!element) return null;
+
+          return <BlockWrapper key={i}>{element}</BlockWrapper>;
+        })}
+      </div>
+    );
+  }
 
   return (
     <div id="slack_blocks_to_jsx">
@@ -79,7 +103,7 @@ export const Message = (props: Props) => {
         <div className="flex flex-col w-full">
           <Header name={name} time={time} />
 
-          <div>
+          <div className="slack_blocks_to_jsx--blocks">
             {blocks.map((block, i) => {
               const element = getBlockComponent(block);
               if (!element) return null;
