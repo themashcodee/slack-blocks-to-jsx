@@ -43,18 +43,18 @@ export const Message = (props: Props) => {
     style,
     showBlockKitDebug = false,
     unstyled = false,
-    data = {},
-    hooks = {},
+    data,
+    hooks,
     withoutWrapper = false,
   } = props;
 
   const { setChannels, setUsers, setHooks } = useGlobalData();
 
   useEffect(() => {
-    if (data.users) setUsers(data.users);
-    if (data.channels) setChannels(data.channels);
+    if (data?.users) setUsers(data.users);
+    if (data?.channels) setChannels(data.channels);
     if (hooks) setHooks(hooks);
-  }, [data]);
+  }, [data, hooks]);
 
   if (withoutWrapper) {
     return (
