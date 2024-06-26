@@ -55,20 +55,19 @@ export const markdown_parser = (markdown: string, options: Options): JSX.Element
 
   let text_string = markdown;
 
-  // REPLACE \N WITH LINE BREAK CHARACTER
+  // TRANSFORM ``` TO MAKE IT A CODE BLOCK INSTEAD OF INLINE CODE BLOCK
   text_string = text_string.replace(/```/g, `\n\`\`\`\n`);
-  // REPLACE SINGLE ASTERICS WITH DOUBLE ASTERICS
+  // REPLACE SINGLE asterisk WITH DOUBLE asterisk
   text_string = text_string.replace(/(?<!\*)\*(?!\*)([^*]+)\*(?!\*)/g, "**$1**");
-  // REPLACE SINGLE TILDE WITH DOUBLE TILDE
+  // REPLACE SINGLE tilde WITH DOUBLE tilde
   text_string = text_string.replace(/(?<!~)~(?!~)([^~]+)~(?!~)/g, "~~$1~~");
   // CHANGE LINK FORMATING FROM <link|label> to [label](link)
   text_string = text_string.replace(/<([^|>]+)\|([^>]+)>/g, "[$2]($1)");
-  // REPLACE \N\n WITH '[[DOUBLE_LINE_BREAK]]'
+  // REPLACE \n\n WITH '[[DOUBLE_LINE_BREAK]]' to prevent @yozora/parser to eat it
   text_string = text_string.replace(/\n\n/g, "[[DOUBLE_LINE_BREAK]]");
 
   const parsed_data = parser.parse(text_string);
 
-  console.log({ parsed_data });
   const elements = parsed_data.children as unknown as Element[];
 
   return (
