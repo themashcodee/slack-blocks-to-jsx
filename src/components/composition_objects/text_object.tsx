@@ -1,6 +1,6 @@
 import { useGlobalData } from "../../store";
 import type { TextObject as TextObjectType } from "../../types";
-import { parseEmojis, slack_text_to_jsx } from "../../utils";
+import { markdown_parser, parseEmojis } from "../../utils";
 
 type TextObjectProps = {
   data: TextObjectType;
@@ -23,13 +23,13 @@ export const TextObject = (props: TextObjectProps) => {
   if (type === "plain_text")
     return (
       <div className={className}>
-        {slack_text_to_jsx(emoji_parsed, { markdown: false, users, channels, hooks })}
+        {markdown_parser(emoji_parsed, { markdown: false, users, channels, hooks })}
       </div>
     );
 
   return (
     <div className={className}>
-      {slack_text_to_jsx(emoji_parsed, { markdown: true, users, channels, hooks })}
+      {markdown_parser(emoji_parsed, { markdown: true, users, channels, hooks })}
     </div>
   );
 };
