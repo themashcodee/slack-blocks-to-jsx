@@ -20,7 +20,10 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
     const potentialDelimiters: ITokenDelimiter[] = [];
     for (let i = blockStartIndex; i < blockEndIndex; ++i) {
       const c = nodePoints[i]?.codePoint;
-      if (c === AsciiCodePoint.OPEN_ANGLE && nodePoints[i + 1]?.codePoint === AsciiCodePoint.HT) {
+      if (
+        c === AsciiCodePoint.OPEN_ANGLE &&
+        nodePoints[i + 1]?.codePoint === AsciiCodePoint.NUMBER_SIGN
+      ) {
         const j = eatOptionalCharacters(nodePoints, i + 2, blockEndIndex, AsciiCodePoint.AT_SIGN);
         if (j < blockEndIndex) {
           potentialDelimiters.push({
