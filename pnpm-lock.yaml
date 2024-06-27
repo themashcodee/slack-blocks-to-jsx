@@ -4,6 +4,9 @@ specifiers:
   '@changesets/cli': ^2.26.2
   '@types/react': 17.0.0
   '@types/react-dom': 17.0.0
+  '@yozora/ast': ^2.3.2
+  '@yozora/character': ^2.3.2
+  '@yozora/core-tokenizer': ^2.3.2
   '@yozora/parser': ^2.3.2
   autoprefixer: ^10.4.17
   cssnano: ^6.0.3
@@ -19,6 +22,9 @@ specifiers:
   zustand: ^4.5.2
 
 dependencies:
+  '@yozora/ast': 2.3.2
+  '@yozora/character': 2.3.2
+  '@yozora/core-tokenizer': 2.3.2
   '@yozora/parser': 2.3.2
   node-emoji: 2.1.0
   react: 18.3.1

@@ -1,0 +1,22 @@
+import { InlineCodeType } from "@yozora/ast";
+import type { INodePoint } from "@yozora/character";
+import { calcStringFromNodePoints } from "@yozora/character";
+import type { IParseInlineHookCreator } from "@yozora/core-tokenizer";
+import type { INode, IThis, IToken, T } from "./types";
+
+export const parse: IParseInlineHookCreator<T, IToken, INode, IThis> = function (api) {
+  return {
+    parse: (tokens) =>
+      tokens.map((token) => {
+        const nodePoints: ReadonlyArray<INodePoint> = api.getNodePoints();
+        let startIndex: number = token.startIndex + 2; // Skip `<@`
+        let endIndex: number = token.endIndex - 1; // Skip `>`
+
+        const value = calcStringFromNodePoints(nodePoints, startIndex, endIndex);
+        const node: INode = api.shouldReservePosition
+          ? { type: InlineCodeType, position: api.calcPosition(token), value }
+          : { type: InlineCodeType, value };
+        return node;
+      }),
+  };
+};
