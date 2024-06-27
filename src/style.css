@@ -269,6 +269,10 @@
   /* #endregion */
 
   /* #region CUSTOM STYLES */
+  & .slack_code_inline {
+    @apply inline-block px-1 text-xs leading-[1.5] whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] text-red-primary;
+  }
+
   & .slack_code {
     @apply block p-2 text-xs leading-[1.5] whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] w-full my-1;
   }
@@ -322,21 +326,18 @@
     color: rgb(18, 100, 163);
     background: rgb(29, 155, 209, 0.1);
     user-select: none;
-    cursor: pointer;
   }
 
   & .slack_channel {
     color: rgb(18, 100, 163);
     background: rgb(29, 155, 209, 0.1);
     user-select: none;
-    cursor: pointer;
   }
 
   & .slack_user_group {
     color: rgb(18, 100, 163);
     background: rgb(29, 155, 209, 0.1);
     user-select: none;
-    cursor: pointer;
   }
 
   & .slack_broadcast {
@@ -350,7 +351,11 @@
   }
   & .slack_blocks_to_jsx__line_break_not_first {
     display: block;
-    height: 8px;
+    height: 3px;
+  }
+
+  & .slack_link {
+    color: rgb(18, 100, 163);
   }
 
   /* #endregion */

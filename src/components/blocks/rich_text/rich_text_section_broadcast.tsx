@@ -7,10 +7,13 @@ export const RichTextSectionBroadcast = (props: Props) => {
   const { range, style } = props;
   const { hooks } = useGlobalData();
 
+  if (range === "channel" && hooks.atChannel) return <>{hooks.atChannel()}</>;
+  if (range === "everyone" && hooks.atEveryone) return <>{hooks.atEveryone()}</>;
+  if (range === "here" && hooks.atHere) return <>{hooks.atHere()}</>;
+
   return (
-    <div
+    <span
       className={`
-        inline-block
         slack_broadcast
         slack_blocks_to_jsx__rich_text_section_element_broadcast
         ${style?.italic ? "italic" : ""}
@@ -18,9 +21,7 @@ export const RichTextSectionBroadcast = (props: Props) => {
         ${style?.bold ? "font-medium" : ""}
       `}
     >
-      {range === "channel" && (hooks.atChannel ? hooks.atChannel() : `@${range}`)}
-      {range === "everyone" && (hooks.atEveryone ? hooks.atEveryone() : `@${range}`)}
-      {range === "here" && (hooks.atHere ? hooks.atHere() : `@${range}`)}
-    </div>
+      @{range}
+    </span>
   );
 };
