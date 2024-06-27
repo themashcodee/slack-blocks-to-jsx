@@ -1,4 +1,3 @@
-import { InlineCodeType } from "@yozora/ast";
 import type { INodeInterval, INodePoint } from "@yozora/character";
 import { AsciiCodePoint } from "@yozora/character";
 import type {
@@ -8,7 +7,13 @@ import type {
   ITokenDelimiter,
 } from "@yozora/core-tokenizer";
 import { eatOptionalCharacters } from "@yozora/core-tokenizer";
-import type { IDelimiter, IThis, IToken, T } from "./types";
+import {
+  InlineSlackUserMentionType,
+  type IDelimiter,
+  type IThis,
+  type IToken,
+  type T,
+} from "./types";
 
 export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = function (api) {
   return { findDelimiter, processSingleDelimiter };
@@ -83,7 +88,7 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
     delimiter: IDelimiter,
   ): IResultOfProcessSingleDelimiter<T, IToken> {
     const token: IToken = {
-      nodeType: InlineCodeType,
+      nodeType: InlineSlackUserMentionType,
       startIndex: delimiter.startIndex,
       endIndex: delimiter.endIndex,
       thickness: delimiter.thickness,

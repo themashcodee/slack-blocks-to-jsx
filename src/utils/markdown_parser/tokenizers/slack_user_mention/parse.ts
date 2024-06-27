@@ -1,8 +1,7 @@
-import { InlineCodeType } from "@yozora/ast";
 import type { INodePoint } from "@yozora/character";
 import { calcStringFromNodePoints } from "@yozora/character";
 import type { IParseInlineHookCreator } from "@yozora/core-tokenizer";
-import type { INode, IThis, IToken, T } from "./types";
+import { InlineSlackUserMentionType, type INode, type IThis, type IToken, type T } from "./types";
 
 export const parse: IParseInlineHookCreator<T, IToken, INode, IThis> = function (api) {
   return {
@@ -14,8 +13,8 @@ export const parse: IParseInlineHookCreator<T, IToken, INode, IThis> = function 
 
         const value = calcStringFromNodePoints(nodePoints, startIndex, endIndex);
         const node: INode = api.shouldReservePosition
-          ? { type: InlineCodeType, position: api.calcPosition(token), value }
-          : { type: InlineCodeType, value };
+          ? { type: InlineSlackUserMentionType, position: api.calcPosition(token), value }
+          : { type: InlineSlackUserMentionType, value };
         return node;
       }),
   };

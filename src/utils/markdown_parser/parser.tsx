@@ -2,8 +2,11 @@ import YozoraParser from "@yozora/parser";
 import { Element } from "./types";
 import { Blockquote, Paragraph, Code } from "./elements";
 import { GlobalStore } from "../../store";
+import { SlackUserMentionTokenizer } from "./tokenizers";
 
-const parser = new YozoraParser().unmountTokenizer("@yozora/tokenizer-list");
+const parser = new YozoraParser()
+  .unmountTokenizer("@yozora/tokenizer-list")
+  .useTokenizer(new SlackUserMentionTokenizer());
 
 type Options = {
   markdown: boolean;
@@ -67,6 +70,7 @@ export const markdown_parser = (markdown: string, options: Options): JSX.Element
   text_string = text_string.replace(/\n\n/g, "[[DOUBLE_LINE_BREAK]]");
 
   const parsed_data = parser.parse(text_string);
+  console.log({ parsed_data });
 
   const elements = parsed_data.children as unknown as Element[];
 
