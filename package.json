@@ -37,13 +37,13 @@
     "zustand": "^4.5.2"
   },
   "peerDependencies": {
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0"
+    "react": "^17 || ^18",
+    "react-dom": "^17 || ^18"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
-    "@types/react": "17.0.0",
-    "@types/react-dom": "17.0.0",
+    "@types/react": "^17",
+    "@types/react-dom": "^17",
     "autoprefixer": "^10.4.17",
     "cssnano": "^6.0.3",
     "postcss": "^8.4.33",

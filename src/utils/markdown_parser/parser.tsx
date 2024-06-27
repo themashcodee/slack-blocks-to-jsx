@@ -7,6 +7,7 @@ import {
   SlackChannelMentionTokenizer,
   SlackUserGroupMentionTokenizer,
 } from "./tokenizers";
+import { ReactNode } from "react";
 
 const parser = new YozoraParser()
   .unmountTokenizer("@yozora/tokenizer-list")
@@ -23,26 +24,11 @@ type Options = {
 
 // #region HELPER CODE
 // TODO: HANDLE DATE PARSING
-// TODO: HANDLE USER GROUP, @HERE, @EVERYONE, @CHANNEL PARSING
-
-//     atChannel(data) {
-//       const channel = channels.find((c) => c.name === data.name);
-//       // if (hooks.atChannel) return hooks.atChannel(channel || data);
-//       const label = channel?.name || data.name;
-//       return `<span class="slack_channel" data-channel-id="${channel?.id}">#${label}</span>`;
-//     },
-//     atEveryone() {
-//       return `<span class="slack_broadcast">@everyone</span>`;
-//     },
-//     atHere() {
-//       return `<span class="slack_broadcast">@everyone</span>`;
-//     },
+// TODO: HANDLE @HERE, @EVERYONE, @CHANNEL PARSING (class - slack_broadcast)
 //     // ...(hooks.date && { date: hooks.date }),
-//     // ...(hooks.usergroup && { usergroup: hooks.usergroup }),
-//   },
 // #endregion
 
-export const markdown_parser = (markdown: string, options: Options): JSX.Element | null => {
+export const markdown_parser = (markdown: string, options: Options): ReactNode => {
   if (!markdown) return null;
 
   let text_string = markdown;
