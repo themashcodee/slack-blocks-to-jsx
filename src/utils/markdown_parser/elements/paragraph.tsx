@@ -3,6 +3,7 @@ import {
   Emphasis,
   InlineCode,
   Link,
+  SlackBroadcast,
   SlackChannelMention,
   SlackUserGroupMention,
   SlackUserMention,
@@ -33,6 +34,8 @@ export const Paragraph = (props: Props) => {
           return <SlackChannelMention key={i} element={subelement} />;
         if (subelement.type === "slack_user_group_mention")
           return <SlackUserGroupMention key={i} element={subelement} />;
+        if (subelement.type === "slack_broadcast")
+          return <SlackBroadcast key={i} element={subelement} />;
 
         return null;
       })}

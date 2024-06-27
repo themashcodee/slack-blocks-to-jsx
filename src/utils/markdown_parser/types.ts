@@ -1,3 +1,8 @@
+export type SlackBroadcastSubElement = {
+  type: "slack_broadcast";
+  value: "here" | "everyone" | "channel";
+};
+
 export type SlackUserMentionSubElement = {
   type: "slack_user_mention";
   value: string;
@@ -31,6 +36,7 @@ export type EmphasisSubElement = {
     | SlackUserMentionSubElement
     | SlackChannelMentionSubElement
     | SlackUserGroupMentionSubElement
+    | SlackBroadcastSubElement
   )[];
 };
 
@@ -42,6 +48,7 @@ export type StrongSubElement = {
     | SlackUserMentionSubElement
     | SlackChannelMentionSubElement
     | SlackUserGroupMentionSubElement
+    | SlackBroadcastSubElement
   )[];
 };
 
@@ -68,6 +75,7 @@ export type ParagraphElement = {
     | SlackUserMentionSubElement
     | SlackChannelMentionSubElement
     | SlackUserGroupMentionSubElement
+    | SlackBroadcastSubElement
   )[];
 };
 

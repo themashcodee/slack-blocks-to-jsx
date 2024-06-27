@@ -1,12 +1,10 @@
-import type { INodeInterval, INodePoint } from "@yozora/character";
+import type { INodePoint } from "@yozora/character";
 import { AsciiCodePoint } from "@yozora/character";
 import type {
   IMatchInlineHookCreator,
   IResultOfFindDelimiters,
   IResultOfProcessSingleDelimiter,
-  ITokenDelimiter,
 } from "@yozora/core-tokenizer";
-import { eatOptionalCharacters } from "@yozora/core-tokenizer";
 import { SlackBroadcastType, type IDelimiter, type IThis, type IToken, type T } from "./types";
 
 export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = function (api) {
@@ -17,68 +15,63 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
     const blockStartIndex: number = api.getBlockStartIndex();
     const blockEndIndex: number = api.getBlockEndIndex();
 
-    const potentialDelimiters: ITokenDelimiter[] = [];
+    const targets = ["@everyone", "@here", "@channel"];
+    const potentialDelimiters: IDelimiter[] = [];
+
     for (let i = blockStartIndex; i < blockEndIndex; ++i) {
-      const c = nodePoints[i]?.codePoint;
-      if (
-        c === AsciiCodePoint.OPEN_ANGLE &&
-        nodePoints[i + 1]?.codePoint === AsciiCodePoint.NUMBER_SIGN
-      ) {
-        const j = eatOptionalCharacters(nodePoints, i + 2, blockEndIndex, AsciiCodePoint.AT_SIGN);
-        if (j < blockEndIndex) {
-          potentialDelimiters.push({
-            type: "opener",
-            startIndex: i,
-            endIndex: j,
-          });
+      if (nodePoints[i]?.codePoint === AsciiCodePoint.AT_SIGN) {
+        for (const target of targets) {
+          if (matchTarget(nodePoints, i, target)) {
+            potentialDelimiters.push({
+              type: "full",
+              startIndex: i,
+              endIndex: i + target.length,
+              thickness: target.length,
+            });
+            i += target.length - 1; // Skip past the matched target
+            break;
+          }
         }
-      } else if (c === AsciiCodePoint.CLOSE_ANGLE) {
-        potentialDelimiters.push({
-          type: "closer",
-          startIndex: i,
-          endIndex: i + 1,
-        });
       }
     }
 
     let pIndex = 0;
     let lastEndIndex = -1;
-    let delimiter: IDelimiter | null = null;
+    let currentDelimiter: IDelimiter | null = null;
     while (pIndex < potentialDelimiters.length) {
-      const [startIndex, endIndex] = yield delimiter;
+      const [startIndex, endIndex] = yield currentDelimiter;
 
       if (lastEndIndex === endIndex) {
-        if (delimiter == null || delimiter.startIndex >= startIndex) continue;
+        if (currentDelimiter == null || currentDelimiter.startIndex >= startIndex) continue;
       }
       lastEndIndex = endIndex;
 
-      let openerDelimiter: INodeInterval | null = null;
-      let closerDelimiter: INodeInterval | null = null;
       for (; pIndex < potentialDelimiters.length; ++pIndex) {
         const delimiter = potentialDelimiters[pIndex]!;
-        if (delimiter.startIndex >= startIndex && delimiter.type !== "closer") {
-          openerDelimiter = delimiter;
+        if (delimiter.startIndex >= startIndex) {
+          currentDelimiter = {
+            type: "full",
+            startIndex: delimiter.startIndex,
+            endIndex: delimiter.endIndex,
+            thickness: delimiter.thickness,
+          };
           break;
         }
       }
-
-      for (let i = pIndex + 1; i < potentialDelimiters.length; ++i) {
-        const delimiter = potentialDelimiters[i]!;
-        if (delimiter.type === "closer") {
-          closerDelimiter = delimiter;
-          break;
-        }
-      }
-
-      if (closerDelimiter == null) return;
-
-      delimiter = {
-        type: "full",
-        startIndex: openerDelimiter!.startIndex,
-        endIndex: closerDelimiter.endIndex,
-        thickness: closerDelimiter.endIndex - closerDelimiter.startIndex,
-      };
     }
+  }
+
+  function matchTarget(
+    nodePoints: ReadonlyArray<INodePoint>,
+    startIndex: number,
+    target: string,
+  ): boolean {
+    for (let j = 0; j < target.length; ++j) {
+      if (nodePoints[startIndex + j]?.codePoint !== target.charCodeAt(j)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   function processSingleDelimiter(

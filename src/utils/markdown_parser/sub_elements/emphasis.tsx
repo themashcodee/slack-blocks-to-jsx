@@ -1,5 +1,6 @@
 import { EmphasisSubElement } from "../types";
 import { Delete } from "./delete";
+import { SlackBroadcast } from "./slack_broadcast";
 import { SlackChannelMention } from "./slack_channel_mention";
 import { SlackUserGroupMention } from "./slack_user_group_mention";
 import { SlackUserMention } from "./slack_user_mention";
@@ -22,6 +23,7 @@ export const Emphasis = (props: Props) => {
           return <SlackChannelMention key={i} element={child} />;
         if (child.type === "slack_user_group_mention")
           return <SlackUserGroupMention key={i} element={child} />;
+        if (child.type === "slack_broadcast") return <SlackBroadcast key={i} element={child} />;
 
         return <Text key={i} element={child} />;
       })}
