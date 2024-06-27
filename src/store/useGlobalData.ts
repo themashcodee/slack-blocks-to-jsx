@@ -39,6 +39,7 @@ type Data = {
   hooks: Hooks;
   setUsers: (users: User[]) => void;
   setChannels: (channels: Channel[]) => void;
+  setUserGroups: (channels: UserGroup[]) => void;
   setHooks: (hooks: Hooks) => void;
 };
 
@@ -51,11 +52,13 @@ const useBearStore = create<Data>((set) => ({
   hooks: {},
   setUsers: (users) => set({ users }),
   setChannels: (channels) => set({ channels }),
+  setUserGroups: (user_groups) => set({ user_groups }),
   setHooks: (hooks) => set({ hooks }),
 }));
 
 export const useGlobalData = () => {
-  const { users, channels, user_groups, hooks, setChannels, setUsers, setHooks } = useBearStore();
+  const { users, channels, user_groups, hooks, setChannels, setUsers, setHooks, setUserGroups } =
+    useBearStore();
 
   return {
     users,
@@ -65,5 +68,6 @@ export const useGlobalData = () => {
     setChannels,
     setUsers,
     setHooks,
+    setUserGroups,
   };
 };

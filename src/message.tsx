@@ -48,11 +48,12 @@ export const Message = (props: Props) => {
     withoutWrapper = false,
   } = props;
 
-  const { setChannels, setUsers, setHooks } = useGlobalData();
+  const { setChannels, setUsers, setHooks, setUserGroups } = useGlobalData();
 
   useEffect(() => {
     if (data?.users) setUsers(data.users);
     if (data?.channels) setChannels(data.channels);
+    if (data?.user_groups) setUserGroups(data.user_groups);
     if (hooks) setHooks(hooks);
   }, [data, hooks]);
 
