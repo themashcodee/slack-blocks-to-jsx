@@ -6,9 +6,9 @@ import type {
   ITokenizer,
 } from "@yozora/core-tokenizer";
 
-export const SlackUserMentionType = "slack_user_mention";
-export type T = typeof SlackUserMentionType;
-export type INode = Literal<typeof SlackUserMentionType>;
+export const SlackChannelMentionType = "slack_channel_mention";
+export type T = typeof SlackChannelMentionType;
+export type INode = Literal<typeof SlackChannelMentionType>;
 
 export interface IToken extends IPartialInlineToken<T> {
   thickness: number;

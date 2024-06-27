@@ -7,7 +7,7 @@ import { BaseInlineTokenizer, TokenizerPriority } from "@yozora/core-tokenizer";
 import { match } from "./match";
 import { parse } from "./parse";
 import {
-  SlackUserMentionType,
+  SlackChannelMentionType,
   type IDelimiter,
   type INode,
   type IThis,
@@ -16,13 +16,13 @@ import {
   type T,
 } from "./types";
 
-export class SlackUserMentionTokenizer
+export class SlackChannelMentionTokenizer
   extends BaseInlineTokenizer<T, IDelimiter, IToken, INode, IThis>
   implements IInlineTokenizer<T, IDelimiter, IToken, INode, IThis>
 {
   constructor(props: ITokenizerProps = {}) {
     super({
-      name: SlackUserMentionType,
+      name: SlackChannelMentionType,
       priority: props.priority || TokenizerPriority.ATOMIC,
     });
   }

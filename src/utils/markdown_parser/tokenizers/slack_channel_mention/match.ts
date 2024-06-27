@@ -7,7 +7,7 @@ import type {
   ITokenDelimiter,
 } from "@yozora/core-tokenizer";
 import { eatOptionalCharacters } from "@yozora/core-tokenizer";
-import { SlackUserMentionType, type IDelimiter, type IThis, type IToken, type T } from "./types";
+import { SlackChannelMentionType, type IDelimiter, type IThis, type IToken, type T } from "./types";
 
 export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = function (api) {
   return { findDelimiter, processSingleDelimiter };
@@ -20,10 +20,7 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
     const potentialDelimiters: ITokenDelimiter[] = [];
     for (let i = blockStartIndex; i < blockEndIndex; ++i) {
       const c = nodePoints[i]?.codePoint;
-      if (
-        c === AsciiCodePoint.OPEN_ANGLE &&
-        nodePoints[i + 1]?.codePoint === AsciiCodePoint.AT_SIGN
-      ) {
+      if (c === AsciiCodePoint.OPEN_ANGLE && nodePoints[i + 1]?.codePoint === AsciiCodePoint.HT) {
         const j = eatOptionalCharacters(nodePoints, i + 2, blockEndIndex, AsciiCodePoint.AT_SIGN);
         if (j < blockEndIndex) {
           potentialDelimiters.push({
@@ -85,7 +82,7 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
     delimiter: IDelimiter,
   ): IResultOfProcessSingleDelimiter<T, IToken> {
     const token: IToken = {
-      nodeType: SlackUserMentionType,
+      nodeType: SlackChannelMentionType,
       startIndex: delimiter.startIndex,
       endIndex: delimiter.endIndex,
       thickness: delimiter.thickness,

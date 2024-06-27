@@ -2,11 +2,12 @@ import YozoraParser from "@yozora/parser";
 import { Element } from "./types";
 import { Blockquote, Paragraph, Code } from "./elements";
 import { GlobalStore } from "../../store";
-import { SlackUserMentionTokenizer } from "./tokenizers";
+import { SlackUserMentionTokenizer, SlackChannelMentionTokenizer } from "./tokenizers";
 
 const parser = new YozoraParser()
   .unmountTokenizer("@yozora/tokenizer-list")
-  .useTokenizer(new SlackUserMentionTokenizer());
+  .useTokenizer(new SlackUserMentionTokenizer())
+  .useTokenizer(new SlackChannelMentionTokenizer());
 
 type Options = {
   markdown: boolean;
