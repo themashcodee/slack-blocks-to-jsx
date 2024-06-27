@@ -18,24 +18,8 @@ type Options = {
 
 // #region HELPER CODE
 // TODO: HANDLE DATE PARSING
-// TODO: HANDLE CHANNEL, USER, USER GROUP, @HERE, @EVERYONE, @CHANNEL PARSING
-// text_string = slack_text_parser(text_string, {
-//   escapeHTML: false,
-//   slackCallbacks: {
-//     user(data) {
-//       const user = users.find((u) => u.id === data.id || u.name === data.name);
-//       // if (hooks.user) return hooks.user(user || data);
-//       const label = user?.name || data.id || data.name;
-//       return `<span class="slack_user" data-user-id="${user?.id || data.id}">@${label}</span>`;
-//     },
-//     channel(data) {
-//       const channel = channels.find((c) => c.id === data.id || c.name === data.name);
-//       // if (hooks.channel) return hooks.channel(channel || data);
-//       const label = channel?.name || data.id || data.name;
-//       return `<span class="slack_channel" data-channel-id="${
-//         channel?.id || data.id
-//       }">#${label}</span>`;
-//     },
+// TODO: HANDLE USER GROUP, @HERE, @EVERYONE, @CHANNEL PARSING
+
 //     atChannel(data) {
 //       const channel = channels.find((c) => c.name === data.name);
 //       // if (hooks.atChannel) return hooks.atChannel(channel || data);
@@ -51,7 +35,6 @@ type Options = {
 //     // ...(hooks.date && { date: hooks.date }),
 //     // ...(hooks.usergroup && { usergroup: hooks.usergroup }),
 //   },
-// });
 // #endregion
 
 export const markdown_parser = (markdown: string, options: Options): JSX.Element | null => {
