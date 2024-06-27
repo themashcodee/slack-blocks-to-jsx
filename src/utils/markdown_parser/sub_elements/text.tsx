@@ -7,9 +7,6 @@ type Props = {
 export const Text = (props: Props) => {
   const { element } = props;
 
-  let text = element.value;
-  text = text.replace(/LINE__BREAK/g, "\n");
-
   return (
     <span>
       {element.value.split("[[DOUBLE_LINE_BREAK]]").map((line, index) => {

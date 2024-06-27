@@ -7,8 +7,5 @@ type Props = {
 export const InlineCode = (props: Props) => {
   const { element } = props;
 
-  let text = element.value;
-  text = text.replace(/LINE__BREAK/g, "\n");
-
-  return <code className="slack_code_inline">{text}</code>;
+  return <code className="slack_code_inline">{element.value}</code>;
 };

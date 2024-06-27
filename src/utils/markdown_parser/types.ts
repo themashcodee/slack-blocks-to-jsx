@@ -1,26 +1,46 @@
+export type SlackUserMentionSubElement = {
+  type: "slack_user_mention";
+  value: string;
+};
+
+export type SlackChannelMentionSubElement = {
+  type: "slack_channel_mention";
+  value: string;
+};
+
 export type TextSubElement = {
   type: "text";
   value: string;
 };
 
+export type InlineCodeSubElement = {
+  type: "inlineCode";
+  value: string;
+};
+
 export type EmphasisSubElement = {
   type: "emphasis";
-  children: (TextSubElement | DeleteSubElement)[];
+  children: (
+    | TextSubElement
+    | DeleteSubElement
+    | SlackUserMentionSubElement
+    | SlackChannelMentionSubElement
+  )[];
 };
 
 export type StrongSubElement = {
   type: "strong";
-  children: TextSubElement[];
+  children: (
+    | TextSubElement
+    | DeleteSubElement
+    | SlackUserMentionSubElement
+    | SlackChannelMentionSubElement
+  )[];
 };
 
 export type DeleteSubElement = {
   type: "delete";
   children: TextSubElement[];
-};
-
-export type InlineCodeSubElement = {
-  type: "inlineCode";
-  value: string;
 };
 
 export type LinkSubElement = {
@@ -38,6 +58,8 @@ export type ParagraphElement = {
     | InlineCodeSubElement
     | DeleteSubElement
     | LinkSubElement
+    | SlackUserMentionSubElement
+    | SlackChannelMentionSubElement
   )[];
 };
 
