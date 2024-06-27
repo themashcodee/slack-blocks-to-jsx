@@ -7,14 +7,15 @@ export const RichTextSectionChannel = (props: Props) => {
   const { channel_id, style } = props;
   const { channels, hooks } = useGlobalData();
 
-  const channel = channels.find((u) => u.id === channel_id);
+  const channel = channels.find((u) => u.id === channel_id || u.name === channel_id);
   const label = channel?.name || channel_id;
 
+  if (hooks.channel) return <>{hooks.channel(channel || { id: channel_id, name: label })}</>;
+
   return (
-    <div
-      data-channel-id={channel_id}
+    <span
+      data-channel-id={channel?.id || channel_id}
       className={`
-        inline-block
         slack_channel
         slack_blocks_to_jsx__rich_text_section_element_channel
         ${style?.italic ? "italic" : ""}
@@ -22,14 +23,7 @@ export const RichTextSectionChannel = (props: Props) => {
         ${style?.bold ? "font-medium" : ""}
       `}
     >
-      {hooks.user
-        ? hooks.user(
-            channel || {
-              id: channel_id,
-              name: label,
-            },
-          )
-        : `#${label}`}
-    </div>
+      #{label}
+    </span>
   );
 };

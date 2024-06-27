@@ -4,6 +4,7 @@ import {
   InlineCode,
   Link,
   SlackChannelMention,
+  SlackUserGroupMention,
   SlackUserMention,
   Strong,
   Text,
@@ -30,6 +31,8 @@ export const Paragraph = (props: Props) => {
           return <SlackUserMention key={i} element={subelement} />;
         if (subelement.type === "slack_channel_mention")
           return <SlackChannelMention key={i} element={subelement} />;
+        if (subelement.type === "slack_user_group_mention")
+          return <SlackUserGroupMention key={i} element={subelement} />;
 
         return null;
       })}

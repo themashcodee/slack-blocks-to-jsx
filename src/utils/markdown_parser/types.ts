@@ -8,6 +8,11 @@ export type SlackChannelMentionSubElement = {
   value: string;
 };
 
+export type SlackUserGroupMentionSubElement = {
+  type: "slack_user_group_mention";
+  value: string;
+};
+
 export type TextSubElement = {
   type: "text";
   value: string;
@@ -25,6 +30,7 @@ export type EmphasisSubElement = {
     | DeleteSubElement
     | SlackUserMentionSubElement
     | SlackChannelMentionSubElement
+    | SlackUserGroupMentionSubElement
   )[];
 };
 
@@ -35,6 +41,7 @@ export type StrongSubElement = {
     | DeleteSubElement
     | SlackUserMentionSubElement
     | SlackChannelMentionSubElement
+    | SlackUserGroupMentionSubElement
   )[];
 };
 
@@ -60,6 +67,7 @@ export type ParagraphElement = {
     | LinkSubElement
     | SlackUserMentionSubElement
     | SlackChannelMentionSubElement
+    | SlackUserGroupMentionSubElement
   )[];
 };
 
@@ -75,4 +83,4 @@ export type CodeElement = {
   value: string;
 };
 
-export type Element = ParagraphElement | BlockQuoteElement | CodeElement;
+export type MarkdownElement = ParagraphElement | BlockQuoteElement | CodeElement;

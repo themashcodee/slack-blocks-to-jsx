@@ -28,9 +28,17 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
       const c = nodePoints[i]?.codePoint;
       if (
         c === AsciiCodePoint.OPEN_ANGLE &&
-        nodePoints[i + 1]?.codePoint === AsciiCodePoint.NUMBER_SIGN
+        nodePoints[i + 1]?.codePoint === AsciiCodePoint.EXCLAMATION_MARK &&
+        nodePoints[i + 2]?.codePoint === AsciiCodePoint.LOWERCASE_S &&
+        nodePoints[i + 3]?.codePoint === AsciiCodePoint.LOWERCASE_U &&
+        nodePoints[i + 4]?.codePoint === AsciiCodePoint.LOWERCASE_B &&
+        nodePoints[i + 5]?.codePoint === AsciiCodePoint.LOWERCASE_T &&
+        nodePoints[i + 6]?.codePoint === AsciiCodePoint.LOWERCASE_E &&
+        nodePoints[i + 7]?.codePoint === AsciiCodePoint.LOWERCASE_A &&
+        nodePoints[i + 8]?.codePoint === AsciiCodePoint.LOWERCASE_M &&
+        nodePoints[i + 9]?.codePoint === AsciiCodePoint.CARET
       ) {
-        const j = eatOptionalCharacters(nodePoints, i + 2, blockEndIndex, AsciiCodePoint.AT_SIGN);
+        const j = eatOptionalCharacters(nodePoints, i + 10, blockEndIndex, AsciiCodePoint.CARET);
         if (j < blockEndIndex) {
           potentialDelimiters.push({
             type: "opener",

@@ -11,13 +11,18 @@ type Channel = {
   name: string;
 };
 
+type UserGroup = {
+  id: string;
+  name: string;
+};
+
 type Hooks = {
   user?: (data: User) => ReactNode;
   channel?: (data: Channel) => ReactNode;
+  usergroup?: (data: UserGroup) => ReactNode;
   atChannel?: () => ReactNode;
   atEveryone?: () => ReactNode;
   atHere?: () => ReactNode;
-  usergroup?: (id: string) => ReactNode;
   emoji?: (emoji_text: string) => ReactNode;
   date?: (data: {
     timestamp: string;
@@ -30,7 +35,7 @@ type Hooks = {
 type Data = {
   users: User[];
   channels: Channel[];
-  user_groups: Channel[];
+  user_groups: UserGroup[];
   hooks: Hooks;
   setUsers: (users: User[]) => void;
   setChannels: (channels: Channel[]) => void;
