@@ -40,6 +40,7 @@ module.exports = {
 			fontSize: {
 				"small": ["13px", "1.38461538"],
 				"base": ["15px", "1.46668"],
+				"header": ["18px", "1.33334"],
 			},
 			backgroundImage: {
 				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

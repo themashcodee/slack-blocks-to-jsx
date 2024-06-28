@@ -79,7 +79,7 @@ Each Slack block type has a corresponding component:
 - `Context` (✅ supported)
 - `Actions` (🟨 partially supported)
 - `File` (❌ not supported yet)
-- `Header` (❌ not supported yet)
+- `Header` (✅ supported)
 - `Input` (🟨 partially supported)
 - `RichText` (✅ supported)
 - `Video` (✅ supported)
