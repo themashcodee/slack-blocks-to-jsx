@@ -11,7 +11,7 @@
   ],
   "repository": "https://github.com/themashcodee/slack-blocks-to-jsx.git",
   "license": "MIT",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "@yozora/character": "^2.3.2",
     "@yozora/core-tokenizer": "^2.3.2",
     "@yozora/parser": "^2.3.2",
-    "node-emoji": "^2.1.0",
+    "node-emoji": "^2.1.3",
     "zustand": "^4.5.2"
   },
   "peerDependencies": {
