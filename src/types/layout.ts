@@ -11,6 +11,7 @@ import {
   UsersSelectElement,
 } from ".";
 import { RichTextBlockElement } from "../types";
+import { ComponentPropsWithoutRef } from "react";
 
 export type Block =
   | ActionsBlock
@@ -303,6 +304,10 @@ export type VideoBlock = {
    * The URL to be embedded. Must match any existing {@link https://api.slack.com/reference/messaging/link-unfurling#configuring_domains unfurl domains} within the app and point to a HTTPS URL.
    */
   video_url: string;
+  /**
+   * This is a custom property added by slack-block-to-jsx library to more control over iframe
+   */
+  iframeProps?: ComponentPropsWithoutRef<"iframe">;
 };
 
 export type RichTextBlock = {

@@ -1,11 +1,13 @@
 # Slack Blocks to JSX Documentation
 
 ## Overview
+
 The `slack-blocks-to-jsx` package allows you to render Slack blocks in React with styles that closely mimic how they are displayed in Slack. This library converts Slack's block kit components into JSX components, maintaining the visual fidelity and interactive elements.
 
 **🚨 Quickly test out the libray on online playground**: https://slack-block-to-jsx-playground.vercel.app/
 
 ## Installation
+
 To use this package in your project, install it via npm:
 
 ```bash
@@ -21,6 +23,7 @@ yarn add slack-blocks-to-jsx
 ## Usage
 
 ### Importing Styles
+
 Import the necessary CSS file in your entry point to ensure the styles are applied:
 
 ```javascript
@@ -28,6 +31,7 @@ import "slack-blocks-to-jsx/dist/style.css";
 ```
 
 ### Using Components
+
 Import the `Message` component from the package and use it to render your Slack blocks:
 
 ```javascript
@@ -39,6 +43,7 @@ const blocks = [...]; // your Slack blocks data
 ```
 
 ### Types
+
 For better type safety, you can import the `Block` type:
 
 ```javascript
@@ -50,6 +55,7 @@ const blocks: Block[] = [...]; // your Slack blocks data
 ## Components
 
 ### `Message`
+
 This is the main component that renders the entire Slack message. It supports various props to customize the appearance and behavior:
 
 - `blocks`: Array of Slack block objects.
@@ -64,6 +70,7 @@ This is the main component that renders the entire Slack message. It supports va
 - `showBlockKitDebug?`: Show a link to open the message in the Slack Block Kit Builder, for debugging purposes. Defaults to false.
 
 ### Block Components
+
 Each Slack block type has a corresponding component:
 
 - `Section` (✅ supported)
@@ -75,11 +82,12 @@ Each Slack block type has a corresponding component:
 - `Header` (❌ not supported yet)
 - `Input` (🟨 partially supported)
 - `RichText` (✅ supported)
-- `Video` (❌ not supported yet)
+- `Video` (✅ supported)
 
 If you want a support of a particular block or element which is not supported yet so please raise a github issue or mail me at codeemash@gmail.com. I will try to push it asap.
 
 ## Customization
+
 You can handle custom rendering and interactions using the `hooks` prop in the `Message` component. This allows you to define custom behavior for user mentions, channels, and other interactive elements. You can also override default styling. Here are the classes structure to understand to override any block styling.
 
 `.slack_blocks_to_jsx`: Main Wrapper  
@@ -90,25 +98,26 @@ You can handle custom rendering and interactions using the `hooks` prop in the `
 `.slack_blocks_to_jsx__section`: Section Block  
 `.slack_blocks_to_jsx__image`: Image Block  
 `.slack_blocks_to_jsx__context`: Context Block  
-`.slack_blocks_to_jsx__actions`: Actions Block   
+`.slack_blocks_to_jsx__actions`: Actions Block  
 `.slack_blocks_to_jsx__input`: Input Block  
 `.slack_blocks_to_jsx__rich_text`: Rich Text Block  
 `.slack_blocks_to_jsx__rich_text_list_element`: Rich Text Block List Element  
 `.slack_blocks_to_jsx__rich_text_preformatted_element`: Rich Text Block Preformatted Element  
 `.slack_blocks_to_jsx__rich_text_quote_element`: Rich Text Block Element Quote Element  
-`.slack_blocks_to_jsx__rich_text_section_element`: Rich Text Block Section Element  
+`.slack_blocks_to_jsx__rich_text_section_element`: Rich Text Block Section Element
 
 ...as so on (all the other classes will be similar too, for example `.slack_blocks_to_jsx__rich_text_section_element_user` for Rich Text Block Section Element User)
 
 If you want any other customization so please raise a github issue or mail me at codeemash@gmail.com. I will try to push it asap if it aligns with the library development vision.
 
-
 ## Development and Contribution
+
 The project is open-source, and contributions are welcome. If you encounter any issues or want to suggest improvements, please file an issue on the GitHub repository:
 
 [GitHub Repository Issues](https://github.com/themashcodee/slack-blocks-to-jsx/issues)
 
 ## License
+
 The project is licensed under the MIT license, allowing free use, modification, and distribution.
 
 ## Support
