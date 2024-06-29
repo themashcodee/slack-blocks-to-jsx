@@ -48,6 +48,7 @@ export type EmphasisSubElement = {
     | SlackUserGroupMentionSubElement
     | SlackBroadcastSubElement
     | SlackDateSubElement
+    | StrongSubElement
   )[];
 };
 
@@ -61,12 +62,13 @@ export type StrongSubElement = {
     | SlackUserGroupMentionSubElement
     | SlackBroadcastSubElement
     | SlackDateSubElement
+    | EmphasisSubElement
   )[];
 };
 
 export type DeleteSubElement = {
   type: "delete";
-  children: (TextSubElement | SlackDateSubElement)[];
+  children: (TextSubElement | SlackDateSubElement | EmphasisSubElement | StrongSubElement)[];
 };
 
 export type LinkSubElement = {

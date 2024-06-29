@@ -27,7 +27,7 @@ type Hooks = {
   date?: (data: {
     timestamp: string;
     format: string;
-    link?: string | undefined;
+    link: string | null;
     fallback: string;
   }) => ReactNode;
 };

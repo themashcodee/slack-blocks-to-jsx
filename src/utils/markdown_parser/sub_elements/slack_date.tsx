@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { SlackDateSubElement } from "../types";
+import { useGlobalData } from "../../../store";
 
 type Props = {
   element: SlackDateSubElement;
@@ -7,7 +8,20 @@ type Props = {
 
 export const SlackDate = (props: Props) => {
   const { element } = props;
-  const { optionalLink, timestamp, tokenString } = element.value;
+  const { fallbackText, optionalLink, timestamp, tokenString } = element.value;
+  const { hooks } = useGlobalData();
+
+  if (hooks.date)
+    return (
+      <>
+        {hooks.date({
+          fallback: fallbackText,
+          timestamp,
+          format: tokenString,
+          link: optionalLink || null,
+        })}
+      </>
+    );
 
   const date = new Date(Number(timestamp) * 1000);
 
@@ -42,11 +56,11 @@ export const SlackDate = (props: Props) => {
   }
 
   return (
-    <div className="inline-block slack_date">
+    <span className="slack_date">
       <WrapWithLink wrap={!!optionalLink} href={optionalLink}>
         {date_text}
       </WrapWithLink>
-    </div>
+    </span>
   );
 };
 

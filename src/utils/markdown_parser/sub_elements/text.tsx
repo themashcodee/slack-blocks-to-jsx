@@ -7,6 +7,9 @@ type Props = {
 export const Text = (props: Props) => {
   const { element } = props;
 
+  if (!element.value) return <span>{element.value}</span>;
+  if (element.value === " ") return <span>&nbsp;</span>;
+
   return (
     <span>
       {element.value.split("[[DOUBLE_LINE_BREAK]]").map((line, index) => {
