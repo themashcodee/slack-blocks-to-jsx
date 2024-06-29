@@ -7,6 +7,7 @@ import {
   SlackChannelMentionTokenizer,
   SlackUserGroupMentionTokenizer,
   SlackBroadcastTokenizer,
+  SlackDateTokenizer,
 } from "./tokenizers";
 import { ReactNode } from "react";
 
@@ -15,7 +16,8 @@ const parser = new YozoraParser()
   .useTokenizer(new SlackUserMentionTokenizer())
   .useTokenizer(new SlackChannelMentionTokenizer())
   .useTokenizer(new SlackUserGroupMentionTokenizer())
-  .useTokenizer(new SlackBroadcastTokenizer());
+  .useTokenizer(new SlackBroadcastTokenizer())
+  .useTokenizer(new SlackDateTokenizer());
 
 type Options = {
   markdown: boolean;
@@ -39,8 +41,8 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   text_string = text_string.replace(/(?<!\*)\*(?!\*)([^*]+)\*(?!\*)/g, "**$1**");
   // REPLACE SINGLE tilde WITH DOUBLE tilde
   text_string = text_string.replace(/(?<!~)~(?!~)([^~]+)~(?!~)/g, "~~$1~~");
-  // CHANGE LINK FORMATING FROM <link|label> to [label](link)
-  text_string = text_string.replace(/<([^|>]+)\|([^>]+)>/g, "[$2]($1)");
+  // CHANGE LINK FORMATTING FROM <link|label> to [label](link), EXCLUDING LINKS STARTING WITH !date
+  text_string = text_string.replace(/<(?!(?:!date))([^|>]+)\|([^>]+)>/g, "[$2]($1)");
   // REPLACE \n\n WITH '[[DOUBLE_LINE_BREAK]]' to prevent @yozora/parser to eat it
   text_string = text_string.replace(/\n\n/g, "[[DOUBLE_LINE_BREAK]]");
   // REPLACE <!here> with @here
