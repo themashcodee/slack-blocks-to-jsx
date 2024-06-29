@@ -5,6 +5,7 @@ import {
   Link,
   SlackBroadcast,
   SlackChannelMention,
+  SlackDate,
   SlackUserGroupMention,
   SlackUserMention,
   Strong,
@@ -36,6 +37,7 @@ export const Paragraph = (props: Props) => {
           return <SlackUserGroupMention key={i} element={subelement} />;
         if (subelement.type === "slack_broadcast")
           return <SlackBroadcast key={i} element={subelement} />;
+        if (subelement.type === "slack_date") return <SlackDate key={i} element={subelement} />;
 
         return null;
       })}

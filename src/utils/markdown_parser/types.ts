@@ -1,3 +1,13 @@
+export type SlackDateSubElement = {
+  type: "slack_date";
+  value: {
+    timestamp: string;
+    tokenString: string;
+    optionalLink: string;
+    fallbackText: string;
+  };
+};
+
 export type SlackBroadcastSubElement = {
   type: "slack_broadcast";
   value: "here" | "everyone" | "channel";
@@ -37,6 +47,7 @@ export type EmphasisSubElement = {
     | SlackChannelMentionSubElement
     | SlackUserGroupMentionSubElement
     | SlackBroadcastSubElement
+    | SlackDateSubElement
   )[];
 };
 
@@ -49,12 +60,13 @@ export type StrongSubElement = {
     | SlackChannelMentionSubElement
     | SlackUserGroupMentionSubElement
     | SlackBroadcastSubElement
+    | SlackDateSubElement
   )[];
 };
 
 export type DeleteSubElement = {
   type: "delete";
-  children: TextSubElement[];
+  children: (TextSubElement | SlackDateSubElement)[];
 };
 
 export type LinkSubElement = {
@@ -76,6 +88,7 @@ export type ParagraphElement = {
     | SlackChannelMentionSubElement
     | SlackUserGroupMentionSubElement
     | SlackBroadcastSubElement
+    | SlackDateSubElement
   )[];
 };
 
