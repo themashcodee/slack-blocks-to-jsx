@@ -73,7 +73,7 @@ This is the main component that renders the entire Slack message. It supports va
   - atEveryone?: () = ReactNode
   - atHere?: () = ReactNode
   - emoji?: (text:string) => string
-  - date?: (NOT SUPPORTED)
+  - date?: (data: { timestamp: string; format: string; link: string | null; fallback: string; }) => ReactNode;
 - `data?`: optionally pass an array or users, channels and user groups to automatically be replaced with the user, channel and user group mentions.
 - `showBlockKitDebug?`: Show a link to open the message in the Slack Block Kit Builder, for debugging purposes. Defaults to false.
 
@@ -89,7 +89,7 @@ Each Slack block type has a corresponding component:
 - `File` (❌ not supported yet)
 - `Header` (✅ supported)
 - `Input` (🟨 partially supported)
-- `RichText` (✅ supported, except [date parser](https://github.com/themashcodee/slack-blocks-to-jsx/issues/15))
+- `RichText` (✅ supported)
 - `Video` (✅ supported)
 
 If you want a support of a particular block or element which is not supported yet so please raise a github issue or mail me at codeemash@gmail.com. I will try to push it asap.

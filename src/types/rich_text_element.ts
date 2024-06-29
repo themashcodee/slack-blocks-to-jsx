@@ -52,7 +52,15 @@ export type RichTextSectionElement =
   | RichTextSectionEmoji
   | RichTextSectionLink
   | RichTextSectionUsergroup
-  | RichTextSectionBroadcast;
+  | RichTextSectionBroadcast
+  | RichTextSectionDate;
+
+export type RichTextSectionDate = {
+  type: "date";
+  timestamp: number;
+  format: string;
+  style?: RichTextSectionElementStyleCode;
+};
 
 export type RichTextSectionText = {
   type: "text";

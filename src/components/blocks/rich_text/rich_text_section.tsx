@@ -1,4 +1,5 @@
 import { RichTextSectionElement as RichTextSectionElementType } from "../../../types";
+import { SlackDate } from "../../../utils/markdown_parser/sub_elements";
 import { RichTextSectionBroadcast } from "./rich_text_section_broadcast";
 import { RichTextSectionChannel } from "./rich_text_section_channel";
 import { RichTextSectionEmoji } from "./rich_text_section_emoji";
@@ -55,6 +56,34 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
       >
         {text}
       </a>
+    );
+  }
+
+  if (element.type === "date") {
+    const { timestamp, format, style } = element;
+
+    return (
+      <span
+        className={`
+              slack_blocks_to_jsx__rich_text_section_element_date
+              ${style?.italic ? "italic" : ""}
+              ${style?.strike ? "line-through" : ""}
+              ${style?.code ? "slack_inline_code" : ""}
+              ${style?.bold ? "font-medium" : ""}
+            `}
+      >
+        <SlackDate
+          element={{
+            type: "slack_date",
+            value: {
+              fallbackText: "",
+              optionalLink: "",
+              timestamp: timestamp.toString(),
+              tokenString: format,
+            },
+          }}
+        />
+      </span>
     );
   }
 
