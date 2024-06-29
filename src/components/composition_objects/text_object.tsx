@@ -15,7 +15,15 @@ export const TextObject = (props: TextObjectProps) => {
   // TODO: HANDLE VERBATIM
 
   let emoji_parsed =
-    type == "mrkdwn" ? parseEmojis(text) : emoji === false ? text : parseEmojis(text);
+    type == "mrkdwn"
+      ? hooks.emoji
+        ? hooks.emoji(text)
+        : parseEmojis(text)
+      : emoji === false
+      ? text
+      : hooks.emoji
+      ? hooks.emoji(text)
+      : parseEmojis(text);
 
   // BASIC MARKDOWN PARSING
   emoji_parsed = emoji_parsed.replace(/&gt;/g, "> ").replace(/&lt;/g, "<");
