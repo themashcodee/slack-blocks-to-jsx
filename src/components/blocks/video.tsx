@@ -8,10 +8,6 @@ type VideoProps = {
 
 export const Video = (props: VideoProps) => {
   const {
-    // thumbnail_url,
-    // provider_icon_url,
-    // provider_name,
-    //
     alt_text,
     title,
     video_url,
@@ -28,7 +24,7 @@ export const Video = (props: VideoProps) => {
     <div className="py-2 slack_blocks_to_jsx__video" id={block_id}>
       {author_name && (
         <div className="slack_blocks_to_jsx__video_author">
-          <span className="font-bold">Manish Panwar</span>
+          <span className="font-bold">{author_name}</span>
         </div>
       )}
 
