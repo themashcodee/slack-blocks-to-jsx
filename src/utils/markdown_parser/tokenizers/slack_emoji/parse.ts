@@ -10,7 +10,7 @@ export const parse: IParseInlineHookCreator<T, IToken, INode, IThis> = function 
         const nodePoints: ReadonlyArray<INodePoint> = api.getNodePoints();
         const fullString = calcStringFromNodePoints(nodePoints, token.startIndex, token.endIndex);
 
-        const emojiPattern = /^:(\w+):$/;
+        const emojiPattern = /^:([\w-]+):$/;
         const match = emojiPattern.exec(fullString);
 
         let value = fullString;
