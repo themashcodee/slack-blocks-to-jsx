@@ -8,6 +8,7 @@ import {
   SlackUserGroupMentionTokenizer,
   SlackBroadcastTokenizer,
   SlackDateTokenizer,
+  SlackEmojiTokenizer,
 } from "./tokenizers";
 import { ReactNode } from "react";
 
@@ -17,7 +18,8 @@ const parser = new YozoraParser()
   .useTokenizer(new SlackChannelMentionTokenizer())
   .useTokenizer(new SlackUserGroupMentionTokenizer())
   .useTokenizer(new SlackBroadcastTokenizer())
-  .useTokenizer(new SlackDateTokenizer());
+  .useTokenizer(new SlackDateTokenizer())
+  .useTokenizer(new SlackEmojiTokenizer());
 
 type Options = {
   markdown: boolean;
@@ -25,10 +27,6 @@ type Options = {
   channels: GlobalStore["channels"];
   hooks: GlobalStore["hooks"];
 };
-
-// #region HELPER CODE
-// TODO: HANDLE DATE PARSING ...(hooks.date && { date: hooks.date }),
-// #endregion
 
 export const markdown_parser = (markdown: string, options: Options): ReactNode => {
   if (!markdown) return null;

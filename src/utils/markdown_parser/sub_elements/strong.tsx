@@ -4,6 +4,7 @@ import { Emphasis } from "./emphasis";
 import { SlackBroadcast } from "./slack_broadcast";
 import { SlackChannelMention } from "./slack_channel_mention";
 import { SlackDate } from "./slack_date";
+import { SlackEmoji } from "./slack_emoji";
 import { SlackUserGroupMention } from "./slack_user_group_mention";
 import { SlackUserMention } from "./slack_user_mention";
 import { Text } from "./text";
@@ -28,6 +29,7 @@ export const Strong = (props: Props) => {
         if (child.type === "slack_broadcast") return <SlackBroadcast key={i} element={child} />;
         if (child.type === "slack_date") return <SlackDate key={i} element={child} />;
         if (child.type === "emphasis") return <Emphasis key={i} element={child} />;
+        if (child.type === "slack_emoji") return <SlackEmoji key={i} element={child} />;
 
         return <Text element={child} key={i} />;
       })}

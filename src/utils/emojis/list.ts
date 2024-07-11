@@ -1905,4 +1905,5 @@ export const missing_emojis: Record<string, string> = {
   part_alternation_mark: "&#x303D-FE0F;",
   congratulations: "&#x3297-FE0F;",
   secret: "&#x3299-FE0F;",
+  thumbsup: "&#x1F44D;",
 };

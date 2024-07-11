@@ -1,3 +1,8 @@
+export type SlackEmojiSubElement = {
+  type: "slack_emoji";
+  value: string;
+};
+
 export type SlackDateSubElement = {
   type: "slack_date";
   value: {
@@ -49,6 +54,7 @@ export type EmphasisSubElement = {
     | SlackBroadcastSubElement
     | SlackDateSubElement
     | StrongSubElement
+    | SlackEmojiSubElement
   )[];
 };
 
@@ -63,18 +69,31 @@ export type StrongSubElement = {
     | SlackBroadcastSubElement
     | SlackDateSubElement
     | EmphasisSubElement
+    | SlackEmojiSubElement
   )[];
 };
 
 export type DeleteSubElement = {
   type: "delete";
-  children: (TextSubElement | SlackDateSubElement | EmphasisSubElement | StrongSubElement)[];
+  children: (
+    | TextSubElement
+    | SlackDateSubElement
+    | EmphasisSubElement
+    | StrongSubElement
+    | SlackEmojiSubElement
+  )[];
 };
 
 export type LinkSubElement = {
   type: "link";
   url: "http://www.example.com";
-  children: (TextSubElement | EmphasisSubElement | StrongSubElement | DeleteSubElement)[];
+  children: (
+    | TextSubElement
+    | EmphasisSubElement
+    | StrongSubElement
+    | DeleteSubElement
+    | SlackEmojiSubElement
+  )[];
 };
 
 export type ParagraphElement = {
@@ -91,6 +110,7 @@ export type ParagraphElement = {
     | SlackUserGroupMentionSubElement
     | SlackBroadcastSubElement
     | SlackDateSubElement
+    | SlackEmojiSubElement
   )[];
 };
 

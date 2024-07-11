@@ -1,6 +1,6 @@
 import { useGlobalData } from "../../store";
 import type { TextObject as TextObjectType } from "../../types";
-import { markdown_parser, parseEmojis } from "../../utils";
+import { markdown_parser } from "../../utils";
 
 type TextObjectProps = {
   data: TextObjectType;
@@ -14,30 +14,18 @@ export const TextObject = (props: TextObjectProps) => {
 
   // TODO: HANDLE VERBATIM
 
-  let emoji_parsed =
-    type == "mrkdwn"
-      ? hooks.emoji
-        ? hooks.emoji(text)
-        : parseEmojis(text)
-      : emoji === false
-      ? text
-      : hooks.emoji
-      ? hooks.emoji(text)
-      : parseEmojis(text);
-
-  // BASIC MARKDOWN PARSING
-  emoji_parsed = emoji_parsed.replace(/&gt;/g, "> ").replace(/&lt;/g, "<");
+  const parsed = text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<");
 
   if (type === "plain_text")
     return (
       <div className={className}>
-        {markdown_parser(emoji_parsed, { markdown: false, users, channels, hooks })}
+        {markdown_parser(parsed, { markdown: false, users, channels, hooks })}
       </div>
     );
 
   return (
     <div className={className}>
-      {markdown_parser(emoji_parsed, { markdown: true, users, channels, hooks })}
+      {markdown_parser(parsed, { markdown: true, users, channels, hooks })}
     </div>
   );
 };

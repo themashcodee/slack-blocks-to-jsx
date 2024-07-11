@@ -23,7 +23,7 @@ type Hooks = {
   atChannel?: () => ReactNode;
   atEveryone?: () => ReactNode;
   atHere?: () => ReactNode;
-  emoji?: (emoji_text: string) => string;
+  emoji?: (name: string) => ReactNode | "fallback";
   date?: (data: {
     timestamp: string;
     format: string;
