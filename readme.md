@@ -4,7 +4,7 @@
 
 The `slack-blocks-to-jsx` package allows you to render Slack blocks in React with styles that closely mimic how they are displayed in Slack. This library converts Slack's block kit components into JSX components, maintaining the visual fidelity and interactive elements.
 
-**🚨 Quickly test out the libray on online playground**: https://slack-block-to-jsx-playground.vercel.app/
+**🚨 Quickly test out the library on online playground**: https://slack-block-to-jsx-playground.vercel.app/
 
 ## Installation
 
@@ -72,7 +72,7 @@ This is the main component that renders the entire Slack message. It supports va
   - atChannel?: () = ReactNode
   - atEveryone?: () = ReactNode
   - atHere?: () = ReactNode
-  - emoji?: (text:string) => string
+  - emoji?: (name:string) => ReactNode | "fallback" (return "fallback" if you can't handle the emoji)
   - date?: (data: { timestamp: string; format: string; link: string | null; fallback: string; }) => ReactNode;
 - `data?`: optionally pass an array or users, channels and user groups to automatically be replaced with the user, channel and user group mentions.
 - `showBlockKitDebug?`: Show a link to open the message in the Slack Block Kit Builder, for debugging purposes. Defaults to false.
