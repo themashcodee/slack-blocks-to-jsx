@@ -11,7 +11,7 @@
   ],
   "repository": "https://github.com/themashcodee/slack-blocks-to-jsx.git",
   "license": "MIT",
-  "version": "0.3.10",
+  "version": "0.4.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/themashcodee/slack-blocks-to-jsx#readme",
   "scripts": {
-    "build": "tsup ./src/index.ts --format cjs,esm --dts && npm run build:css",
+    "build": "tsup ./src/index.ts --format cjs,esm --dts --minify && npm run build:css",
     "build:css": "postcss ./src/style.css -o ./dist/style.css",
     "dev:css": "postcss ./src/style.css -o ./dist/style.css --watch",
     "dev": "tsup ./src/index.ts --format cjs,esm --dts --watch",
@@ -33,8 +33,7 @@
     "@yozora/character": "^2.3.2",
     "@yozora/core-tokenizer": "^2.3.2",
     "@yozora/parser": "^2.3.2",
-    "node-emoji": "^2.1.3",
-    "zustand": "^4.5.2"
+    "node-emoji": "^2.1.3"
   },
   "peerDependencies": {
     "react": "^17 || ^18",
