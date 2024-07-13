@@ -14,7 +14,7 @@ export const Input = (props: InputProps) => {
   return (
     <div
       id={block_id}
-      className={`mt-2 mb-1 text-primary slack_blocks_to_jsx__input flex w-full text-black-primary`}
+      className="mt-2 mb-1 text-primary slack_blocks_to_jsx__input flex w-full text-black-primary"
     >
       <div className="grow">
         <div className="flex flex-col gap-2">

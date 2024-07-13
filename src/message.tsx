@@ -3,6 +3,7 @@ import { Header } from "./header";
 import { getBlockComponent } from "./components";
 import { BlockWrapper } from "./block_wrapper";
 import { GlobalProvider, GlobalStore } from "./store";
+import { merge_classes } from "./utils";
 
 type Props = {
   /**
@@ -32,6 +33,8 @@ type Props = {
   withoutWrapper?: boolean;
 };
 
+export type MessageProps = Props;
+
 export const Message = (props: Props) => {
   const {
     blocks,
@@ -52,9 +55,11 @@ export const Message = (props: Props) => {
       <GlobalProvider data={data} hooks={hooks}>
         <div
           id="slack_blocks_to_jsx"
-          className={`slack_blocks_to_jsx relative flex gap-2 w-full max-w-[600px] ${
-            unstyled ? "styles_disabled" : "styles_enabled"
-          } ${className}`}
+          className={merge_classes([
+            "slack_blocks_to_jsx relative flex gap-2 w-full max-w-[600px]",
+            unstyled ? "styles_disabled" : "styles_enabled",
+            className,
+          ])}
           style={style}
         >
           {blocks.map((block, i) => {
@@ -72,9 +77,11 @@ export const Message = (props: Props) => {
     <GlobalProvider data={data} hooks={hooks}>
       <div id="slack_blocks_to_jsx">
         <section
-          className={`flex gap-2 w-full max-w-[600px] slack_blocks_to_jsx relative ${
-            unstyled ? "styles_disabled" : "styles_enabled"
-          } ${className}`}
+          className={merge_classes([
+            "slack_blocks_to_jsx relative flex gap-2 w-full max-w-[600px]",
+            unstyled ? "styles_disabled" : "styles_enabled",
+            className,
+          ])}
           style={style}
         >
           {showBlockKitDebug && (

@@ -1,5 +1,6 @@
 import { RichTextSectionChannel as RichTextSectionChannelType } from "../../../types";
 import { useGlobalData } from "../../../store";
+import { merge_classes } from "../../../utils";
 
 type Props = RichTextSectionChannelType;
 
@@ -15,13 +16,13 @@ export const RichTextSectionChannel = (props: Props) => {
   return (
     <span
       data-channel-id={channel?.id || channel_id}
-      className={`
-        slack_channel
-        slack_blocks_to_jsx__rich_text_section_element_channel
-        ${style?.italic ? "italic" : ""}
-        ${style?.strike ? "line-through" : ""}
-        ${style?.bold ? "font-medium" : ""}
-      `}
+      className={merge_classes([
+        "slack_channel",
+        "slack_blocks_to_jsx__rich_text_section_element_channel",
+        style?.italic ? "italic" : "",
+        style?.strike ? "line-through" : "",
+        style?.bold ? "font-medium" : "",
+      ])}
     >
       #{label}
     </span>

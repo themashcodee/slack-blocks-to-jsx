@@ -1,6 +1,6 @@
 import { getElementComponent } from "..";
 import { SectionBlock } from "../../types";
-import { is_accessory_stacked } from "../../utils";
+import { is_accessory_stacked, merge_classes } from "../../utils";
 import { TextObject } from "../composition_objects";
 
 type SectionProps = {
@@ -16,9 +16,10 @@ export const Section = (props: SectionProps) => {
   return (
     <div
       id={block_id}
-      className={`mt-2 mb-1 text-primary slack_blocks_to_jsx__section flex w-full text-black-primary ${
-        is_stacked ? "flex-col" : ""
-      }`}
+      className={merge_classes([
+        "mt-2 mb-1 text-primary slack_blocks_to_jsx__section flex w-full text-black-primary",
+        is_stacked ? "flex-col" : "",
+      ])}
     >
       <div className="grow">
         <div className="flex flex-col gap-3">

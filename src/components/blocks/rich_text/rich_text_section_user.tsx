@@ -1,5 +1,6 @@
 import { RichTextSectionUser as RichTextSectionUserType } from "../../../types";
 import { useGlobalData } from "../../../store";
+import { merge_classes } from "../../../utils";
 
 type Props = RichTextSectionUserType;
 
@@ -15,13 +16,13 @@ export const RichTextSectionUser = (props: Props) => {
   return (
     <span
       data-user-id={user?.id || user_id}
-      className={`
-        slack_user
-        slack_blocks_to_jsx__rich_text_section_element_user
-        ${style?.italic ? "italic" : ""}
-        ${style?.strike ? "line-through" : ""}
-        ${style?.bold ? "font-medium" : ""}
-      `}
+      className={merge_classes([
+        "slack_user",
+        "slack_blocks_to_jsx__rich_text_section_element_user",
+        style?.italic ? "italic" : "",
+        style?.strike ? "line-through" : "",
+        style?.bold ? "font-medium" : "",
+      ])}
     >
       @{label}
     </span>

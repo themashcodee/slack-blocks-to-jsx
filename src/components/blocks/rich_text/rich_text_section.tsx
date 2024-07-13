@@ -1,4 +1,5 @@
 import { RichTextSectionElement as RichTextSectionElementType } from "../../../types";
+import { merge_classes } from "../../../utils";
 import { SlackDate } from "../../../utils/markdown_parser/sub_elements";
 import { RichTextSectionBroadcast } from "./rich_text_section_broadcast";
 import { RichTextSectionChannel } from "./rich_text_section_channel";
@@ -24,13 +25,13 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
 
     return (
       <span
-        className={`
-              slack_blocks_to_jsx__rich_text_section_element_text
-              ${style?.italic ? "italic" : ""}
-              ${style?.strike ? "line-through" : ""}
-              ${style?.code ? "slack_inline_code" : ""}
-              ${style?.bold ? "font-medium" : ""}
-            `}
+        className={merge_classes([
+          "slack_blocks_to_jsx__rich_text_section_element_text",
+          style?.italic ? "italic" : "",
+          style?.strike ? "line-through" : "",
+          style?.code ? "slack_inline_code" : "",
+          style?.bold ? "font-medium" : "",
+        ])}
       >
         {text}
       </span>
@@ -45,14 +46,14 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
         target="_blank"
         rel="noreferrer noopener"
         href={url}
-        className={`
-            slack_blocks_to_jsx__rich_text_section_element_link
-          text-blue-primary hover:underline underline-offset-4
-            ${style?.italic ? "italic" : ""}
-            ${style?.strike ? "line-through" : ""}
-            ${style?.code ? "slack_inline_code" : ""}
-            ${style?.bold ? "font-medium" : ""}
-          `}
+        className={merge_classes([
+          "slack_blocks_to_jsx__rich_text_section_element_link",
+          "text-blue-primary hover:underline underline-offset-4",
+          style?.italic ? "italic" : "",
+          style?.strike ? "line-through" : "",
+          style?.code ? "slack_inline_code" : "",
+          style?.bold ? "font-medium" : "",
+        ])}
       >
         {text}
       </a>
@@ -64,13 +65,13 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
 
     return (
       <span
-        className={`
-              slack_blocks_to_jsx__rich_text_section_element_date
-              ${style?.italic ? "italic" : ""}
-              ${style?.strike ? "line-through" : ""}
-              ${style?.code ? "slack_inline_code" : ""}
-              ${style?.bold ? "font-medium" : ""}
-            `}
+        className={merge_classes([
+          "slack_blocks_to_jsx__rich_text_section_element_date",
+          style?.italic ? "italic" : "",
+          style?.strike ? "line-through" : "",
+          style?.code ? "slack_inline_code" : "",
+          style?.bold ? "font-medium" : "",
+        ])}
       >
         <SlackDate
           element={{

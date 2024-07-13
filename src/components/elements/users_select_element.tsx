@@ -85,9 +85,7 @@ export const UsersSelectElement = (props: TextObjectProps) => {
 
                   <div className="relative">
                     {option.online && (
-                      <div
-                        className={`bg-green-secondary w-[9px] h-[9px] rounded-full shrink-0`}
-                      ></div>
+                      <div className="bg-green-secondary w-[9px] h-[9px] rounded-full shrink-0"></div>
                     )}
 
                     {!option.online && (

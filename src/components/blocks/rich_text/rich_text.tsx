@@ -35,7 +35,7 @@ const Element = (props: ElementProps) => {
       <div className="flex gap-2 slack_blocks_to_jsx__rich_text_list_element">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
-        <RichTextListWrapper element={element} className={`list-none`}>
+        <RichTextListWrapper element={element} className="list-none">
           {elements.map((el, i) => {
             return (
               <li
