@@ -1,5 +1,6 @@
 import { RichTextBlockElement } from "../../../types";
 import { RichTextBlock } from "../../../types";
+import { numberToAlpha, numberToRoman } from "../../../utils";
 import { RichTextListWrapper } from "./rich_text_list_wrapper";
 import { RichTextSectionElement } from "./rich_text_section";
 
@@ -42,12 +43,15 @@ const Element = (props: ElementProps) => {
                 className="flex"
                 key={`${el.type}__${i}`}
                 style={{
-                  marginLeft: indent ? (indent > 5 ? 0 : indent * 28 + 6 + 28) : 0,
+                  marginLeft: indent ? (indent > 5 ? 0 : indent * 28) : 0,
                 }}
               >
                 {style === "ordered" && (
                   <span className="w-[22px] h-[22px] shrink-0 flex items-center justify-center">
-                    {i + 1}.
+                    {(indent === undefined || indent === 0 || indent === 3 || indent === 6) &&
+                      `${i + 1}.`}
+                    {(indent === 1 || indent === 4 || indent === 7) && `${numberToAlpha(i + 1)}.`}
+                    {(indent === 2 || indent === 5 || indent === 8) && `${numberToRoman(i + 1)}.`}
                   </span>
                 )}
 
