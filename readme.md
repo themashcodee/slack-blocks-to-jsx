@@ -130,6 +130,6 @@ The project is licensed under the MIT license, allowing free use, modification, 
 
 ## Support
 
-If you like my work, you can buy me a coffee! 😊
+Love my open source work or anything else I do? Treat me to a coffee! 😊
 
 [![Buy Me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/themashcodee)
