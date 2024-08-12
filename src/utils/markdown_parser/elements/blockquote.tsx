@@ -10,8 +10,8 @@ export const Blockquote = (props: Props) => {
 
   return (
     <>
-      {element.children.map((para) => {
-        return <Paragraph element={para} />;
+      {element.children.map((para, i) => {
+        return <Paragraph key={i} element={para} />;
       })}
     </>
   );

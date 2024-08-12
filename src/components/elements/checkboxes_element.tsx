@@ -30,6 +30,7 @@ export const CheckboxesElement = (props: TextObjectProps) => {
 
           return (
             <label
+              key={i}
               className="flex cursor-pointer items-baseline gap-3 select-none"
               htmlFor={`checkboxes-${action_id}-value-${value}-${i}`}
             >
