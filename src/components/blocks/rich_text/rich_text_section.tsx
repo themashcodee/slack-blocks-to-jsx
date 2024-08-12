@@ -41,6 +41,8 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
   if (element.type === "link") {
     const { url, style, text } = element;
 
+    // link elements may not have text prop when it is just a URL
+    const linkText = text || url;
     return (
       <a
         target="_blank"
@@ -55,7 +57,7 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
           style?.bold ? "font-medium" : "",
         ])}
       >
-        {text}
+        {linkText}
       </a>
     );
   }
