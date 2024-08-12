@@ -80,6 +80,10 @@ export type RichTextSectionUser = {
 export type RichTextSectionEmoji = {
   type: "emoji";
   name: string;
+  /* hyphen-delineated list of Unicode code points */
+  unicode?: string;
+  /* included only for single-color skintone emojis (not compound emojis) */
+  skin_tone?: 1 | 2 | 3 | 4 | 5 | 6;
 };
 export type RichTextSectionLink = {
   type: "link";

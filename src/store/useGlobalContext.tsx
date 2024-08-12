@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode, useState } from "react";
+import React, { ReactNode, createContext, useContext, useState } from "react";
 
 type User = {
   id: string;
@@ -15,6 +15,14 @@ type UserGroup = {
   name: string;
 };
 
+type Emoji = {
+  name: string;
+  /* hyphen-delineated list of Unicode code points */
+  unicode?: string;
+  /* included only for single-color skintone emojis (not compound emojis) */
+  skin_tone?: 1 | 2 | 3 | 4 | 5 | 6;
+};
+
 type Hooks = {
   user?: (data: User) => ReactNode;
   channel?: (data: Channel) => ReactNode;
@@ -22,7 +30,13 @@ type Hooks = {
   atChannel?: () => ReactNode;
   atEveryone?: () => ReactNode;
   atHere?: () => ReactNode;
-  emoji?: (name: string, parse: (name: string) => string) => ReactNode;
+  /**
+   * The hook to replace emojis with custom components
+   * @param data - the emoji object
+   * @param parse - fallback function for default emoji parsing
+   * @returns the custom emoji component
+   */
+  emoji?: (data: Emoji, parse: (data: Emoji) => string) => ReactNode;
   date?: (data: {
     timestamp: string;
     format: string;
