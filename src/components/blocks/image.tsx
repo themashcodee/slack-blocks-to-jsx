@@ -52,8 +52,8 @@ export const Image = (props: ImageProps) => {
           <img
             src={image_url}
             style={{
-              width: image_width || 400,
-              height: image_height || 300,
+              width: image_width,
+              height: image_height,
             }}
             alt={alt_text}
           />
