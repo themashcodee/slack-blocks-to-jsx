@@ -72,7 +72,7 @@ This is the main component that renders the entire Slack message. It supports va
   - atChannel?: () = ReactNode
   - atEveryone?: () = ReactNode
   - atHere?: () = ReactNode
-  - emoji?: (name:string) => ReactNode | "fallback" (return "fallback" if you can't handle the emoji)
+  - emoji?: (data: { name: string; unicode?: string; skin_tone?: number; }, => ReactNode, fallback: (data: { name: string; unicode?: string; skin_tone?: number; }) => string )
   - date?: (data: { timestamp: string; format: string; link: string | null; fallback: string; }) => ReactNode;
 - `data?`: optionally pass an array or users, channels and user groups to automatically be replaced with the user, channel and user group mentions.
 - `showBlockKitDebug?`: Show a link to open the message in the Slack Block Kit Builder, for debugging purposes. Defaults to false.
