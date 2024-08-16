@@ -1,8 +1,8 @@
-import { Block } from "./types";
-import { Header } from "./header";
-import { getBlockComponent } from "./components";
 import { BlockWrapper } from "./block_wrapper";
+import { getBlockComponent } from "./components";
+import { Header } from "./header";
 import { GlobalProvider, GlobalStore } from "./store";
+import { Block } from "./types";
 import { merge_classes } from "./utils";
 
 type Props = {
@@ -62,12 +62,16 @@ export const Message = (props: Props) => {
           ])}
           style={style}
         >
-          {blocks.map((block, i) => {
-            const element = getBlockComponent(block);
-            if (!element) return null;
+          <div className="flex flex-col w-full">
+            <div className="slack_blocks_to_jsx--blocks">
+              {blocks.map((block, i) => {
+                const element = getBlockComponent(block);
+                if (!element) return null;
 
-            return <BlockWrapper key={i}>{element}</BlockWrapper>;
-          })}
+                return <BlockWrapper key={i}>{element}</BlockWrapper>;
+              })}
+            </div>
+          </div>
         </div>
       </GlobalProvider>
     );

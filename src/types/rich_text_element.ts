@@ -88,7 +88,7 @@ export type RichTextSectionEmoji = {
 export type RichTextSectionLink = {
   type: "link";
   url: string;
-  text: string;
+  text?: string;
   style?: RichTextSectionElementStyleCode;
 };
 

@@ -7,7 +7,15 @@ type TextObjectProps = {
 };
 
 export const UsersSelectElement = (props: TextObjectProps) => {
-  const { action_id, focus_on_load, placeholder, type, confirm, initial_user, people } = props.data;
+  const {
+    action_id,
+    focus_on_load,
+    placeholder,
+    type,
+    confirm,
+    initial_user,
+    people = [],
+  } = props.data;
   const [visible, setVisible] = useState(focus_on_load || false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState("");
