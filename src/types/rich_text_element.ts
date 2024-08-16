@@ -79,10 +79,17 @@ export type RichTextSectionUser = {
 };
 export type RichTextSectionEmoji = {
   type: "emoji";
+  /**
+   * Name of the emoji, e.g. smiley, sparkles, grinning_face.
+   */
   name: string;
-  /* hyphen-delineated list of Unicode code points */
+  /**
+   * hyphen-delineated list of Unicode code points
+   * */
   unicode?: string;
-  /* included only for single-color skintone emojis (not compound emojis) */
+  /**
+   * included only for single-color skintone emojis (not compound emojis)
+   * */
   skin_tone?: 1 | 2 | 3 | 4 | 5 | 6;
 };
 export type RichTextSectionLink = {
