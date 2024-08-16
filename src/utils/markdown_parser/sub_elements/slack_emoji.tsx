@@ -13,9 +13,9 @@ export const SlackEmoji = (props: Props) => {
   if (hooks.emoji)
     return (
       <span className="slack_emoji">
-        {hooks.emoji(element.value, (name) => parseEmojis(`:${name}:`))}
+        {hooks.emoji({ name: element.value }, (emojiElement) => parseEmojis(emojiElement))}
       </span>
     );
 
-  return <span className="slack_emoji">{parseEmojis(`:${element.value}:`)}</span>;
+  return <span className="slack_emoji">{parseEmojis({ name: element.value })}</span>;
 };
