@@ -12,7 +12,7 @@ export const Image = (props: ImageProps) => {
 
   return (
     <div id={block_id} className="my-2 flex flex-col gap-2 slack_blocks_to_jsx__image">
-      <div className="text-black-secondary text-small flex gap-1 items-center">
+      <div className="slack_blocks_to_jsx__image_media_trigger text-black-secondary text-small flex gap-1 items-center">
         <span>
           {alt_text}
           {image_bytes && ` (${Math.round(image_bytes / 1000)} kB)`}
