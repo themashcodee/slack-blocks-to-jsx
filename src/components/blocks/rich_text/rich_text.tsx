@@ -115,9 +115,11 @@ const Element = (props: ElementProps) => {
       <blockquote className="flex gap-2 slack_blocks_to_jsx__rich_text_quote_element">
         {border === 1 && <div className="w-1 rounded bg-gray-primary self-stretch"></div>}
 
-        {elements.map((el, i) => {
-          return <RichTextSectionElement key={`${el.type}__${i}`} element={el} />;
-        })}
+        <div>
+          {elements.map((el, i) => {
+            return <RichTextSectionElement key={`${el.type}__${i}`} element={el} />;
+          })}
+        </div>
       </blockquote>
     );
   }
