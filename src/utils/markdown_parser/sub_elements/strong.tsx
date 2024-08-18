@@ -1,6 +1,7 @@
 import { StrongSubElement } from "../types";
 import { Delete } from "./delete";
 import { Emphasis } from "./emphasis";
+import { Link } from "./link";
 import { SlackBroadcast } from "./slack_broadcast";
 import { SlackChannelMention } from "./slack_channel_mention";
 import { SlackDate } from "./slack_date";
@@ -30,6 +31,7 @@ export const Strong = (props: Props) => {
         if (child.type === "slack_date") return <SlackDate key={i} element={child} />;
         if (child.type === "emphasis") return <Emphasis key={i} element={child} />;
         if (child.type === "slack_emoji") return <SlackEmoji key={i} element={child} />;
+        if (child.type === "link") return <Link key={i} element={child} />;
 
         return <Text element={child} key={i} />;
       })}

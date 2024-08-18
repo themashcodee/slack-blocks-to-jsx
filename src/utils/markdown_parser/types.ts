@@ -55,6 +55,7 @@ export type EmphasisSubElement = {
     | SlackDateSubElement
     | StrongSubElement
     | SlackEmojiSubElement
+    | LinkSubElement
   )[];
 };
 
@@ -70,6 +71,7 @@ export type StrongSubElement = {
     | SlackDateSubElement
     | EmphasisSubElement
     | SlackEmojiSubElement
+    | LinkSubElement
   )[];
 };
 
@@ -81,6 +83,7 @@ export type DeleteSubElement = {
     | EmphasisSubElement
     | StrongSubElement
     | SlackEmojiSubElement
+    | LinkSubElement
   )[];
 };
 
