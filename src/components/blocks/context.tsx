@@ -25,7 +25,7 @@ export const Context = (props: ContextProps) => {
 
         return (
           <span key={i}>
-            <ImageElement data={element} />
+            <ImageElement inside="context" data={element} />
           </span>
         );
       })}
