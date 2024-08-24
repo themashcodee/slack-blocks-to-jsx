@@ -270,15 +270,15 @@
 
   /* #region CUSTOM STYLES */
   & .slack_code_inline {
-    @apply inline-block px-1 text-xs leading-[1.5] whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] text-red-primary;
+    @apply inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] text-red-primary font-mono;
   }
 
   & .slack_code {
-    @apply block p-2 text-xs leading-[1.5] whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] w-full my-1;
+    @apply block p-2 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] w-full my-1 font-mono;
   }
 
   & .slack_inline_code {
-    @apply inline-block leading-[1.5] px-[3px] pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04];
+    @apply inline-block px-[3px] text-xs pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] font-mono;
   }
 
   & .slack_bold code {
