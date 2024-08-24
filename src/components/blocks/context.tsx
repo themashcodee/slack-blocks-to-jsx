@@ -17,17 +17,13 @@ export const Context = (props: ContextProps) => {
       {elements.slice(0, 10).map((element, i) => {
         if (element.type !== "image") {
           return (
-            <span className="text-black-secondary text-small pr-3 flex items-center" key={i}>
+            <div className="text-black-secondary text-small pr-3 flex items-center" key={i}>
               <TextObject data={element} />
-            </span>
+            </div>
           );
         }
 
-        return (
-          <span key={i}>
-            <ImageElement inside="context" data={element} />
-          </span>
-        );
+        return <ImageElement key={i} inside="context" data={element} />;
       })}
     </div>
   );

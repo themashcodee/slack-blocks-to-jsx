@@ -22,7 +22,7 @@ export const Paragraph = (props: Props) => {
   const { element } = props;
 
   return (
-    <>
+    <p>
       {element.children.map((subelement, i) => {
         if (subelement.type === "text") return <Text key={i} element={subelement} />;
         if (subelement.type === "emphasis") return <Emphasis key={i} element={subelement} />;
@@ -43,6 +43,6 @@ export const Paragraph = (props: Props) => {
 
         return null;
       })}
-    </>
+    </p>
   );
 };
