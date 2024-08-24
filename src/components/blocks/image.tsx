@@ -7,16 +7,20 @@ type ImageProps = {
 
 export const Image = (props: ImageProps) => {
   // TODO: USE OTHER PROPERTIES
-  const { block_id, alt_text, image_url, image_bytes, image_height, image_width } = props.data;
+  const { block_id, alt_text, image_url, image_bytes, image_height, image_width, title } =
+    props.data;
   const [showImage, setShowImage] = useState(true);
+  const captionText = title?.text;
 
   return (
     <div id={block_id} className="my-2 flex flex-col gap-2 slack_blocks_to_jsx__image">
       <div className="slack_blocks_to_jsx__image_media_trigger text-black-secondary text-small flex gap-1 items-center">
-        <span>
-          {alt_text}
-          {image_bytes && ` (${Math.round(image_bytes / 1000)} kB)`}
-        </span>
+        {captionText && <span className="slack_blocks_to_jsx__image_title">{captionText}</span>}
+        {image_bytes && (
+          <span className="slack_blocks_to_jsx__image_size">
+            {`(${Math.round(image_bytes / 1000)} kB)`}
+          </span>
+        )}
 
         <button
           type="button"
