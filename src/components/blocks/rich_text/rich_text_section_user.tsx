@@ -11,7 +11,9 @@ export const RichTextSectionUser = (props: Props) => {
   const user = users.find((u) => u.id === user_id || u.name === user_id);
   const label = user?.name || user_id;
 
-  if (hooks.user) return <>{hooks.user(user || { id: user_id, name: label })}</>;
+  if (hooks.user) {
+    return <>{hooks.user(user ? { ...user, style } : { id: user_id, name: label, style })}</>;
+  }
 
   return (
     <span

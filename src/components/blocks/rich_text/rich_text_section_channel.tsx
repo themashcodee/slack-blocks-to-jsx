@@ -11,7 +11,11 @@ export const RichTextSectionChannel = (props: Props) => {
   const channel = channels.find((u) => u.id === channel_id || u.name === channel_id);
   const label = channel?.name || channel_id;
 
-  if (hooks.channel) return <>{hooks.channel(channel || { id: channel_id, name: label })}</>;
+  if (hooks.channel) {
+    return (
+      <>{hooks.channel(channel ? { ...channel, style } : { id: channel_id, name: label, style })}</>
+    );
+  }
 
   return (
     <span

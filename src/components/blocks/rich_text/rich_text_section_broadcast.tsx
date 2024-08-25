@@ -8,9 +8,9 @@ export const RichTextSectionBroadcast = (props: Props) => {
   const { range, style } = props;
   const { hooks } = useGlobalData();
 
-  if (range === "channel" && hooks.atChannel) return <>{hooks.atChannel()}</>;
-  if (range === "everyone" && hooks.atEveryone) return <>{hooks.atEveryone()}</>;
-  if (range === "here" && hooks.atHere) return <>{hooks.atHere()}</>;
+  if (range === "channel" && hooks.atChannel) return <>{hooks.atChannel(style)}</>;
+  if (range === "everyone" && hooks.atEveryone) return <>{hooks.atEveryone(style)}</>;
+  if (range === "here" && hooks.atHere) return <>{hooks.atHere(style)}</>;
 
   return (
     <span

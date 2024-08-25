@@ -1,19 +1,31 @@
 import React, { ReactNode, createContext, useContext, useState } from "react";
+import {
+  RichTextSectionUser,
+  RichTextSectionChannel,
+  RichTextSectionBroadcast,
+  RichTextSectionUsergroup,
+} from "../types";
 
 type User = {
   id: string;
   name: string;
 };
 
+type UserWithStyle = User & { style?: RichTextSectionUser["style"] };
+
 type Channel = {
   id: string;
   name: string;
 };
 
+type ChannelWithStyle = Channel & { style?: RichTextSectionChannel["style"] };
+
 type UserGroup = {
   id: string;
   name: string;
 };
+
+type UserGroupWithStyle = UserGroup & { style?: RichTextSectionUsergroup["style"] };
 
 type Emoji = {
   name: string;
@@ -24,12 +36,12 @@ type Emoji = {
 };
 
 type Hooks = {
-  user?: (data: User) => ReactNode;
-  channel?: (data: Channel) => ReactNode;
-  usergroup?: (data: UserGroup) => ReactNode;
-  atChannel?: () => ReactNode;
-  atEveryone?: () => ReactNode;
-  atHere?: () => ReactNode;
+  user?: (data: UserWithStyle) => ReactNode;
+  channel?: (data: ChannelWithStyle) => ReactNode;
+  usergroup?: (data: UserGroupWithStyle) => ReactNode;
+  atChannel?: (style?: RichTextSectionBroadcast["style"]) => ReactNode;
+  atEveryone?: (style?: RichTextSectionBroadcast["style"]) => ReactNode;
+  atHere?: (style?: RichTextSectionBroadcast["style"]) => ReactNode;
   /**
    * The hook to replace emojis with custom components
    * @param data - the emoji object

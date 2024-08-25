@@ -11,7 +11,11 @@ export const RichTextSectionUserGroup = (props: Props) => {
   const group = user_groups.find((u) => u.id === usergroup_id || u.name === usergroup_id);
   const label = group?.name || usergroup_id;
 
-  if (hooks.usergroup) return <>{hooks.usergroup(group || { id: usergroup_id, name: label })}</>;
+  if (hooks.usergroup) {
+    return (
+      <>{hooks.usergroup(group ? { ...group, style } : { id: usergroup_id, name: label, style })}</>
+    );
+  }
 
   return (
     <span
