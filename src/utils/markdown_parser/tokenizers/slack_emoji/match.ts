@@ -10,6 +10,43 @@ import { SlackEmojiType, type IDelimiter, type IThis, type IToken, type T } from
 export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = function (api) {
   return { findDelimiter, processSingleDelimiter };
 
+  function hasSpaceBetween(
+    nodePoints: ReadonlyArray<INodePoint>,
+    startIndex: number,
+    endIndex: number,
+  ): boolean {
+    for (let i = startIndex + 1; i < endIndex; ++i) {
+      if (nodePoints[i]?.codePoint === AsciiCodePoint.SPACE) {
+        return true; // Found a space between the colons
+      }
+    }
+    return false;
+  }
+
+  function isPartOfLink(nodePoints: ReadonlyArray<INodePoint>, index: number): boolean {
+    // Check for common URL protocols preceding the colon (e.g., http:, https:, wss:, etc.)
+    const protocolCheck = () => {
+      const protocolPatterns = ["http", "https", "ftp", "wss", "ws", "mailto"];
+      for (const protocol of protocolPatterns) {
+        if (
+          index >= protocol.length &&
+          nodePoints
+            .slice(index - protocol.length, index)
+            .map((np) => String.fromCharCode(np.codePoint))
+            .join("") === protocol
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    // If the colon is part of a known protocol (e.g., http:), return true to skip parsing
+    if (protocolCheck()) return true;
+
+    return false;
+  }
+
   function* findDelimiter(): IResultOfFindDelimiters<IDelimiter> {
     const nodePoints: ReadonlyArray<INodePoint> = api.getNodePoints();
     const blockStartIndex: number = api.getBlockStartIndex();
@@ -20,6 +57,10 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
     for (let i = blockStartIndex; i < blockEndIndex; ++i) {
       if (nodePoints[i]?.codePoint === AsciiCodePoint.COLON) {
         const endIndex = findEndDelimiter(nodePoints, i, blockEndIndex);
+
+        if (isPartOfLink(nodePoints, i)) continue;
+        if (hasSpaceBetween(nodePoints, i, endIndex)) continue;
+
         if (endIndex !== -1) {
           potentialDelimiters.push({
             type: "both",
