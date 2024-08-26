@@ -1,6 +1,7 @@
 import {
   Delete,
   Emphasis,
+  HTML,
   InlineCode,
   Link,
   SlackBroadcast,
@@ -25,6 +26,7 @@ export const Paragraph = (props: Props) => {
     <p>
       {element.children.map((subelement, i) => {
         if (subelement.type === "text") return <Text key={i} element={subelement} />;
+        if (subelement.type === "html") return <HTML key={i} element={subelement} />;
         if (subelement.type === "emphasis") return <Emphasis key={i} element={subelement} />;
         if (subelement.type === "inlineCode") return <InlineCode key={i} element={subelement} />;
         if (subelement.type === "delete") return <Delete key={i} element={subelement} />;

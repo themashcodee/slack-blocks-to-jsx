@@ -3,6 +3,11 @@ export type SlackEmojiSubElement = {
   value: string;
 };
 
+export type HTMLSubElement = {
+  type: "html";
+  value: string;
+};
+
 export type SlackDateSubElement = {
   type: "slack_date";
   value: {
@@ -114,6 +119,7 @@ export type ParagraphElement = {
     | SlackBroadcastSubElement
     | SlackDateSubElement
     | SlackEmojiSubElement
+    | HTMLSubElement
   )[];
 };
 

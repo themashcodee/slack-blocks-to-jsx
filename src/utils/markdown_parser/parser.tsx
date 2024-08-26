@@ -28,6 +28,16 @@ type Options = {
   hooks: GlobalStore["hooks"];
 };
 
+// Helper function to check if a string is a valid URL
+function isValidURL(string: string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
 export const markdown_parser = (markdown: string, options: Options): ReactNode => {
   if (!markdown) return null;
 
@@ -40,7 +50,16 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   // REPLACE SINGLE tilde WITH DOUBLE tilde
   text_string = text_string.replace(/(?<!~)~(?!~)([^~]+)~(?!~)/g, "~~$1~~");
   // CHANGE LINK FORMATTING FROM <link|label> to [label](link), EXCLUDING LINKS STARTING WITH !date
-  text_string = text_string.replace(/<(?!(?:!date))([^|>]+)\|([^>]+)>/g, "[$2]($1)");
+  text_string = text_string.replace(/<(?!(?:!date))([^|>]+)\|([^>]+)>/g, (match, link, label) => {
+    if (isValidURL(link)) return `[${label}](${link})`;
+    return match;
+  });
+  // CHANGE LINK FORMATTING FROM <link> to [link](link), EXCLUDING LINKS STARTING WITH !date
+  text_string = text_string.replace(/<(?!(?:!date))([^|>]+)>/g, (match, link) => {
+    if (isValidURL(link)) return `[${link}](${link})`;
+    return match;
+  });
+
   // REPLACE \n\n WITH '[[DOUBLE_LINE_BREAK]]' to prevent @yozora/parser to eat it
   text_string = text_string.replace(/\n\n/g, "[[DOUBLE_LINE_BREAK]]");
   // REPLACE <!here> with @here
@@ -51,6 +70,7 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   text_string = text_string.replace(/<!channel>/g, "@channel");
 
   const parsed_data = parser.parse(text_string);
+  console.log({ text_string, parsed_data });
 
   const elements = parsed_data.children as unknown as MarkdownElement[];
 
