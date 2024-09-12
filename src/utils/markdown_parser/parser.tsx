@@ -1,16 +1,16 @@
 import YozoraParser from "@yozora/parser";
-import { MarkdownElement } from "./types";
-import { Blockquote, Paragraph, Code } from "./elements";
+import { ReactNode } from "react";
 import { GlobalStore } from "../../store";
+import { Blockquote, Code, Paragraph } from "./elements";
 import {
-  SlackUserMentionTokenizer,
-  SlackChannelMentionTokenizer,
-  SlackUserGroupMentionTokenizer,
   SlackBroadcastTokenizer,
+  SlackChannelMentionTokenizer,
   SlackDateTokenizer,
   SlackEmojiTokenizer,
+  SlackUserGroupMentionTokenizer,
+  SlackUserMentionTokenizer,
 } from "./tokenizers";
-import { ReactNode } from "react";
+import { MarkdownElement } from "./types";
 
 const parser = new YozoraParser()
   .unmountTokenizer("@yozora/tokenizer-list")
@@ -70,7 +70,6 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   text_string = text_string.replace(/<!channel>/g, "@channel");
 
   const parsed_data = parser.parse(text_string);
-  console.log({ text_string, parsed_data });
 
   const elements = parsed_data.children as unknown as MarkdownElement[];
 
