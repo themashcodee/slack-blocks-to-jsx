@@ -35,6 +35,14 @@ type Emoji = {
   skin_tone?: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
+type LinkInput = {
+  href: string;
+  children: ReactNode;
+  className: string;
+  target?: "_blank" | "_self" | "_parent" | "_top";
+  rel?: string;
+};
+
 type Hooks = {
   user?: (data: UserWithStyle) => ReactNode;
   channel?: (data: ChannelWithStyle) => ReactNode;
@@ -55,6 +63,11 @@ type Hooks = {
     link: string | null;
     fallback: string;
   }) => ReactNode;
+  /**
+   *
+   * This hook allows you to replace the anchor (a) tag with your own wrapper. It gets applied to rich_text_section links, links in mrkdown, slack date optional links, and video block title URLs.
+   */
+  link?: (input: LinkInput) => ReactNode;
 };
 
 export type GlobalStore = {

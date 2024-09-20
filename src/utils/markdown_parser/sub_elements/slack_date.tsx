@@ -65,7 +65,23 @@ export const SlackDate = (props: Props) => {
 };
 
 const WrapWithLink = (props: { wrap: boolean; href: string; children: ReactNode }) => {
+  const { hooks } = useGlobalData();
+
   if (!props.wrap) return <>{props.children}</>;
+
+  if (hooks.link) {
+    return (
+      <>
+        {hooks.link({
+          href: props.href,
+          children: props.children,
+          className: "text-blue-primary",
+          rel: "noopener noreferrer",
+          target: "_blank",
+        })}
+      </>
+    );
+  }
 
   return (
     <a href={props.href} target="_blank" rel="noopener noreferrer" className="text-blue-primary">

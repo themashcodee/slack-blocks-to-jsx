@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { VideoBlock } from "../../types";
+import { VideoBlock, TextObject as TextObjectType } from "../../types";
 import { TextObject } from "../composition_objects";
+import { useGlobalData } from "../../store";
 
 type VideoProps = {
   data: VideoBlock;
@@ -36,9 +37,7 @@ export const Video = (props: VideoProps) => {
 
       <div className="flex flex-wrap items-center gap-1 slack_blocks_to_jsx__video_title">
         {title_url ? (
-          <a href={title_url} className="text-blue-primary" target="_blank" rel="noreferrer">
-            <TextObject data={title} />
-          </a>
+          <RenderLink title={title} url={title_url} />
         ) : (
           <p>
             <TextObject data={title} />
@@ -85,5 +84,29 @@ export const Video = (props: VideoProps) => {
         )}
       </div>
     </div>
+  );
+};
+
+const RenderLink = ({ url, title }: { url: string; title: TextObjectType<"plain_text"> }) => {
+  const { hooks } = useGlobalData();
+
+  if (hooks.link) {
+    return (
+      <>
+        {hooks.link({
+          href: url,
+          children: <TextObject data={title} />,
+          className: "text-blue-primary",
+          rel: "noopener noreferrer",
+          target: "_blank",
+        })}
+      </>
+    );
+  }
+
+  return (
+    <a href={url} className="text-blue-primary" target="_blank" rel="noopener noreferrer">
+      <TextObject data={title} />
+    </a>
   );
 };
