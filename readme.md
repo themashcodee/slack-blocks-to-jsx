@@ -6,7 +6,7 @@ The `slack-blocks-to-jsx` package allows you to render Slack blocks in React wit
 
 **🚨 Quickly test out the library on online playground**: https://slack-block-to-jsx-playground.vercel.app/
 
-🔗 **New!** Check out our detailed blog post: [Rendering Slack Blocks in React: A Complete Guide](<insert-your-blog-link-here>)
+🔗 **New!** Check out our detailed blog post: [Rendering Slack Blocks in React: A Complete Guide](https://mashcodee.hashnode.dev/how-to-effortlessly-render-slack-blocks-in-react-with-slack-blocks-to-jsx)
 
 ## Installation
 
