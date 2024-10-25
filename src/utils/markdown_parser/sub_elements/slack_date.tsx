@@ -27,33 +27,27 @@ export const SlackDate = (props: Props) => {
 
   let date_text = tokenString;
 
-  if (tokenString.includes("{date_num}")) {
-    date_text = date_text.replace("{date_num}", date_token_to_label(date, "{date_num}"));
-  }
-  if (tokenString.includes("{date}"))
-    date_text = date_text.replace("{date}", date_token_to_label(date, "{date}"));
-  if (tokenString.includes("{date_short}"))
-    date_text = date_text.replace("{date_short}", date_token_to_label(date, "{date_short}"));
-  if (tokenString.includes("{date_long}"))
-    date_text = date_text.replace("{date_long}", date_token_to_label(date, "{date_long}"));
-  if (tokenString.includes("{date_pretty}"))
-    date_text = date_text.replace("{date_pretty}", date_token_to_label(date, "{date_pretty}"));
-  if (tokenString.includes("{date_short_pretty}"))
-    date_text = date_text.replace(
-      "{date_short_pretty}",
-      date_token_to_label(date, "{date_short_pretty}"),
-    );
-  if (tokenString.includes("{date_long_pretty}"))
-    date_text = date_text.replace(
-      "{date_long_pretty}",
-      date_token_to_label(date, "{date_long_pretty}"),
-    );
-  if (tokenString.includes("{time}")) {
-    date_text = date_text.replace("{time}", date_token_to_label(date, "{time}"));
-  }
-  if (tokenString.includes("{time_secs}")) {
-    date_text = date_text.replace("{time_secs}", date_token_to_label(date, "{time_secs}"));
-  }
+  const replacements: { [key: string]: string } = {
+    "{day_divider_pretty}": date_token_to_label(date, "{day_divider_pretty}"),
+    "{date_num}": date_token_to_label(date, "{date_num}"),
+    "{date_slash}": date_token_to_label(date, "{date_slash}"),
+    "{date_long}": date_token_to_label(date, "{date_long}"),
+    "{date_long_full}": date_token_to_label(date, "{date_long_full}"),
+    "{date_long_pretty}": date_token_to_label(date, "{date_long_pretty}"),
+    "{date}": date_token_to_label(date, "{date}"),
+    "{date_pretty}": date_token_to_label(date, "{date_pretty}"),
+    "{date_short}": date_token_to_label(date, "{date_short}"),
+    "{date_short_pretty}": date_token_to_label(date, "{date_short_pretty}"),
+    "{time}": date_token_to_label(date, "{time}"),
+    "{time_secs}": date_token_to_label(date, "{time_secs}"),
+    "{ago}": date_token_to_label(date, "{ago}"),
+  };
+
+  Object.entries(replacements).forEach(([key, value]) => {
+    if (tokenString.includes(key)) {
+      date_text = date_text.replace(key, value);
+    }
+  });
 
   return (
     <span className="slack_date">
@@ -92,6 +86,7 @@ const WrapWithLink = (props: { wrap: boolean; href: string; children: ReactNode 
 
 const date_token_to_label = (inputDate: Date, formatString: string): string => {
   const dateObj = new Date(inputDate);
+  const now = new Date();
 
   // Function to get month with leading zero
   const getMonthWithZero = (date: Date): string => {
@@ -106,45 +101,77 @@ const date_token_to_label = (inputDate: Date, formatString: string): string => {
     return day + (suffixes[relevantDigits] || suffixes[0] || "");
   };
 
+  // Function to check if date is today, yesterday, or tomorrow
+  const getRelativeDay = (date: Date): string | null => {
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const inputDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const diffDays = Math.round((inputDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Tomorrow";
+    if (diffDays === -1) return "Yesterday";
+    return null;
+  };
+
   // Format strings based on formatString
   switch (formatString) {
+    case "{day_divider_pretty}": {
+      const relativeDay = getRelativeDay(dateObj);
+      if (relativeDay) return relativeDay;
+      if (dateObj.getFullYear() === now.getFullYear()) {
+        return dateObj.toLocaleString("en-US", { weekday: "long", month: "long", day: "numeric" });
+      }
+      return dateObj.toLocaleString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
     case "{date_num}":
       return `${dateObj.getFullYear()}-${getMonthWithZero(dateObj)}-${dateObj
         .getDate()
         .toString()
         .padStart(2, "0")}`;
-    case "{date}":
-      return `${dateObj.toLocaleString("en-US", { month: "long" })} ${getDayWithSuffix(
-        dateObj,
-      )}, ${dateObj.getFullYear()}`;
-    case "{date_short}":
-      return `${dateObj.toLocaleString("en-US", { month: "short" })} ${getDayWithSuffix(
-        dateObj,
-      )}, ${dateObj.getFullYear()}`;
+    case "{date_slash}":
+      return dateObj.toLocaleDateString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
     case "{date_long}":
-      return `${dateObj.toLocaleString("en-US", {
+      return dateObj.toLocaleString("en-US", {
         weekday: "long",
         month: "long",
-      })} ${getDayWithSuffix(dateObj)}, ${dateObj.getFullYear()}`;
-    case "{date_pretty}":
-      // Assuming implementation to check if date is yesterday, today, or tomorrow
-      // For simplicity, let's return the same as {date}
-      return `${dateObj.toLocaleString("en-US", { month: "long" })} ${getDayWithSuffix(
-        dateObj,
-      )}, ${dateObj.getFullYear()}`;
-    case "{date_short_pretty}":
-      // Assuming implementation to check if date is yesterday, today, or tomorrow
-      // For simplicity, let's return the same as {date_short}
-      return `${dateObj.toLocaleString("en-US", { month: "short" })} ${getDayWithSuffix(
-        dateObj,
-      )}, ${dateObj.getFullYear()}`;
-    case "{date_long_pretty}":
-      // Assuming implementation to check if date is yesterday, today, or tomorrow
-      // For simplicity, let's return the same as {date_long}
-      return `${dateObj.toLocaleString("en-US", {
+        day: "numeric",
+        year: "numeric",
+      });
+    case "{date_long_full}":
+      return dateObj.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    case "{date_long_pretty}": {
+      const relativeDay = getRelativeDay(dateObj);
+      if (relativeDay) return relativeDay;
+      return dateObj.toLocaleString("en-US", {
         weekday: "long",
         month: "long",
-      })} ${getDayWithSuffix(dateObj)}, ${dateObj.getFullYear()}`;
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+    case "{date}":
+      return dateObj.toLocaleString("en-US", { month: "long", day: "numeric" });
+    case "{date_pretty}": {
+      const relativeDay = getRelativeDay(dateObj);
+      if (relativeDay) return relativeDay;
+      return dateObj.toLocaleString("en-US", { month: "long", day: "numeric" });
+    }
+    case "{date_short}":
+      return dateObj.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    case "{date_short_pretty}": {
+      const relativeDay = getRelativeDay(dateObj);
+      if (relativeDay) return relativeDay;
+      return dateObj.toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    }
     case "{time}":
       return dateObj.toLocaleString("en-US", { hour: "numeric", minute: "numeric", hour12: true });
     case "{time_secs}":
@@ -154,6 +181,20 @@ const date_token_to_label = (inputDate: Date, formatString: string): string => {
         second: "numeric",
         hour12: true,
       });
+    case "{ago}": {
+      const diff = now.getTime() - dateObj.getTime();
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      const years = Math.round(days / 365);
+
+      if (seconds < 60) return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
+      if (minutes < 60) return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+      if (hours < 24) return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
+      if (days < 365) return `${days} day${days !== 1 ? "s" : ""} ago`;
+      return `${years} year${years !== 1 ? "s" : ""} ago`;
+    }
     default:
       return formatString;
   }
