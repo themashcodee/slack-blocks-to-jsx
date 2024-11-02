@@ -12,7 +12,11 @@ export const Text = (props: Props) => {
 
   return (
     <span>
-      {element.value.split("[[DOUBLE_LINE_BREAK]]").map((line, index) => {
+      {element.value.split("LBK").map((line, index) => {
+        if (line === "") {
+          return <span key={index} className="block h-2"></span>;
+        }
+
         return (
           <span key={index}>
             {index > 0 && <span className="slack_blocks_to_jsx__line_break_not_first"></span>}

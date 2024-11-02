@@ -12,10 +12,12 @@
     box-sizing: border-box;
     border: 0 solid #e5e7eb;
   }
+
   & :after,
   & :before {
     --tw-content: "";
   }
+
   & :host,
   & html {
     line-height: 1.5;
@@ -27,15 +29,18 @@
     font-variation-settings: normal;
     -webkit-tap-highlight-color: transparent;
   }
+
   & body {
     margin: 0;
     line-height: inherit;
   }
+
   & hr {
     height: 0;
     color: inherit;
     border-top-width: 1px;
   }
+
   & abbr:where([title]) {
     -webkit-text-decoration: underline dotted;
     text-decoration: underline dotted;
@@ -50,14 +55,17 @@
     font-size: inherit;
     font-weight: inherit;
   }
+
   & a {
     color: inherit;
     text-decoration: inherit;
   }
+
   & b,
   & strong {
     font-weight: bolder;
   }
+
   & code,
   & kbd,
   & pre,
@@ -68,9 +76,11 @@
     font-variation-settings: normal;
     font-size: 1em;
   }
+
   & small {
     font-size: 80%;
   }
+
   & sub,
   & sup {
     font-size: 75%;
@@ -78,17 +88,21 @@
     position: relative;
     vertical-align: initial;
   }
+
   & sub {
     bottom: -0.25em;
   }
+
   & sup {
     top: -0.5em;
   }
+
   & table {
     text-indent: 0;
     border-color: inherit;
     border-collapse: collapse;
   }
+
   & button,
   & input,
   & optgroup,
@@ -104,10 +118,12 @@
     margin: 0;
     padding: 0;
   }
+
   & button,
   & select {
     text-transform: none;
   }
+
   & [type="button"],
   & [type="reset"],
   & [type="submit"],
@@ -116,33 +132,42 @@
     background-color: initial;
     background-image: none;
   }
+
   & :-moz-focusring {
     outline: auto;
   }
+
   & :-moz-ui-invalid {
     box-shadow: none;
   }
+
   & progress {
     vertical-align: initial;
   }
+
   & ::-webkit-inner-spin-button,
   & ::-webkit-outer-spin-button {
     height: auto;
   }
+
   & [type="search"] {
     -webkit-appearance: textfield;
     outline-offset: -2px;
   }
+
   & ::-webkit-search-decoration {
     -webkit-appearance: none;
   }
+
   & ::-webkit-file-upload-button {
     -webkit-appearance: button;
     font: inherit;
   }
+
   & summary {
     display: list-item;
   }
+
   & blockquote,
   & dd,
   & dl,
@@ -158,13 +183,16 @@
   & pre {
     margin: 0;
   }
+
   & fieldset {
     margin: 0;
   }
+
   & fieldset,
   & legend {
     padding: 0;
   }
+
   & menu,
   & ol,
   & ul {
@@ -172,29 +200,36 @@
     margin: 0;
     padding: 0;
   }
+
   & dialog {
     padding: 0;
   }
+
   & textarea {
     resize: vertical;
   }
+
   & input::-moz-placeholder,
   & textarea::-moz-placeholder {
     opacity: 1;
     color: #9ca3af;
   }
+
   & input::placeholder,
   & textarea::placeholder {
     opacity: 1;
     color: #9ca3af;
   }
+
   & [role="button"],
   & button {
     cursor: pointer;
   }
+
   & :disabled {
     cursor: default;
   }
+
   & audio,
   & canvas,
   & embed,
@@ -206,14 +241,17 @@
     display: block;
     vertical-align: middle;
   }
+
   & img,
   & video {
     max-width: 100%;
     height: auto;
   }
+
   & [hidden] {
     display: none;
   }
+
   & *,
   & ::backdrop,
   & :after,
@@ -266,6 +304,7 @@
     --tw-backdrop-saturate: ;
     --tw-backdrop-sepia: ;
   }
+
   /* #endregion */
 
   /* #region CUSTOM STYLES */
@@ -349,9 +388,9 @@
   & .slack_blocks_to_jsx__line_break {
     display: block;
   }
+
   & .slack_blocks_to_jsx__line_break_not_first {
     display: block;
-    height: 3px;
   }
 
   & .slack_link {
@@ -361,6 +400,6 @@
   /* #endregion */
 }
 
-.slack_blocks_to_jsx.styles_disabled > * {
+.slack_blocks_to_jsx.styles_disabled>* {
   all: unset !important;
 }

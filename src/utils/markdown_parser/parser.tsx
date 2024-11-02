@@ -60,8 +60,7 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
     return match;
   });
 
-  // REPLACE \n\n WITH '[[DOUBLE_LINE_BREAK]]' to prevent @yozora/parser to eat it
-  text_string = text_string.replace(/\n\n/g, "[[DOUBLE_LINE_BREAK]]");
+  text_string = text_string.replace(/\n/g, "LBK");
   // REPLACE <!here> with @here
   text_string = text_string.replace(/<!here>/g, "@here");
   // REPLACE <!everyone> with @everyone
