@@ -159,7 +159,7 @@ const date_token_to_label = (inputDate: Date, formatString: string): string => {
       });
     }
     case "{date}":
-      return dateObj.toLocaleString("en-US", { month: "long", day: "numeric" });
+      return dateObj.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" });
     case "{date_pretty}": {
       const relativeDay = getRelativeDay(dateObj);
       if (relativeDay) return relativeDay;
@@ -182,18 +182,25 @@ const date_token_to_label = (inputDate: Date, formatString: string): string => {
         hour12: true,
       });
     case "{ago}": {
-      const diff = now.getTime() - dateObj.getTime();
-      const seconds = Math.floor(diff / 1000);
+      const diff = dateObj.getTime() - now.getTime();
+      const absDiff = Math.abs(diff);
+      const seconds = Math.floor(absDiff / 1000);
       const minutes = Math.floor(seconds / 60);
       const hours = Math.floor(minutes / 60);
       const days = Math.floor(hours / 24);
-      const years = Math.round(days / 365);
+      const months = Math.floor(days / 30);
+      const years = Math.floor(days / 365);
 
-      if (seconds < 60) return `${seconds} second${seconds !== 1 ? "s" : ""} ago`;
-      if (minutes < 60) return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
-      if (hours < 24) return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
-      if (days < 365) return `${days} day${days !== 1 ? "s" : ""} ago`;
-      return `${years} year${years !== 1 ? "s" : ""} ago`;
+      const isFuture = diff > 0;
+      const suffix = isFuture ? "" : " ago";
+      const prefix = isFuture ? "in " : "";
+
+      if (seconds < 60) return `${prefix}${seconds} second${seconds !== 1 ? "s" : ""}${suffix}`;
+      if (minutes < 60) return `${prefix}${minutes} minute${minutes !== 1 ? "s" : ""}${suffix}`;
+      if (hours < 24) return `${prefix}${hours} hour${hours !== 1 ? "s" : ""}${suffix}`;
+      if (days < 30) return `${prefix}${days} day${days !== 1 ? "s" : ""}${suffix}`;
+      if (months < 12) return `${prefix}${months} month${months !== 1 ? "s" : ""}${suffix}`;
+      return `${prefix}${years} year${years !== 1 ? "s" : ""}${suffix}`;
     }
     default:
       return formatString;
