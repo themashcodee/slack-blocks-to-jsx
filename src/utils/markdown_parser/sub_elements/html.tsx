@@ -12,7 +12,7 @@ export const HTML = (props: Props) => {
 
   return (
     <span>
-      {element.value.split("LBK").map((line, index) => {
+      {element.value.split("LBKS").map((line, index) => {
         if (line === "") {
           return <span key={index} className="block h-2"></span>;
         }

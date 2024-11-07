@@ -60,7 +60,9 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
     return match;
   });
 
-  text_string = text_string.replace(/\n/g, "LBK");
+  // REPLACE CONSECUTIVE LINE BREAKS WITH CUSTOM SPACE
+  text_string = text_string.replace(/\n\n+/g, (match) => "LBKS".repeat(match.length - 1));
+
   // REPLACE <!here> with @here
   text_string = text_string.replace(/<!here>/g, "@here");
   // REPLACE <!everyone> with @everyone
