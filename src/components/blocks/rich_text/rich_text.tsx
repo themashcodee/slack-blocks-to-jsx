@@ -1,4 +1,5 @@
-import { RichTextBlockElement } from "../../../types";
+import { useMemo } from "react";
+import { RichTextBlockElement, RichTextList } from "../../../types";
 import { RichTextBlock } from "../../../types";
 import { numberToAlpha, numberToRoman } from "../../../utils";
 import { RichTextListWrapper } from "./rich_text_list_wrapper";
@@ -11,10 +12,27 @@ type RichTextProps = {
 export const RichText = (props: RichTextProps) => {
   const { elements, block_id } = props.data;
 
+  let _consecutive_index: number = 0;
+
   return (
     <div id={block_id} className="slack_blocks_to_jsx__rich_text">
       {elements.map((element, i) => {
-        return <Element key={`${element.type}__${i}`} element={element} />;
+        let _local_index = 0;
+
+        if (element.type !== "rich_text_list") {
+          _consecutive_index = 0;
+        } else if (element.indent === 0) {
+          _local_index = _consecutive_index;
+          _consecutive_index += element.elements.length;
+        }
+
+        return (
+          <Element
+            key={`${element.type}__${i}`}
+            element={element}
+            consecutive_index={_local_index}
+          />
+        );
       })}
     </div>
   );
@@ -22,10 +40,11 @@ export const RichText = (props: RichTextProps) => {
 
 type ElementProps = {
   element: RichTextBlockElement;
+  consecutive_index: number;
 };
 
 const Element = (props: ElementProps) => {
-  const { element } = props;
+  const { element, consecutive_index } = props;
 
   if (element.type === "rich_text_list") {
     const { elements, style, border = 0, indent, offset } = element;
@@ -49,7 +68,7 @@ const Element = (props: ElementProps) => {
                 {style === "ordered" && (
                   <span className="w-[22px] h-[22px] shrink-0 flex items-center justify-center">
                     {(indent === undefined || indent === 0 || indent === 3 || indent === 6) &&
-                      `${i + 1}.`}
+                      `${consecutive_index + i + 1}.`}
                     {(indent === 1 || indent === 4 || indent === 7) && `${numberToAlpha(i + 1)}.`}
                     {(indent === 2 || indent === 5 || indent === 8) && `${numberToRoman(i + 1)}.`}
                   </span>
@@ -76,7 +95,7 @@ const Element = (props: ElementProps) => {
                     marginLeft: 6,
                   }}
                 >
-                  <Element key={`${element.type}__${i}`} element={el} />
+                  <Element key={`${element.type}__${i}`} element={el} consecutive_index={0} />
                 </div>
               </li>
             );
