@@ -12,7 +12,17 @@ type RichTextProps = {
 export const RichText = (props: RichTextProps) => {
   const { elements, block_id } = props.data;
 
-  let _consecutive_index: number = 0;
+  let _consecutive_index_map: Record<NonNullable<RichTextList["indent"]>, number> = {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+  };
 
   return (
     <div id={block_id} className="slack_blocks_to_jsx__rich_text">
@@ -20,10 +30,18 @@ export const RichText = (props: RichTextProps) => {
         let _local_index = 0;
 
         if (element.type !== "rich_text_list") {
-          _consecutive_index = 0;
-        } else if (element.indent === 0) {
-          _local_index = _consecutive_index;
-          _consecutive_index += element.elements.length;
+          for (let i = 0; i <= 8; i++) {
+            _consecutive_index_map[i as NonNullable<RichTextList["indent"]>] = 0;
+          }
+        } else {
+          const indent = element.indent || 0;
+
+          for (let i = indent + 1; i <= 8; i++) {
+            _consecutive_index_map[i as NonNullable<RichTextList["indent"]>] = 0;
+          }
+
+          _local_index = _consecutive_index_map[indent];
+          _consecutive_index_map[indent] += element.elements.length;
         }
 
         return (
@@ -69,8 +87,10 @@ const Element = (props: ElementProps) => {
                   <span className="w-[22px] h-[22px] shrink-0 flex items-center justify-center">
                     {(indent === undefined || indent === 0 || indent === 3 || indent === 6) &&
                       `${consecutive_index + i + 1}.`}
-                    {(indent === 1 || indent === 4 || indent === 7) && `${numberToAlpha(i + 1)}.`}
-                    {(indent === 2 || indent === 5 || indent === 8) && `${numberToRoman(i + 1)}.`}
+                    {(indent === 1 || indent === 4 || indent === 7) &&
+                      `${numberToAlpha(consecutive_index + i + 1)}.`}
+                    {(indent === 2 || indent === 5 || indent === 8) &&
+                      `${numberToRoman(consecutive_index + i + 1)}.`}
                   </span>
                 )}
 
