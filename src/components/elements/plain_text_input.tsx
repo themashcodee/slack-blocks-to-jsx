@@ -23,9 +23,6 @@ export const PlaintTextInput = (props: TextObjectProps) => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      console.log({ target });
-
-      console.log(target.id);
 
       if (
         target.id !== "static_select_popup" &&
