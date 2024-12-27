@@ -60,6 +60,9 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
     return match;
   });
 
+  // ADD A SPACE BEFORE LINE BREAK AND AFTER THE :, SO IT DOES NOT MESS UP EMOJIS PARSING
+  text_string = text_string.replace(/:\n/g, ": \n");
+
   // REPLACE CONSECUTIVE LINE BREAKS WITH CUSTOM SPACE
   text_string = text_string.replace(/\n\n+/g, (match) => "LBKS".repeat(match.length - 1));
 
