@@ -59,6 +59,8 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
     if (isValidURL(link)) return `[${link}](${link})`;
     return match;
   });
+  // REPLACE _\n with _[space]\n
+  text_string = text_string.replace(/_\n/g, "_ \n");
 
   // ADD A SPACE BEFORE LINE BREAK AND AFTER THE :, SO IT DOES NOT MESS UP EMOJIS PARSING
   text_string = text_string.replace(/:\n/g, ": \n");
