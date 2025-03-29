@@ -134,4 +134,6 @@ The project is licensed under the MIT license, allowing free use, modification, 
 
 Love my open source work or anything else I do? Treat me to a coffee! 😊
 
-[![Buy Me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/themashcodee)
+[![Buy Me a Coffee](https://github.com/user-attachments/assets/1c8e9f68-b33d-4132-b081-f255027580b6)](https://www.buymeacoffee.com/themashcodee)
+
+
