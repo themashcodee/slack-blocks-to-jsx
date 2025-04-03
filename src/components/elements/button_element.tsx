@@ -20,9 +20,9 @@ export const ButtonElement = (props: TextObjectProps) => {
         "px-2 pt-0 pb-[1px] text-small h-[28px] min-w-[56px] border rounded whitespace-nowrap font-semibold",
         "slack_blocks_to_jsx__button_element",
         style === "primary"
-          ? "border-green-primary.3 text-green-primary"
+          ? "bg-green-primary.3 text-green-primary"
           : style === "danger"
-          ? "border-red-primary.3 text-red-primary"
+          ? "bg-red-primary.3 text-red-primary"
           : "border-black-primary.3 text-black-primary",
       ])}
       onClick={() => {
