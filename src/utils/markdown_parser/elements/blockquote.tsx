@@ -9,10 +9,14 @@ export const Blockquote = (props: Props) => {
   const { element } = props;
 
   return (
-    <>
-      {element.children.map((para, i) => {
-        return <Paragraph key={i} element={para} />;
-      })}
-    </>
+    <div className="flex gap-2">
+      <div className="w-1 rounded bg-gray-primary self-stretch"></div>
+
+      <div>
+        {element.children.map((para, i) => {
+          return <Paragraph key={i} element={para} />;
+        })}
+      </div>
+    </div>
   );
 };

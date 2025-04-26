@@ -68,6 +68,10 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   // REPLACE CONSECUTIVE LINE BREAKS WITH CUSTOM SPACE
   text_string = text_string.replace(/\n\n+/g, (match) => "LBKS".repeat(match.length - 1));
 
+  // Insert a blank line after blockquote lines if the next line is not a blockquote
+  // This ensures only the line starting with '>' is treated as the blockquote.
+  text_string = text_string.replace(/^>.*$(?!\n>)/gm, "$&\n");
+
   // REPLACE <!here> with @here
   text_string = text_string.replace(/<!here>/g, "@here");
   // REPLACE <!everyone> with @everyone
