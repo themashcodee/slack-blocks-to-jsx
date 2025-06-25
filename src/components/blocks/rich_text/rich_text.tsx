@@ -136,7 +136,7 @@ const Element = (props: ElementProps) => {
           className="p-2 rounded my-1 whitespace-pre-wrap bg-gray-secondary text-xs leading-[1.50001] border grow"
           style={{
             wordWrap: "break-word",
-            wordBreak: "normal",
+            wordBreak: "break-all",
           }}
         >
           {elements.map((el, i) => {
