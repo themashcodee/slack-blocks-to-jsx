@@ -22,6 +22,7 @@ export type Block =
   | ImageBlock
   | InputBlock
   | SectionBlock
+  | TableBlock
   | VideoBlock
   | RichTextBlock;
 
@@ -308,6 +309,53 @@ export type VideoBlock = {
    * This is a custom property added by slack-block-to-jsx library to more control over iframe
    */
   iframeProps?: ComponentPropsWithoutRef<"iframe">;
+};
+
+export type TableBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/table-block/ View here}
+   *
+   * A ***table*** block displays data in a structured table format. It supports up to 100 rows with 20 cells each. Only one table is allowed per message.
+   */
+  type: "table";
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated. Maximum length for this field is 255 characters. ***block_id*** should be unique for each message and each iteration of a message. If a message is updated, use a new ***block_id***.
+   */
+  block_id?: string;
+  /**
+   * An array of table rows. Maximum 100 rows, each row can have up to 20 cells.
+   */
+  rows: TableCell[][];
+  /**
+   * Optional array to configure column behavior. Can specify alignment and text wrapping. Maximum 20 configuration items.
+   */
+  column_settings?: TableColumnSetting[];
+};
+
+export type TableCell =
+  | {
+      /**
+       * The type of cell content
+       */
+      type: "raw_text";
+      /**
+       * The text content of the cell
+       */
+      text: string;
+    }
+  | RichTextBlock;
+
+export type TableColumnSetting = {
+  /**
+   * Text alignment for the column. Defaults to left.
+   */
+  align?: "left" | "center" | "right";
+  /**
+   * Whether text should wrap in the column. Defaults to false.
+   */
+  is_wrapped?: boolean;
 };
 
 export type RichTextBlock = {

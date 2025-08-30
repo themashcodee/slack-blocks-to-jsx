@@ -7,4 +7,5 @@ export * from "./image";
 export * from "./input";
 export * from "./rich_text";
 export * from "./section";
+export * from "./table";
 export * from "./video";

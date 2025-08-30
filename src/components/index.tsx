@@ -11,6 +11,7 @@ import {
   Header,
   Input,
   RichText,
+  Table,
   Video,
 } from "./blocks";
 import {
@@ -40,6 +41,8 @@ export const getBlockComponent = (block: Block): ReactNode => {
   if (block.type === "video") return <Video data={block} />;
   // ✅ DONE
   if (block.type === "rich_text") return <RichText data={block} />;
+  // ✅ DONE
+  if (block.type === "table") return <Table data={block} />;
 
   return null;
 };
