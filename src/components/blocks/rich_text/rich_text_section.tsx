@@ -31,8 +31,9 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
           "slack_blocks_to_jsx__rich_text_section_element_text",
           style?.italic ? "italic" : "",
           style?.strike ? "line-through" : "",
+          style?.underline ? "underline" : "",
           style?.code ? "slack_inline_code" : "",
-          style?.bold ? "font-medium" : "",
+          style?.bold ? "font-bold" : "",
         ])}
       >
         {text}
@@ -49,8 +50,9 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
           "slack_blocks_to_jsx__rich_text_section_element_date",
           style?.italic ? "italic" : "",
           style?.strike ? "line-through" : "",
+          style?.underline ? "underline" : "",
           style?.code ? "slack_inline_code" : "",
-          style?.bold ? "font-medium" : "",
+          style?.bold ? "font-bold" : "",
         ])}
       >
         <SlackDate

@@ -115,6 +115,7 @@ export type RichTextSectionElementStyle = {
   bold?: boolean;
   italic?: boolean;
   strike?: boolean;
+  underline?: boolean;
   highlight?: boolean;
   client_highlight?: boolean;
   unlink?: boolean;
@@ -125,4 +126,5 @@ export type RichTextSectionElementStyleCode = {
   bold?: boolean;
   italic?: boolean;
   strike?: boolean;
+  underline?: boolean;
 };

@@ -23,8 +23,9 @@ export const RichTextSectionLink = (props: Props) => {
             "text-blue-primary hover:underline underline-offset-4",
             style?.italic ? "italic" : "",
             style?.strike ? "line-through" : "",
+            style?.underline ? "underline" : "",
             style?.code ? "slack_inline_code" : "",
-            style?.bold ? "font-medium" : "",
+            style?.bold ? "font-bold" : "",
           ]),
           children: linkText,
         })}
@@ -42,8 +43,9 @@ export const RichTextSectionLink = (props: Props) => {
         "text-blue-primary hover:underline underline-offset-4",
         style?.italic ? "italic" : "",
         style?.strike ? "line-through" : "",
+        style?.underline ? "underline" : "",
         style?.code ? "slack_inline_code" : "",
-        style?.bold ? "font-medium" : "",
+        style?.bold ? "font-bold" : "",
       ])}
     >
       {linkText}

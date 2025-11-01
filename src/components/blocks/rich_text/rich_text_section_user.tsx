@@ -23,7 +23,8 @@ export const RichTextSectionUser = (props: Props) => {
         "slack_blocks_to_jsx__rich_text_section_element_user",
         style?.italic ? "italic" : "",
         style?.strike ? "line-through" : "",
-        style?.bold ? "font-medium" : "",
+        style?.underline ? "underline" : "",
+        style?.bold ? "font-bold" : "",
       ])}
     >
       @{label}
