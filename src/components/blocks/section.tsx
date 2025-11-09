@@ -26,7 +26,7 @@ export const Section = (props: SectionProps) => {
           {text && <TextObject data={text} />}
 
           {fields && (
-            <div className="grid grid-col-2 w-full">
+            <div className="grid grid-cols-2 w-full">
               {fields.map((field, i) => {
                 return <TextObject key={i} data={field} />;
               })}

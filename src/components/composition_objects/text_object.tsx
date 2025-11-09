@@ -8,24 +8,22 @@ type TextObjectProps = {
 };
 
 export const TextObject = (props: TextObjectProps) => {
-  const { type, text, emoji, verbatim = false } = props.data;
+  const { type, text, verbatim = false } = props.data;
   const { className = "" } = props;
   const { channels, users, hooks } = useGlobalData();
-
-  // TODO: HANDLE VERBATIM
 
   const parsed = text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<");
 
   if (type === "plain_text")
     return (
       <div className={className}>
-        {markdown_parser(parsed, { markdown: false, users, channels, hooks })}
+        {markdown_parser(parsed, { markdown: false, verbatim, users, channels, hooks })}
       </div>
     );
 
   return (
     <div className={className}>
-      {markdown_parser(parsed, { markdown: true, users, channels, hooks })}
+      {markdown_parser(parsed, { markdown: true, verbatim, users, channels, hooks })}
     </div>
   );
 };

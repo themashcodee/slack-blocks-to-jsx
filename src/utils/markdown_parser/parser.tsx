@@ -23,6 +23,7 @@ const parser = new YozoraParser()
 
 type Options = {
   markdown: boolean;
+  verbatim: boolean;
   users: GlobalStore["users"];
   channels: GlobalStore["channels"];
   hooks: GlobalStore["hooks"];
@@ -40,6 +41,11 @@ function isValidURL(string: string) {
 
 export const markdown_parser = (markdown: string, options: Options): ReactNode => {
   if (!markdown) return null;
+
+  // If verbatim is true, return plain text without any parsing
+  if (options.verbatim) {
+    return <div>{markdown}</div>;
+  }
 
   let text_string = markdown;
 
