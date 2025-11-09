@@ -50,6 +50,7 @@ export const Table = (props: TableProps) => {
                       <div>
                         {markdown_parser(cell.text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<"), {
                           markdown: false,
+                          verbatim: false,
                           users,
                           channels,
                           hooks,
