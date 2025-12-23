@@ -6,6 +6,7 @@ type Props = {
 
 export const Code = (props: Props) => {
   const { element } = props;
+  const value = element.value.replace(/LBKS/g, "\n");
 
-  return <code className="slack_code">{element.value}</code>;
+  return <code className="slack_code">{value}</code>;
 };
