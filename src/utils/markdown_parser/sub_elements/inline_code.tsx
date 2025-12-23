@@ -13,9 +13,6 @@ function extractUrl(value: string): string | null {
   const slackLinkMatch = value.match(/^<(https?:\/\/[^>]+)>$/);
   if (slackLinkMatch) return slackLinkMatch[1] as string;
 
-  const bareUrlMatch = value.match(/^(https?:\/\/\S+)$/);
-  if (bareUrlMatch) return bareUrlMatch[1] as string;
-
   return null;
 }
 
