@@ -68,7 +68,12 @@ export const InlineCode = (props: Props) => {
   const firstPart = parts[0];
   if (parts.length === 1 && firstPart?.type === "link") {
     return (
-      <a href={firstPart.url} className="slack_code_inline hover:underline">
+      <a
+        href={firstPart.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="slack_code_inline hover:underline"
+      >
         {firstPart.label}
       </a>
     );
@@ -85,7 +90,13 @@ export const InlineCode = (props: Props) => {
       return <span key={i}>{part.content}</span>;
     }
     return (
-      <a key={i} href={part.url} className="hover:underline">
+      <a
+        key={i}
+        href={part.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:underline"
+      >
         {part.label}
       </a>
     );
