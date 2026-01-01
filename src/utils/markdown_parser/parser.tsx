@@ -71,8 +71,15 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   // ADD A SPACE BEFORE LINE BREAK AND AFTER THE :, SO IT DOES NOT MESS UP EMOJIS PARSING
   text_string = text_string.replace(/:\n/g, ": \n");
 
-  // REPLACE CONSECUTIVE LINE BREAKS WITH CUSTOM SPACE
-  text_string = text_string.replace(/\n\n+/g, (match) => "LBKS".repeat(match.length - 1));
+  // HANDLE CONSECUTIVE LINE BREAKS
+  // We need to keep \n\n so Yozora can properly separate paragraphs and parse formatting.
+  // For additional newlines beyond \n\n, we add LBKS markers to preserve visual line breaks.
+  // \n\n = paragraph break (no LBKS needed, just normal paragraph separation)
+  // \n\n\n = paragraph break + 1 blank line (add 1 LBKS)
+  // \n\n\n\n = paragraph break + 2 blank lines (add 2 LBKS)
+  text_string = text_string.replace(/\n\n(\n*)/g, (_, extraNewlines) => {
+    return "\n\n" + "LBKS".repeat(extraNewlines.length);
+  });
 
   // Insert a blank line after blockquote lines if the next line is not a blockquote
   // This ensures only the line starting with '>' is treated as the blockquote.
@@ -92,7 +99,8 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   return (
     <div>
       {elements.map((element, i) => {
-        if (element.type === "paragraph") return <Paragraph key={i} element={element} />;
+        if (element.type === "paragraph")
+          return <Paragraph key={i} element={element} isFirst={i === 0} />;
         if (element.type === "blockquote") return <Blockquote key={i} element={element} />;
         if (element.type === "code") return <Code key={i} element={element} />;
 
