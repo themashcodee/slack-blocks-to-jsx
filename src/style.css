@@ -400,6 +400,6 @@
   /* #endregion */
 }
 
-.slack_blocks_to_jsx.styles_disabled>* {
+.slack_blocks_to_jsx.styles_disabled > * {
   all: unset !important;
 }

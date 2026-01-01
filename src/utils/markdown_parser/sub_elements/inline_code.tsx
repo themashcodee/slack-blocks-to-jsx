@@ -5,9 +5,7 @@ type Props = {
   element: InlineCodeSubElement;
 };
 
-type ParsedPart =
-  | { type: "text"; content: string }
-  | { type: "link"; url: string; label: string };
+type ParsedPart = { type: "text"; content: string } | { type: "link"; url: string; label: string };
 
 /**
  * Parse inline code value and extract links embedded within text.
@@ -70,7 +68,7 @@ export const InlineCode = (props: Props) => {
   const firstPart = parts[0];
   if (parts.length === 1 && firstPart?.type === "link") {
     return (
-      <a href={firstPart.url} className="slack_code_inline slack_link">
+      <a href={firstPart.url} className="slack_code_inline hover:underline">
         {firstPart.label}
       </a>
     );
@@ -87,7 +85,7 @@ export const InlineCode = (props: Props) => {
       return <span key={i}>{part.content}</span>;
     }
     return (
-      <a key={i} href={part.url} className="slack_link">
+      <a key={i} href={part.url} className="hover:underline">
         {part.label}
       </a>
     );
