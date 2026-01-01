@@ -1,60 +1,97 @@
+import { ReactNode } from "react";
 import { InlineCodeSubElement } from "../types";
 
 type Props = {
   element: InlineCodeSubElement;
 };
 
-type ExtractedLink = {
-  url: string;
-  label: string;
-} | null;
+type ParsedPart =
+  | { type: "text"; content: string }
+  | { type: "link"; url: string; label: string };
 
-function extractLink(value: string): ExtractedLink {
-  // Check for markdown link format: [label](url)
-  const markdownLinkMatch = value.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-  if (markdownLinkMatch) {
-    return {
-      label: markdownLinkMatch[1] as string,
-      url: markdownLinkMatch[2] as string,
-    };
+/**
+ * Parse inline code value and extract links embedded within text.
+ * Handles:
+ * - Markdown links: [label](url)
+ * - Slack links with label: <url|label>
+ * - Slack links without label: <url>
+ * - Bare URLs: https://...
+ */
+function parseInlineCodeValue(value: string): ParsedPart[] {
+  const parts: ParsedPart[] = [];
+
+  // Combined regex to match all link formats
+  // Group 1: Markdown link label, Group 2: Markdown link URL
+  // Group 3: Slack link URL (with label), Group 4: Slack link label
+  // Group 5: Slack link URL (without label)
+  // Group 6: Bare URL
+  const linkRegex =
+    /\[([^\]]+)\]\(([^)]+)\)|<(https?:\/\/[^|>]+)\|([^>]+)>|<(https?:\/\/[^>]+)>|(https?:\/\/\S+)/g;
+
+  let lastIndex = 0;
+  let match;
+
+  while ((match = linkRegex.exec(value)) !== null) {
+    // Add text before this match
+    if (match.index > lastIndex) {
+      parts.push({ type: "text", content: value.slice(lastIndex, match.index) });
+    }
+
+    if (match[1] !== undefined && match[2] !== undefined) {
+      // Markdown link: [label](url)
+      parts.push({ type: "link", label: match[1], url: match[2] });
+    } else if (match[3] !== undefined && match[4] !== undefined) {
+      // Slack link with label: <url|label>
+      parts.push({ type: "link", url: match[3], label: match[4] });
+    } else if (match[5] !== undefined) {
+      // Slack link without label: <url>
+      parts.push({ type: "link", url: match[5], label: match[5] });
+    } else if (match[6] !== undefined) {
+      // Bare URL
+      parts.push({ type: "link", url: match[6], label: match[6] });
+    }
+
+    lastIndex = match.index + match[0].length;
   }
 
-  // Check for Slack link format with label: <url|label>
-  const slackLinkWithLabelMatch = value.match(/^<(https?:\/\/[^|>]+)\|([^>]+)>$/);
-  if (slackLinkWithLabelMatch) {
-    return {
-      url: slackLinkWithLabelMatch[1] as string,
-      label: slackLinkWithLabelMatch[2] as string,
-    };
+  // Add remaining text after last match
+  if (lastIndex < value.length) {
+    parts.push({ type: "text", content: value.slice(lastIndex) });
   }
 
-  // Check for Slack link format without label: <url>
-  const slackLinkMatch = value.match(/^<(https?:\/\/[^>]+)>$/);
-  if (slackLinkMatch) {
-    const url = slackLinkMatch[1] as string;
-    return { url, label: url };
-  }
-
-  // Check for bare URL (entire value is just a URL)
-  const bareUrlMatch = value.match(/^https?:\/\/\S+$/);
-  if (bareUrlMatch) {
-    return { url: value, label: value };
-  }
-
-  return null;
+  return parts;
 }
 
 export const InlineCode = (props: Props) => {
   const { element } = props;
-  const link = extractLink(element.value);
+  const parts = parseInlineCodeValue(element.value);
 
-  if (link) {
+  // If the entire value is just a single link, render without code wrapper
+  const firstPart = parts[0];
+  if (parts.length === 1 && firstPart?.type === "link") {
     return (
-      <a href={link.url} className="slack_code_inline slack_link">
-        {link.label}
+      <a href={firstPart.url} className="slack_code_inline slack_link">
+        {firstPart.label}
       </a>
     );
   }
 
-  return <code className="slack_code_inline">{element.value}</code>;
+  // If there are no links, just render as plain code
+  if (parts.every((part) => part.type === "text")) {
+    return <code className="slack_code_inline">{element.value}</code>;
+  }
+
+  // Mixed content: render code with embedded links
+  const children: ReactNode[] = parts.map((part, i) => {
+    if (part.type === "text") {
+      return <span key={i}>{part.content}</span>;
+    }
+    return (
+      <a key={i} href={part.url} className="slack_link">
+        {part.label}
+      </a>
+    );
+  });
+
+  return <code className="slack_code_inline">{children}</code>;
 };
