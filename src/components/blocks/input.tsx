@@ -14,7 +14,7 @@ export const Input = (props: InputProps) => {
   return (
     <div
       id={block_id}
-      className="mt-2 mb-1 text-primary slack_blocks_to_jsx__input flex w-full text-black-primary"
+      className="mt-2 mb-1 text-primary slack_blocks_to_jsx__input flex w-full text-black-primary dark:text-dark-text-primary"
     >
       <div className="grow">
         <div className="flex flex-col gap-2">
@@ -31,7 +31,7 @@ export const Input = (props: InputProps) => {
             <div className="relative shrink-0">{element}</div>
 
             {(hint || given_element?.type === "plain_text_input") && (
-              <div className="text-black-secondary text-small flex gap-1">
+              <div className="text-black-secondary dark:text-dark-text-secondary text-small flex gap-1">
                 {hint && (
                   <div className="inline">
                     <TextObject data={hint} />

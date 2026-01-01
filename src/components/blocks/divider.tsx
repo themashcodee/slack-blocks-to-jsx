@@ -11,7 +11,7 @@ export const Divider = (props: DividerProps) => {
   return (
     <div
       id={block_id}
-      className="border-b border-gray-primary border-solid w-full mt-1 mb-2 slack_blocks_to_jsx__divider"
+      className="border-b border-gray-primary dark:border-dark-border border-solid w-full mt-1 mb-2 slack_blocks_to_jsx__divider"
     ></div>
   );
 };

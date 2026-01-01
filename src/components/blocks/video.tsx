@@ -24,18 +24,18 @@ export const Video = (props: VideoProps) => {
   return (
     <div className="py-2 slack_blocks_to_jsx__video" id={block_id}>
       {author_name && (
-        <div className="slack_blocks_to_jsx__video_author">
+        <div className="slack_blocks_to_jsx__video_author text-black-primary dark:text-dark-text-primary">
           <span className="font-bold">{author_name}</span>
         </div>
       )}
 
       {description && (
-        <div className="slack_blocks_to_jsx__video_description">
+        <div className="slack_blocks_to_jsx__video_description text-black-primary dark:text-dark-text-primary">
           <TextObject data={description} />
         </div>
       )}
 
-      <div className="flex flex-wrap items-center gap-1 slack_blocks_to_jsx__video_title">
+      <div className="flex flex-wrap items-center gap-1 slack_blocks_to_jsx__video_title text-black-primary dark:text-dark-text-primary">
         {title_url ? (
           <RenderLink title={title} url={title_url} />
         ) : (
@@ -53,7 +53,7 @@ export const Video = (props: VideoProps) => {
             xmlns="http://www.w3.org/2000/svg"
             fillRule="evenodd"
             clipRule="evenodd"
-            className="text-blue-primary"
+            className="text-blue-primary dark:text-dark-link"
             imageRendering="optimizeQuality"
             shapeRendering="geometricPrecision"
             textRendering="geometricPrecision"
@@ -77,7 +77,7 @@ export const Video = (props: VideoProps) => {
         {showVideo && (
           <iframe
             title={alt_text}
-            className="max-w-[360px] bg-gray-100 w-full aspect-video"
+            className="max-w-[360px] bg-gray-100 dark:bg-dark-bg-secondary w-full aspect-video"
             src={video_url}
             {...iframeProps}
           />
@@ -96,7 +96,7 @@ const RenderLink = ({ url, title }: { url: string; title: TextObjectType<"plain_
         {hooks.link({
           href: url,
           children: <TextObject data={title} />,
-          className: "text-blue-primary",
+          className: "text-blue-primary dark:text-dark-link",
           rel: "noopener noreferrer",
           target: "_blank",
         })}
@@ -105,7 +105,7 @@ const RenderLink = ({ url, title }: { url: string; title: TextObjectType<"plain_
   }
 
   return (
-    <a href={url} className="text-blue-primary" target="_blank" rel="noopener noreferrer">
+    <a href={url} className="text-blue-primary dark:text-dark-link" target="_blank" rel="noopener noreferrer">
       <TextObject data={title} />
     </a>
   );

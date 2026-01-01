@@ -72,7 +72,7 @@ export const InlineCode = (props: Props) => {
         href={firstPart.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="slack_code_inline hover:underline"
+        className="slack_code_inline inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] dark:border-dark-code-border bg-black-primary/[0.04] dark:bg-dark-code-bg text-red-primary dark:text-dark-text-primary font-mono hover:underline"
       >
         {firstPart.label}
       </a>
@@ -81,7 +81,7 @@ export const InlineCode = (props: Props) => {
 
   // If there are no links, just render as plain code
   if (parts.every((part) => part.type === "text")) {
-    return <code className="slack_code_inline">{element.value}</code>;
+    return <code className="slack_code_inline inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] dark:border-dark-code-border bg-black-primary/[0.04] dark:bg-dark-code-bg text-red-primary dark:text-dark-text-primary font-mono">{element.value}</code>;
   }
 
   // Mixed content: render code with embedded links
@@ -95,12 +95,12 @@ export const InlineCode = (props: Props) => {
         href={part.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="hover:underline"
+        className="hover:underline text-blue-primary dark:text-dark-link"
       >
         {part.label}
       </a>
     );
   });
 
-  return <code className="slack_code_inline">{children}</code>;
+  return <code className="slack_code_inline inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] dark:border-dark-code-border bg-black-primary/[0.04] dark:bg-dark-code-bg text-red-primary dark:text-dark-text-primary font-mono">{children}</code>;
 };

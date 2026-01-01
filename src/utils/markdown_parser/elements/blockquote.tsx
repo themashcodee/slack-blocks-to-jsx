@@ -10,7 +10,7 @@ export const Blockquote = (props: Props) => {
 
   return (
     <div className="flex gap-2">
-      <div className="w-1 rounded bg-gray-primary self-stretch"></div>
+      <div className="w-1 rounded bg-gray-primary dark:bg-dark-text-high self-stretch"></div>
 
       <div>
         {element.children.map((para, i) => {

@@ -13,5 +13,5 @@ export const SlackBroadcast = (props: Props) => {
   if (element.value === "everyone" && hooks.atEveryone) return <>{hooks.atEveryone()}</>;
   if (element.value === "channel" && hooks.atChannel) return <>{hooks.atChannel()}</>;
 
-  return <span className="slack_broadcast">@{element.value}</span>;
+  return <span className="slack_broadcast text-broadcast-text dark:text-dark-broadcast-text bg-broadcast-bg dark:bg-dark-broadcast-bg font-semibold">@{element.value}</span>;
 };

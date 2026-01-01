@@ -23,7 +23,7 @@ export const ButtonElement = (props: TextObjectProps) => {
           ? "bg-green-primary text-white-primary"
           : style === "danger"
           ? "bg-red-primary text-white-primary"
-          : "border-black-primary.3 text-black-primary",
+          : "border-black-primary.3 text-black-primary dark:border-dark-border dark:text-dark-text-primary",
       ])}
       onClick={() => {
         if (url) {

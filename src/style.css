@@ -309,15 +309,15 @@
 
   /* #region CUSTOM STYLES */
   & .slack_code_inline {
-    @apply inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] text-red-primary font-mono;
+    @apply inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] text-red-primary dark:text-orange-primary font-mono dark:border-dark-code-border dark:bg-dark-code-bg;
   }
 
   & .slack_code {
-    @apply block p-2 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] w-full my-1 font-mono;
+    @apply block p-2 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] w-full my-1 font-mono dark:border-dark-code-border dark:bg-dark-code-bg dark:text-dark-text-primary;
   }
 
   & .slack_inline_code {
-    @apply inline-block px-[3px] text-xs pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] font-mono;
+    @apply inline-block px-[3px] text-xs pt-0.5 pb-px whitespace-pre-wrap break-words text-red-primary dark:text-orange-primary rounded-[3px] border border-black-primary/[0.13] bg-black-primary/[0.04] font-mono dark:border-dark-code-border dark:bg-dark-code-bg;
   }
 
   & .slack_bold code {
@@ -350,7 +350,7 @@
   }
 
   & blockquote::before {
-    background: rgb(221, 221, 221);
+    @apply bg-gray-primary dark:bg-dark-text-high;
     content: "";
     border-radius: 8px;
     width: 4px;
@@ -361,28 +361,14 @@
     left: 0;
   }
 
-  & .slack_user {
-    color: rgb(18, 100, 163);
-    background: rgb(29, 155, 209, 0.1);
-    user-select: none;
-  }
-
-  & .slack_channel {
-    color: rgb(18, 100, 163);
-    background: rgb(29, 155, 209, 0.1);
-    user-select: none;
-  }
-
+  & .slack_user,
+  & .slack_channel,
   & .slack_user_group {
-    color: rgb(18, 100, 163);
-    background: rgb(29, 155, 209, 0.1);
-    user-select: none;
+    @apply text-blue-primary bg-blue-primary/10 dark:text-dark-user-text dark:bg-dark-user-bg select-none;
   }
 
   & .slack_broadcast {
-    color: rgb(29, 28, 29);
-    background: rgba(255, 198, 0, 0.18);
-    font-weight: 600;
+    @apply text-broadcast-text bg-broadcast-bg font-semibold dark:text-dark-broadcast-text dark:bg-dark-broadcast-bg;
   }
 
   & .slack_blocks_to_jsx__line_break {
@@ -394,7 +380,7 @@
   }
 
   & .slack_link {
-    color: rgb(18, 100, 163);
+    @apply text-blue-primary dark:text-dark-link;
   }
 
   /* #endregion */

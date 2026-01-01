@@ -16,13 +16,13 @@ export const TextObject = (props: TextObjectProps) => {
 
   if (type === "plain_text")
     return (
-      <div className={className}>
+      <div className={className + " dark:text-dark-text-primary"}>
         {markdown_parser(parsed, { markdown: false, verbatim, users, channels, hooks })}
       </div>
     );
 
   return (
-    <div className={className}>
+    <div className={className + " dark:text-dark-text-primary"}>
       {markdown_parser(parsed, { markdown: true, verbatim, users, channels, hooks })}
     </div>
   );

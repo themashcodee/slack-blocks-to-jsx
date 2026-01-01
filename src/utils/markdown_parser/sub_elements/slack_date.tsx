@@ -69,7 +69,7 @@ const WrapWithLink = (props: { wrap: boolean; href: string; children: ReactNode 
         {hooks.link({
           href: props.href,
           children: props.children,
-          className: "text-blue-primary",
+          className: "text-blue-primary dark:text-dark-link",
           rel: "noopener noreferrer",
           target: "_blank",
         })}
@@ -78,7 +78,7 @@ const WrapWithLink = (props: { wrap: boolean; href: string; children: ReactNode 
   }
 
   return (
-    <a href={props.href} target="_blank" rel="noopener noreferrer" className="text-blue-primary">
+    <a href={props.href} target="_blank" rel="noopener noreferrer" className="text-blue-primary dark:text-dark-link">
       {props.children}
     </a>
   );

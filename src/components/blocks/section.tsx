@@ -17,7 +17,7 @@ export const Section = (props: SectionProps) => {
     <div
       id={block_id}
       className={merge_classes([
-        "mt-2 mb-1 text-primary slack_blocks_to_jsx__section flex w-full text-black-primary",
+        "mt-2 mb-1 text-primary slack_blocks_to_jsx__section flex w-full text-black-primary dark:text-dark-text-primary",
         is_stacked ? "flex-col" : "",
       ])}
     >

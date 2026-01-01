@@ -14,7 +14,7 @@ export const Image = (props: ImageProps) => {
 
   return (
     <div id={block_id} className="my-2 flex flex-col gap-2 slack_blocks_to_jsx__image">
-      <div className="slack_blocks_to_jsx__image_media_trigger text-black-secondary text-small flex gap-1 items-center">
+      <div className="slack_blocks_to_jsx__image_media_trigger text-black-secondary dark:text-dark-text-secondary text-small flex gap-1 items-center">
         {captionText && <span className="slack_blocks_to_jsx__image_title">{captionText}</span>}
         {image_bytes && (
           <span className="slack_blocks_to_jsx__image_size">
@@ -31,7 +31,7 @@ export const Image = (props: ImageProps) => {
             xmlns="http://www.w3.org/2000/svg"
             fillRule="evenodd"
             clipRule="evenodd"
-            className="text-blue-primary"
+            className="text-blue-primary dark:text-dark-link"
             imageRendering="optimizeQuality"
             shapeRendering="geometricPrecision"
             textRendering="geometricPrecision"

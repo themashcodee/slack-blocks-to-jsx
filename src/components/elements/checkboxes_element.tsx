@@ -52,7 +52,7 @@ export const CheckboxesElement = (props: TextObjectProps) => {
 
               <div>
                 <TextObject data={text} />
-                {description && <TextObject className="text-black-secondary" data={description} />}
+                {description && <TextObject className="text-black-secondary dark:text-dark-text-secondary" data={description} />}
               </div>
             </label>
           );
