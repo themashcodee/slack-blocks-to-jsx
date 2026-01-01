@@ -1,16 +1,39 @@
-# Slack Blocks to JSX Documentation
+# Slack Blocks to JSX
 
-## Overview
+A React library that renders Slack Block Kit components as JSX with pixel-perfect styling.
 
-The `slack-blocks-to-jsx` package allows you to render Slack blocks in React with styles that closely mimic how they are displayed in Slack. This library converts Slack's block kit components into JSX components, maintaining the visual fidelity and interactive elements.
+**[🎮 Live Playground](https://slack-block-to-jsx-playground.vercel.app/)** | **[📖 Blog Post](https://themashcodee.hashnode.dev/how-to-effortlessly-render-slack-blocks-in-react-with-slack-blocks-to-jsx)** | **[📦 NPM](https://www.npmjs.com/package/slack-blocks-to-jsx)**
 
-**🚨 Quickly test out the library on online playground**: https://slack-block-to-jsx-playground.vercel.app/
+## Table of Contents
 
-🔗 **New!** Check out our detailed blog post: [Rendering Slack Blocks in React: A Complete Guide](https://themashcodee.hashnode.dev/how-to-effortlessly-render-slack-blocks-in-react-with-slack-blocks-to-jsx)
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Supported Blocks](#supported-blocks)
+- [Supported Elements](#supported-elements)
+- [Rich Text Support](#rich-text-support)
+- [Hooks API](#hooks-api)
+- [Data Props](#automatic-mention-replacement)
+- [TypeScript](#typescript-support)
+- [Theming & Customization](#theming--customization)
+- [FAQ](#faq)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
+
+## Features
+
+- **Pixel-perfect rendering** - Matches Slack's native appearance
+- **Rich text support** - Bold, italic, strikethrough, code, links, and more
+- **Mentions** - User, channel, and usergroup mentions with custom rendering
+- **Emoji support** - Full emoji rendering with skin tone variants
+- **Date formatting** - Slack date syntax support
+- **Custom hooks** - Override rendering for any element type
+- **TypeScript first** - Full type exports for type safety
+- **Themeable** - CSS class overrides for custom styling
+- **React 17, 18, 19** - Compatible with all modern React versions
 
 ## Installation
-
-To use this package in your project, install it via npm:
 
 ```bash
 npm install slack-blocks-to-jsx
@@ -22,118 +45,509 @@ Or using yarn:
 yarn add slack-blocks-to-jsx
 ```
 
-## Usage
+Or using pnpm:
 
-### Importing Styles
+```bash
+pnpm add slack-blocks-to-jsx
+```
 
-Import the necessary CSS file in your entry point to ensure the styles are applied:
+## Quick Start
 
-```javascript
+### 1. Import the styles
+
+```tsx
 import "slack-blocks-to-jsx/dist/style.css";
 ```
 
-### Using Components
+### 2. Use the Message component
 
-Import the `Message` component from the package and use it to render your Slack blocks:
-
-```javascript
+```tsx
 import { Message } from "slack-blocks-to-jsx";
 
-const blocks = [...]; // your Slack blocks data
+const blocks = [
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Hello, *world*! :wave:",
+    },
+  },
+];
 
-<Message time={new Date()} name="Your Company" logo="logo_url" blocks={blocks} />
+function App() {
+  return (
+    <Message
+      blocks={blocks}
+      name="My App"
+      logo="/logo.png"
+      time={new Date()}
+    />
+  );
+}
 ```
 
-### Types
+### 3. Add type safety (optional)
 
-For better type safety, you can import the `Block` type:
-
-```javascript
+```tsx
 import type { Block } from "slack-blocks-to-jsx";
 
-const blocks: Block[] = [...]; // your Slack blocks data
+const blocks: Block[] = [
+  // TypeScript will validate your blocks
+];
 ```
 
-## Components
+## Supported Blocks
 
-### `Message`
+| Block Type | Status | Notes |
+|------------|--------|-------|
+| Section | ✅ Full | Text, fields, and accessories |
+| Divider | ✅ Full | Horizontal divider |
+| Image | ✅ Full | Collapsible with alt text |
+| Context | ✅ Full | Images and text elements |
+| Header | ✅ Full | Large bold text |
+| Rich Text | ✅ Full | Lists, quotes, preformatted, sections |
+| Video | ✅ Full | Collapsible video embed |
+| Table | ✅ Full | Rows, columns, alignment |
+| Actions | 🟨 Partial | Buttons ✅, Static Select ✅, others pending |
+| Input | 🟨 Partial | Plain text ✅, Checkboxes ✅, others pending |
+| File | ❌ None | Remote files not implemented |
 
-This is the main component that renders the entire Slack message. It supports various props to customize the appearance and behavior:
+> Need support for a specific block or element? [Open an issue](https://github.com/themashcodee/slack-blocks-to-jsx/issues) or email codeemash@gmail.com.
 
-- `blocks`: Array of Slack block objects.
-- `logo`: URL of the logo to display.
-- `name`: Name of the sender.
-- `time?`: Timestamp for the message.
-- `className?`, `style?`: Standard React styling props.
-- `unstyled?`: If true, disables all included styles. Default to false.
-- `withoutWrapper?`: If true, renders only the Slack blocks without any wrapper. Default to false.
-- `hooks?`: custom handlers for user, channel, broadcast, usergroup, emoji etc.
-  - user?: (input: { id: string; name: string }) = ReactNode
-  - channel?: (input: { id: string; name: string }) = ReactNode
-  - usergroup?: (input: { id: string; name: string }) = ReactNode
-  - atChannel?: () = ReactNode
-  - atEveryone?: () = ReactNode
-  - atHere?: () = ReactNode
-  - emoji?: (data: { name: string; unicode?: string; skin_tone?: number; }, => ReactNode, fallback: (data: { name: string; unicode?: string; skin_tone?: number; }) => string )
-  - date?: (data: { timestamp: string; format: string; link: string | null; fallback: string; }) => ReactNode;
-- `data?`: optionally pass an array or users, channels and user groups to automatically be replaced with the user, channel and user group mentions.
-- `showBlockKitDebug?`: Show a link to open the message in the Slack Block Kit Builder, for debugging purposes. Defaults to false.
+## Supported Elements
 
-### Block Components
+| Element | Status | Notes |
+|---------|--------|-------|
+| Button | ✅ Full | Primary, danger, default styles |
+| Image | ✅ Full | Simple image display |
+| Static Select | ✅ Full | Searchable dropdown |
+| Users Select | ✅ Full | User picker with search |
+| Plain Text Input | ✅ Full | Single/multiline with validation |
+| Checkboxes | ✅ Full | Multi-select with descriptions |
+| Datepicker | ❌ | Not yet implemented |
+| Timepicker | ❌ | Not yet implemented |
+| Multi-select variants | ❌ | Not yet implemented |
+| Radio Buttons | ❌ | Not yet implemented |
+| Overflow Menu | ❌ | Not yet implemented |
 
-Each Slack block type has a corresponding component:
+## Rich Text Support
 
-- `Section` (✅ supported)
-- `Divider` (✅ supported)
-- `Image` (✅ supported)
-- `Context` (✅ supported)
-- `Actions` (🟨 partially supported)
-- `File` (❌ not supported yet)
-- `Header` (✅ supported)
-- `Input` (🟨 partially supported)
-- `RichText` (✅ supported)
-- `Video` (✅ supported)
+The library fully supports Slack's rich text block with all formatting options.
 
-If you want a support of a particular block or element which is not supported yet so please raise a github issue or mail me at codeemash@gmail.com. I will try to push it asap.
+### Text Styles
 
-## Customization
+| Style | Slack Syntax | Result |
+|-------|--------------|--------|
+| Bold | `*text*` | **text** |
+| Italic | `_text_` | *text* |
+| Strikethrough | `~text~` | ~~text~~ |
+| Inline code | `` `code` `` | `code` |
 
-You can handle custom rendering and interactions using the `hooks` prop in the `Message` component. This allows you to define custom behavior for user mentions, channels, and other interactive elements. You can also override default styling. Here are the classes structure to understand to override any block styling.
+### Block Elements
 
-`.slack_blocks_to_jsx`: Main Wrapper  
-`.slack_blocks_to_jsx--header`: Header (name and time)  
-`.slack_blocks_to_jsx--blocks`: blocks array mapping wrapper  
-`.slack_blocks_to_jsx--block_wrapper`: wrapper around every block
-`.slack_blocks_to_jsx__divider`: Divider Block  
-`.slack_blocks_to_jsx__section`: Section Block  
-`.slack_blocks_to_jsx__image`: Image Block  
-`.slack_blocks_to_jsx__context`: Context Block  
-`.slack_blocks_to_jsx__actions`: Actions Block  
-`.slack_blocks_to_jsx__input`: Input Block  
-`.slack_blocks_to_jsx__rich_text`: Rich Text Block  
-`.slack_blocks_to_jsx__rich_text_list_element`: Rich Text Block List Element  
-`.slack_blocks_to_jsx__rich_text_preformatted_element`: Rich Text Block Preformatted Element  
-`.slack_blocks_to_jsx__rich_text_quote_element`: Rich Text Block Element Quote Element  
-`.slack_blocks_to_jsx__rich_text_section_element`: Rich Text Block Section Element
+- **Lists** - Ordered (numeric, alpha, roman) and unordered with up to 8 levels of indentation
+- **Quotes** - Blockquote styling with left border
+- **Preformatted** - Code blocks with monospace font
 
-...as so on (all the other classes will be similar too, for example `.slack_blocks_to_jsx__rich_text_section_element_user` for Rich Text Block Section Element User)
+### Mentions & Special Syntax
 
-If you want any other customization so please raise a github issue or mail me at codeemash@gmail.com. I will try to push it asap if it aligns with the library development vision.
+| Type | Syntax | Description |
+|------|--------|-------------|
+| User mention | `<@U123456>` | Mentions a user |
+| Channel mention | `<#C123456>` | Links to a channel |
+| Usergroup mention | `<!subteam^S123456>` | Mentions a user group |
+| Broadcast @here | `<!here>` | Notifies active users |
+| Broadcast @channel | `<!channel>` | Notifies all channel members |
+| Broadcast @everyone | `<!everyone>` | Notifies everyone |
+| Link | `<https://example.com\|Link Text>` | Hyperlink with custom text |
+| Date | `<!date^1234567890^{date_short}\|fallback>` | Formatted date |
 
-## Development and Contribution
+## Hooks API
 
-The project is open-source, and contributions are welcome. If you encounter any issues or want to suggest improvements, please file an issue on the GitHub repository:
+Hooks allow you to customize how specific elements are rendered.
 
-[GitHub Repository Issues](https://github.com/themashcodee/slack-blocks-to-jsx/issues)
+### Available Hooks
 
-## License
+| Hook | Parameters | Description |
+|------|------------|-------------|
+| `user` | `{ id, name, style }` | Custom user mention rendering |
+| `channel` | `{ id, name, style }` | Custom channel mention rendering |
+| `usergroup` | `{ id, name, handle, style }` | Custom usergroup mention rendering |
+| `atHere` | `style` | Custom @here broadcast rendering |
+| `atChannel` | `style` | Custom @channel broadcast rendering |
+| `atEveryone` | `style` | Custom @everyone broadcast rendering |
+| `emoji` | `data, defaultParser` | Custom emoji rendering |
+| `date` | `{ timestamp, format, link, fallback }` | Custom date rendering |
+| `link` | `{ url, text, style }` | Custom link rendering |
 
-The project is licensed under the MIT license, allowing free use, modification, and distribution.
+### Examples
+
+#### User Mention Hook
+
+```tsx
+<Message
+  blocks={blocks}
+  hooks={{
+    user: ({ id, name, style }) => (
+      <span
+        className="user-mention"
+        style={{ fontWeight: style?.bold ? "bold" : "normal" }}
+      >
+        @{name || id}
+      </span>
+    ),
+  }}
+/>
+```
+
+#### Channel Mention Hook
+
+```tsx
+<Message
+  blocks={blocks}
+  hooks={{
+    channel: ({ id, name }) => (
+      <a href={`/channels/${id}`}>#{name || id}</a>
+    ),
+  }}
+/>
+```
+
+#### Emoji Hook
+
+```tsx
+<Message
+  blocks={blocks}
+  hooks={{
+    emoji: (data, defaultParser) => {
+      // Use custom emoji images or fall back to default
+      if (data.name === "custom_emoji") {
+        return <img src="/emojis/custom.png" alt={data.name} />;
+      }
+      return defaultParser(data);
+    },
+  }}
+/>
+```
+
+#### Date Hook
+
+```tsx
+<Message
+  blocks={blocks}
+  hooks={{
+    date: ({ timestamp, format, link, fallback }) => {
+      const date = new Date(parseInt(timestamp) * 1000);
+      return <time dateTime={date.toISOString()}>{fallback}</time>;
+    },
+  }}
+/>
+```
+
+#### Broadcast Hooks
+
+```tsx
+<Message
+  blocks={blocks}
+  hooks={{
+    atHere: (style) => <span className="broadcast">@here</span>,
+    atChannel: (style) => <span className="broadcast">@channel</span>,
+    atEveryone: (style) => <span className="broadcast">@everyone</span>,
+  }}
+/>
+```
+
+#### Link Hook
+
+```tsx
+<Message
+  blocks={blocks}
+  hooks={{
+    link: ({ url, text, style }) => (
+      <a href={url} target="_blank" rel="noopener noreferrer" className="custom-link">
+        {text || url}
+      </a>
+    ),
+  }}
+/>
+```
+
+## Automatic Mention Replacement
+
+Pass user, channel, and usergroup data to automatically resolve mentions:
+
+```tsx
+<Message
+  blocks={blocks}
+  data={{
+    users: [
+      { id: "U123456", name: "John Doe", avatar: "https://..." },
+      { id: "U789012", name: "Jane Smith", avatar: "https://..." },
+    ],
+    channels: [
+      { id: "C123456", name: "general" },
+      { id: "C789012", name: "random" },
+    ],
+    user_groups: [
+      { id: "S123456", name: "Engineering Team", handle: "engineering" },
+    ],
+  }}
+/>
+```
+
+When a mention like `<@U123456>` appears in blocks, it will automatically display "John Doe" instead of the raw ID.
+
+## Message Component Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `blocks` | `Block[]` | required | Array of Slack block objects |
+| `name` | `string` | required | Name of the sender/app |
+| `logo` | `string` | required | URL of the logo to display |
+| `time` | `Date` | - | Timestamp for the message |
+| `className` | `string` | - | Additional CSS classes |
+| `style` | `CSSProperties` | - | Inline styles |
+| `unstyled` | `boolean` | `false` | Disable all included styles |
+| `withoutWrapper` | `boolean` | `false` | Render blocks without wrapper |
+| `hooks` | `Hooks` | - | Custom rendering hooks |
+| `data` | `Data` | - | Users, channels, usergroups data |
+| `showBlockKitDebug` | `boolean` | `false` | Show Block Kit Builder link |
+
+## TypeScript Support
+
+The library exports all types for full type safety:
+
+```tsx
+import type {
+  // Main types
+  Block,
+
+  // Block types
+  SectionBlock,
+  DividerBlock,
+  ImageBlock,
+  ContextBlock,
+  ActionsBlock,
+  HeaderBlock,
+  InputBlock,
+  RichTextBlock,
+  VideoBlock,
+  FileBlock,
+
+  // Element types
+  ButtonElement,
+  ImageElement,
+  StaticSelectElement,
+  UsersSelectElement,
+  PlainTextInputElement,
+  CheckboxesElement,
+
+  // Rich text types
+  RichTextSection,
+  RichTextList,
+  RichTextQuote,
+  RichTextPreformatted,
+
+  // Composition objects
+  TextObject,
+  ConfirmDialogObject,
+  OptionObject,
+} from "slack-blocks-to-jsx";
+```
+
+## Theming & Customization
+
+### CSS Class Structure
+
+The library uses a consistent BEM-like naming convention:
+
+```
+.slack_blocks_to_jsx                         /* Main wrapper */
+├── .slack_blocks_to_jsx--header             /* Header section */
+├── .slack_blocks_to_jsx--blocks             /* Blocks container */
+│   └── .slack_blocks_to_jsx--block_wrapper  /* Each block wrapper */
+│       └── .slack_blocks_to_jsx__[block]    /* Block-specific class */
+```
+
+### Block Classes
+
+| Class | Description |
+|-------|-------------|
+| `.slack_blocks_to_jsx__divider` | Divider block |
+| `.slack_blocks_to_jsx__section` | Section block |
+| `.slack_blocks_to_jsx__image` | Image block |
+| `.slack_blocks_to_jsx__context` | Context block |
+| `.slack_blocks_to_jsx__actions` | Actions block |
+| `.slack_blocks_to_jsx__input` | Input block |
+| `.slack_blocks_to_jsx__header` | Header block |
+| `.slack_blocks_to_jsx__rich_text` | Rich text block |
+| `.slack_blocks_to_jsx__video` | Video block |
+| `.slack_blocks_to_jsx__table` | Table block |
+
+### Rich Text Element Classes
+
+| Class | Description |
+|-------|-------------|
+| `.slack_blocks_to_jsx__rich_text_section_element` | Section element |
+| `.slack_blocks_to_jsx__rich_text_list_element` | List element |
+| `.slack_blocks_to_jsx__rich_text_quote_element` | Quote element |
+| `.slack_blocks_to_jsx__rich_text_preformatted_element` | Preformatted element |
+| `.slack_blocks_to_jsx__rich_text_section_element_user` | User mention |
+| `.slack_blocks_to_jsx__rich_text_section_element_channel` | Channel mention |
+| `.slack_blocks_to_jsx__rich_text_section_element_emoji` | Emoji |
+
+### Override Examples
+
+```css
+/* Custom link color */
+.slack_blocks_to_jsx a {
+  color: #1264a3;
+}
+
+/* Custom code block styling */
+.slack_blocks_to_jsx__rich_text_preformatted_element {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+/* Custom mention styling */
+.slack_blocks_to_jsx__rich_text_section_element_user {
+  background: #e8f5fa;
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+/* Custom quote styling */
+.slack_blocks_to_jsx__rich_text_quote_element {
+  border-left: 4px solid #1264a3;
+  padding-left: 12px;
+}
+```
+
+## Complete Example
+
+```tsx
+import { Message, Block } from "slack-blocks-to-jsx";
+import "slack-blocks-to-jsx/dist/style.css";
+
+const blocks: Block[] = [
+  {
+    type: "header",
+    text: { type: "plain_text", text: "Welcome to the Team!" },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Hey <@U123>! Welcome to <#C456|general> :tada:",
+    },
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*Getting Started:*\n• Read the onboarding docs\n• Set up your development environment\n• Join the standup tomorrow",
+    },
+  },
+  {
+    type: "context",
+    elements: [{ type: "mrkdwn", text: "Posted by *HR Bot* :robot_face:" }],
+  },
+];
+
+function App() {
+  return (
+    <Message
+      blocks={blocks}
+      name="HR Bot"
+      logo="/bot-logo.png"
+      time={new Date()}
+      data={{
+        users: [{ id: "U123", name: "New Employee" }],
+        channels: [{ id: "C456", name: "general" }],
+      }}
+      hooks={{
+        user: ({ name }) => (
+          <strong className="text-blue-600">@{name}</strong>
+        ),
+      }}
+    />
+  );
+}
+
+export default App;
+```
+
+## FAQ
+
+### How do I render messages without the header?
+
+Use the `withoutWrapper` prop:
+
+```tsx
+<Message blocks={blocks} withoutWrapper />
+```
+
+### How do I disable default styles?
+
+Use the `unstyled` prop and provide your own CSS:
+
+```tsx
+<Message blocks={blocks} unstyled />
+```
+
+### How do I debug my blocks?
+
+Enable the Block Kit Builder link:
+
+```tsx
+<Message blocks={blocks} showBlockKitDebug />
+```
+
+This adds a link to open your blocks in Slack's Block Kit Builder.
+
+### Why isn't my mention showing the user's name?
+
+Make sure you're either:
+1. Passing user data via the `data` prop, or
+2. Handling it via the `user` hook
+
+### Does this work with Next.js / SSR?
+
+Yes! The library is compatible with server-side rendering.
+
+### Can I use this with Tailwind CSS?
+
+Yes, the library uses Tailwind internally. You can extend or override styles using Tailwind classes or the provided CSS class names.
+
+### What React versions are supported?
+
+React 17, 18, and 19 are all supported.
+
+### How do I handle interactive elements like buttons?
+
+Buttons render visually but don't have built-in click handlers. Use the component's structure to add your own event handling or wrap the Message component.
+
+## Contributing
+
+The project is open-source and contributions are welcome! Here's how you can help:
+
+1. **Report bugs** - [Open an issue](https://github.com/themashcodee/slack-blocks-to-jsx/issues)
+2. **Request features** - Describe your use case in an issue
+3. **Submit PRs** - Fork the repo and submit a pull request
+4. **Improve docs** - Help make the documentation better
+
+For feature requests or custom implementations, you can also reach out at codeemash@gmail.com.
 
 ## Support
 
-Love my open source work or anything else I do? Treat me to a coffee! 😊
+Love this library? Consider supporting its development:
 
 [![Buy Me a Coffee](https://github.com/user-attachments/assets/1c8e9f68-b33d-4132-b081-f255027580b6)](https://www.buymeacoffee.com/themashcodee)
 
+## License
 
+MIT License - see [LICENSE](./LICENSE) for details.
