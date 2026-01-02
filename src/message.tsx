@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { BlockWrapper } from "./block_wrapper";
 import { getBlockComponent } from "./components";
 import { Header } from "./header";
@@ -7,7 +8,7 @@ import { merge_classes } from "./utils";
 
 type Props = {
   /**
-   * Not yet implemented.
+   * Theme mode for the component. If not specified, system preference is used.
    */
   theme?: "light" | "dark";
   /**
@@ -48,13 +49,31 @@ export const Message = (props: Props) => {
     data,
     hooks,
     withoutWrapper = false,
+    theme,
   } = props;
+
+  const [systemPrefersDark, setSystemPrefersDark] = useState(false);
+
+  useEffect(() => {
+    if (theme === undefined) {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      setSystemPrefersDark(mediaQuery.matches);
+
+      const handler = (e: MediaQueryListEvent) => setSystemPrefersDark(e.matches);
+      mediaQuery.addEventListener("change", handler);
+
+      return () => mediaQuery.removeEventListener("change", handler);
+    }
+  }, [theme]);
+
+  const activeTheme = theme ?? (systemPrefersDark ? "dark" : "light");
 
   if (withoutWrapper) {
     return (
       <GlobalProvider data={data} hooks={hooks}>
         <div
           id="slack_blocks_to_jsx"
+          data-theme={activeTheme}
           className={merge_classes([
             "slack_blocks_to_jsx relative flex gap-2 w-full max-w-[600px]",
             unstyled ? "styles_disabled" : "styles_enabled",
@@ -79,9 +98,10 @@ export const Message = (props: Props) => {
 
   return (
     <GlobalProvider data={data} hooks={hooks}>
-      <div id="slack_blocks_to_jsx">
+      <div id="slack_blocks_to_jsx" data-theme={activeTheme} className="dark:text-dark-text-primary dark:bg-dark-bg-primary">
         <section
           className={merge_classes([
+            "dark:text-dark-text-primary dark:bg-dark-bg-primary",
             "slack_blocks_to_jsx relative flex gap-2 w-full max-w-[600px]",
             unstyled ? "styles_disabled" : "styles_enabled",
             className,

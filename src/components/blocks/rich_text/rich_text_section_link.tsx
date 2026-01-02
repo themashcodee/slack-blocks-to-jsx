@@ -20,7 +20,7 @@ export const RichTextSectionLink = (props: Props) => {
           rel: "noreferrer noopener",
           className: merge_classes([
             "slack_blocks_to_jsx__rich_text_section_element_link",
-            "text-blue-primary hover:underline underline-offset-4",
+            "text-blue-primary dark:text-dark-link hover:underline underline-offset-4",
             style?.italic ? "italic" : "",
             style?.strike ? "line-through" : "",
             style?.underline ? "underline" : "",
@@ -40,7 +40,7 @@ export const RichTextSectionLink = (props: Props) => {
       href={url}
       className={merge_classes([
         "slack_blocks_to_jsx__rich_text_section_element_link",
-        "text-blue-primary hover:underline underline-offset-4",
+        "text-blue-primary dark:text-dark-link hover:underline underline-offset-4",
         style?.italic ? "italic" : "",
         style?.strike ? "line-through" : "",
         style?.underline ? "underline" : "",

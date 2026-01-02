@@ -11,7 +11,7 @@ export const Actions = (props: ActionsProps) => {
   return (
     <div
       id={block_id}
-      className="mb-2 text-primary flex w-full text-black-primary items-center slack_blocks_to_jsx__actions"
+      className="mb-2 text-primary flex w-full text-black-primary dark:text-dark-text-primary items-center slack_blocks_to_jsx__actions"
     >
       <div className="flex flex-wrap">
         {elements.map((element, i) => {

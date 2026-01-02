@@ -29,7 +29,7 @@ export const SlackChannelMention = (props: Props) => {
   }
 
   return (
-    <span className="slack_channel" data-channel-id={channel?.id || channel_id}>
+    <span className="slack_channel text-blue-primary dark:text-dark-user-text bg-blue-primary/10 dark:bg-dark-user-bg select-none" data-channel-id={channel?.id || channel_id}>
       #{label}
     </span>
   );

@@ -18,7 +18,7 @@ export const Table = (props: TableProps) => {
   return (
     <div
       id={block_id}
-      className="mt-2 mb-1 slack_blocks_to_jsx__table inline-block border border-gray-300 rounded"
+      className="mt-2 mb-1 slack_blocks_to_jsx__table inline-block border border-gray-300 dark:border-dark-border rounded"
     >
       <table className="border-none">
         <tbody>
@@ -26,7 +26,7 @@ export const Table = (props: TableProps) => {
             <tr
               key={rowIndex}
               className={merge_classes([
-                "border-b border-gray-200",
+                "border-b border-gray-200 dark:border-dark-border",
                 rowIndex === rows.length - 1 ? "border-b-0" : "",
               ])}
             >
@@ -37,7 +37,7 @@ export const Table = (props: TableProps) => {
                 const isHeaderRow = rowIndex === 0;
 
                 const cellClasses = merge_classes([
-                  "px-3 py-2 border-r border-gray-200 last:border-r-0",
+                  "px-3 py-2 border-r border-gray-200 dark:border-dark-border last:border-r-0",
                   align === "center" ? "text-center" : "",
                   align === "right" ? "text-right" : "text-left",
                   isWrapped ? "break-words" : "whitespace-nowrap overflow-hidden text-ellipsis",

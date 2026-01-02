@@ -47,13 +47,13 @@ export const PlaintTextInput = (props: TextObjectProps) => {
       tabIndex={0}
     >
       {!value && placeholder && (
-        <div className="absolute left-2 top-2 text-black-primary.3">
+        <div className="absolute left-2 top-2 text-black-primary.3 dark:text-dark-text-secondary">
           <TextObject data={placeholder} />
         </div>
       )}
 
       {!value && !placeholder && (
-        <div className="absolute left-2 top-2 text-black-primary.3">
+        <div className="absolute left-2 top-2 text-black-primary.3 dark:text-dark-text-secondary">
           <TextObject
             data={{
               type: "plain_text",
@@ -66,7 +66,7 @@ export const PlaintTextInput = (props: TextObjectProps) => {
       <textarea
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full focus:outline-none rounded border border-black-primary.3 p-2"
+        className="w-full focus:outline-none rounded border border-black-primary.3 dark:border-dark-border dark:bg-dark-bg-secondary dark:text-dark-text-primary p-2"
         minLength={min_length}
         maxLength={max_length}
         style={{
