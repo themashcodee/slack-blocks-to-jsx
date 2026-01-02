@@ -15,7 +15,7 @@ export const SlackUserMention = (props: Props) => {
   const label = user?.name || user_id;
 
   return (
-    <span className="slack_user text-blue-primary dark:text-dark-user-text bg-blue-primary/10 dark:bg-dark-user-bg select-none" data-user-id={user?.id || user_id}>
+    <span className="slack_user" data-user-id={user?.id || user_id}>
       @{label}
     </span>
   );

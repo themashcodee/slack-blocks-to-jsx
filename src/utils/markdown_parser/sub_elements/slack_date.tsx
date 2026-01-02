@@ -78,7 +78,12 @@ const WrapWithLink = (props: { wrap: boolean; href: string; children: ReactNode 
   }
 
   return (
-    <a href={props.href} target="_blank" rel="noopener noreferrer" className="text-blue-primary dark:text-dark-link">
+    <a
+      href={props.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-primary dark:text-dark-link"
+    >
       {props.children}
     </a>
   );

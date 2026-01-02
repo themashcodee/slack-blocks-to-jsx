@@ -16,7 +16,7 @@ export const SlackUserGroupMention = (props: Props) => {
   if (hooks.usergroup) return <>{hooks.usergroup(group || { id: group_id, name: label })}</>;
 
   return (
-    <span data-usergroup-id={group?.id || group_id} className="slack_user_group text-blue-primary dark:text-dark-user-text bg-blue-primary/10 dark:bg-dark-user-bg select-none">
+    <span data-usergroup-id={group?.id || group_id} className="slack_user_group">
       @{label}
     </span>
   );
