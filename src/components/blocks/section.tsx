@@ -8,7 +8,7 @@ type SectionProps = {
 };
 
 export const Section = (props: SectionProps) => {
-  const { accessory, fields, text, block_id } = props.data;
+  const { accessory, fields, text, block_id, expand } = props.data;
 
   const element = accessory ? getElementComponent(accessory) : null;
   const is_stacked = accessory ? is_accessory_stacked(accessory) : false;

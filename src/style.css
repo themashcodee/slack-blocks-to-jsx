@@ -63,14 +63,21 @@
 
   & b,
   & strong {
-    font-weight: bolder;
+    font-weight: 600;
   }
 
   & code,
   & kbd,
   & pre,
   & samp {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New,
+    font-family:
+      ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      Monaco,
+      Consolas,
+      Liberation Mono,
+      Courier New,
       monospace;
     font-feature-settings: normal;
     font-variation-settings: normal;
@@ -321,11 +328,11 @@
   }
 
   & .slack_bold code {
-    @apply font-semibold;
+    @apply font-medium;
   }
 
   & .slack_bold {
-    @apply font-semibold;
+    @apply font-medium;
   }
 
   & .slack_strikethrough {
@@ -381,6 +388,141 @@
 
   & .slack_link {
     @apply text-blue-primary dark:text-dark-link;
+  }
+
+  /* Confirm Dialog Overlay */
+  & .slack_blocks_to_jsx__confirm_dialog_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  & .slack_blocks_to_jsx__confirm_dialog {
+    @apply bg-white-primary dark:bg-dark-bg-primary rounded-lg shadow-lg p-6 max-w-[400px] w-full mx-4 border border-gray-primary dark:border-dark-border;
+  }
+
+  /* Overflow Menu */
+  & .slack_blocks_to_jsx__overflow_menu_popup {
+    @apply absolute top-full right-0 mt-1 bg-white-secondary dark:bg-dark-bg-secondary border border-gray-primary dark:border-dark-border rounded-md shadow-lg z-20 min-w-[200px] py-1;
+  }
+
+  /* Task Card Status Indicators */
+  & .slack_blocks_to_jsx__task_status_pending {
+    @apply w-3 h-3 rounded-full bg-gray-primary dark:bg-dark-text-high inline-block shrink-0;
+  }
+
+  & .slack_blocks_to_jsx__task_status_in_progress {
+    @apply w-3 h-3 rounded-full bg-blue-primary inline-block shrink-0;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+
+  & .slack_blocks_to_jsx__task_status_complete {
+    @apply w-3 h-3 rounded-full bg-green-primary inline-block shrink-0;
+  }
+
+  & .slack_blocks_to_jsx__task_status_error {
+    @apply w-3 h-3 rounded-full bg-red-primary inline-block shrink-0;
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  /* Color Element Swatch */
+  & .slack_blocks_to_jsx__color_swatch {
+    @apply inline-block w-3 h-3 rounded-sm border border-black-primary/20 dark:border-dark-border align-middle mr-1;
+  }
+
+  /* Markdown Block Styles */
+  & .slack_blocks_to_jsx__markdown_block {
+    & h1,
+    & h2,
+    & h3 {
+      @apply font-semibold text-header mb-0.5;
+    }
+
+    & p {
+      @apply mb-0.5;
+    }
+
+    & ul {
+      @apply list-disc pl-6 mb-0.5;
+    }
+
+    & ol {
+      @apply list-decimal pl-6 mb-0.5;
+    }
+
+    & li {
+      @apply mb-px;
+    }
+
+    & a {
+      @apply text-blue-primary dark:text-dark-link;
+    }
+
+    & blockquote {
+      @apply pl-4 border-l-4 border-gray-primary dark:border-dark-text-high my-0.5 text-black-secondary dark:text-dark-text-secondary;
+    }
+
+    & hr {
+      @apply border-t border-gray-primary dark:border-dark-border my-1;
+    }
+
+    & table {
+      @apply border-collapse w-full my-0.5;
+    }
+
+    & th,
+    & td {
+      @apply border border-gray-primary dark:border-dark-border px-3 py-1 text-left;
+    }
+
+    & th {
+      @apply font-semibold bg-gray-secondary dark:bg-dark-bg-secondary;
+    }
+
+    & input[type="checkbox"] {
+      @apply mr-2;
+    }
+
+    & img {
+      @apply inline;
+    }
+  }
+
+  /* Plan Block */
+  & .slack_blocks_to_jsx__plan {
+    @apply border border-gray-primary dark:border-dark-border rounded-lg p-3 my-1;
+  }
+
+  /* Feedback Buttons */
+  & .slack_blocks_to_jsx__feedback_buttons {
+    @apply flex gap-2 items-center;
+  }
+
+  /* File Input */
+  & .slack_blocks_to_jsx__file_input {
+    @apply border-2 border-dashed border-gray-primary dark:border-dark-border rounded-lg p-4 text-center text-black-secondary dark:text-dark-text-secondary;
+  }
+
+  /* Rich Text Input */
+  & .slack_blocks_to_jsx__rich_text_input {
+    @apply border border-black-primary/30 dark:border-dark-border rounded p-2 min-h-[80px] focus:outline-none focus:border-blue-primary dark:bg-dark-bg-secondary dark:text-dark-text-primary;
   }
 
   /* #endregion */

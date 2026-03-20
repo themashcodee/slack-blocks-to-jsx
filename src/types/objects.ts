@@ -85,7 +85,7 @@ export type DispatchActionConfigObject = {
 export type FilterObject = {
   /**
      * Indicates which type of conversations should be included in the list. When this field is provided, any conversations that do not match will be excluded
-     
+
      * You should provide an array of strings from the following options: ***im***, ***mpim***, ***private***, and ***public***. The array cannot be empty.
      */
   include?: string[];
@@ -97,4 +97,36 @@ export type FilterObject = {
    * Indicates whether to exclude bot users from conversation lists. Defaults to ***false***.
    */
   exclude_bot_users?: boolean;
+};
+
+export type SlackFileObject = {
+  /**
+   * The url_private or permalink of the Slack file.
+   */
+  url?: string;
+  /**
+   * Slack ID of the file.
+   */
+  id?: string;
+};
+
+export type TriggerObject = {
+  /**
+   * A link trigger URL. Must be associated with a valid trigger.
+   */
+  url: string;
+  /**
+   * An array of input parameter objects that map customizable values to workflow inputs.
+   */
+  customizable_input_parameters?: {
+    name: string;
+    value: string;
+  }[];
+};
+
+export type WorkflowObject = {
+  /**
+   * A trigger object that contains information about a workflow's trigger.
+   */
+  trigger: TriggerObject;
 };

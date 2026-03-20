@@ -6,9 +6,17 @@ type ImageProps = {
 };
 
 export const Image = (props: ImageProps) => {
-  // TODO: USE OTHER PROPERTIES
-  const { block_id, alt_text, image_url, image_bytes, image_height, image_width, title } =
-    props.data;
+  const {
+    block_id,
+    alt_text,
+    image_url,
+    slack_file,
+    image_bytes,
+    image_height,
+    image_width,
+    title,
+  } = props.data;
+  const resolvedUrl = image_url || slack_file?.url;
   const [showImage, setShowImage] = useState(true);
   const captionText = title?.text;
 
@@ -54,7 +62,7 @@ export const Image = (props: ImageProps) => {
       {showImage && (
         <div className="rounded-md overflow-hidden relative max-w-max">
           <img
-            src={image_url}
+            src={resolvedUrl}
             style={{
               width: image_width,
               height: image_height,

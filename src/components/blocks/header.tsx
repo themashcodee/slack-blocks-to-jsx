@@ -10,7 +10,7 @@ export const Header = (props: HeaderProps) => {
 
   return (
     <div id={block_id} className="mt-1 slack_blocks_to_jsx__header">
-      <h3 className="text-header font-bold text-black-primary dark:text-dark-text-primary slack_blocks_to_jsx__header_heading">
+      <h3 className="text-header font-semibold text-black-primary dark:text-dark-text-primary slack_blocks_to_jsx__header_heading">
         <TextObject data={text} />
       </h3>
     </div>

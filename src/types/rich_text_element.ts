@@ -25,6 +25,10 @@ export type RichTextPreformatted = {
    * 0 or 1 (default 0) - if 1, a border is drawn on the left side of the block.
    */
   border?: 0 | 1;
+  /**
+   * Programming language for syntax highlighting (e.g., "python", "javascript", "json").
+   */
+  language?: string;
 };
 export type RichTextQuote = {
   type: "rich_text_quote";
@@ -53,7 +57,8 @@ export type RichTextSectionElement =
   | RichTextSectionLink
   | RichTextSectionUsergroup
   | RichTextSectionBroadcast
-  | RichTextSectionDate;
+  | RichTextSectionDate
+  | RichTextSectionColor;
 
 export type RichTextSectionDate = {
   type: "date";
@@ -96,6 +101,7 @@ export type RichTextSectionLink = {
   type: "link";
   url: string;
   text?: string;
+  unsafe?: boolean;
   style?: RichTextSectionElementStyleCode;
 };
 
@@ -127,4 +133,10 @@ export type RichTextSectionElementStyleCode = {
   italic?: boolean;
   strike?: boolean;
   underline?: boolean;
+};
+
+export type RichTextSectionColor = {
+  type: "color";
+  value: string;
+  style?: RichTextSectionElementStyle;
 };

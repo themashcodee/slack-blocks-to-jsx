@@ -11,7 +11,7 @@
   ],
   "repository": "https://github.com/themashcodee/slack-blocks-to-jsx.git",
   "license": "MIT",
-  "version": "0.8.6",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -20,26 +20,29 @@
   },
   "homepage": "https://github.com/themashcodee/slack-blocks-to-jsx#readme",
   "scripts": {
-    "build": "tsup ./src/index.ts --format cjs,esm --dts --minify && npm run build:css",
+    "build": "tsup && npm run build:css",
     "build:css": "postcss ./src/style.css -o ./dist/style.css",
     "dev:css": "postcss ./src/style.css -o ./dist/style.css --watch",
-    "dev": "tsup ./src/index.ts --format cjs,esm --dts --watch",
+    "dev": "tsup --watch",
     "new-version": "pnpm changeset",
     "lint": "tsc",
-    "release": "pnpm run build && changeset publish"
+    "release": "pnpm run build && changeset publish",
+    "release-alpha-without-git": "pnpm run build && pnpm publish --tag alpha --no-git-checks"
   },
   "dependencies": {
-    "@yozora/ast": "^2.3.2",
-    "@yozora/character": "^2.3.2",
-    "@yozora/core-tokenizer": "^2.3.2",
-    "@yozora/parser": "^2.3.2",
-    "node-emoji": "^2.1.3"
+    "node-emoji": "^2.1.3",
+    "react-markdown": "^9.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "peerDependencies": {
     "react": "^17 || ^18 || ^19",
     "react-dom": "^17 || ^18 || ^19"
   },
   "devDependencies": {
+    "@yozora/ast": "^2.3.2",
+    "@yozora/character": "^2.3.2",
+    "@yozora/core-tokenizer": "^2.3.2",
+    "@yozora/parser": "^2.3.2",
     "@changesets/cli": "^2.26.2",
     "@types/react": "^17 || ^18 || ^19",
     "@types/react-dom": "^17 || ^18 || ^19",

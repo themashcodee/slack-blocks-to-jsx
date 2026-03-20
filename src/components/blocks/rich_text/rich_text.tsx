@@ -65,13 +65,15 @@ const Element = (props: ElementProps) => {
   const { element, consecutive_index } = props;
 
   if (element.type === "rich_text_list") {
-    const { elements, style, border = 0, indent, offset } = element;
+    const { elements, style, border = 0, indent, offset = 0 } = element;
 
-    // TODO: Add support for offset
+    const effectiveStart = style === "ordered" ? offset || 0 : 0;
 
     return (
       <div className="flex gap-2 slack_blocks_to_jsx__rich_text_list_element">
-        {border === 1 && <div className="w-1 rounded bg-gray-primary dark:bg-dark-text-high self-stretch"></div>}
+        {border === 1 && (
+          <div className="w-1 rounded bg-gray-primary dark:bg-dark-text-high self-stretch"></div>
+        )}
 
         <RichTextListWrapper element={element} className="list-none">
           {elements.map((el, i) => {
@@ -86,11 +88,11 @@ const Element = (props: ElementProps) => {
                 {style === "ordered" && (
                   <span className="w-[22px] h-[22px] shrink-0 flex items-center justify-center">
                     {(indent === undefined || indent === 0 || indent === 3 || indent === 6) &&
-                      `${consecutive_index + i + 1}.`}
+                      `${consecutive_index + effectiveStart + i + 1}.`}
                     {(indent === 1 || indent === 4 || indent === 7) &&
-                      `${numberToAlpha(consecutive_index + i + 1)}.`}
+                      `${numberToAlpha(consecutive_index + effectiveStart + i + 1)}.`}
                     {(indent === 2 || indent === 5 || indent === 8) &&
-                      `${numberToRoman(consecutive_index + i + 1)}.`}
+                      `${numberToRoman(consecutive_index + effectiveStart + i + 1)}.`}
                   </span>
                 )}
 
@@ -130,10 +132,12 @@ const Element = (props: ElementProps) => {
 
     return (
       <code className="flex gap-2 w-full slack_blocks_to_jsx__rich_text_preformatted_element">
-        {border === 1 && <div className="w-1 rounded bg-gray-primary dark:bg-dark-text-high self-stretch"></div>}
+        {border === 1 && (
+          <div className="w-1 rounded bg-gray-primary dark:bg-dark-text-high self-stretch"></div>
+        )}
 
         <pre
-          className="p-2 rounded my-1 whitespace-pre-wrap bg-gray-secondary dark:bg-dark-bg-secondary text-xs leading-[1.50001] border dark:border-dark-border grow"
+          className="p-2 rounded-lg mt-2 mb-1 ml-1 whitespace-pre-wrap bg-gray-secondary dark:bg-dark-bg-secondary text-xs leading-[1.50001] border dark:border-dark-border grow"
           style={{
             wordWrap: "break-word",
             wordBreak: "break-all",
@@ -152,7 +156,9 @@ const Element = (props: ElementProps) => {
 
     return (
       <blockquote className="flex gap-2 slack_blocks_to_jsx__rich_text_quote_element">
-        {border === 1 && <div className="w-1 rounded bg-gray-primary dark:bg-dark-text-high self-stretch"></div>}
+        {border === 1 && (
+          <div className="w-1 rounded bg-gray-primary dark:bg-dark-text-high self-stretch"></div>
+        )}
 
         <p>
           {elements.map((el, i) => {

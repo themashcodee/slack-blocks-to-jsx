@@ -8,6 +8,8 @@ import {
   TextObject,
   OptionObjectWithoutUrl,
   RichTextBlockElement,
+  WorkflowObject,
+  RichTextBlock,
 } from ".";
 
 export type Element =
@@ -16,6 +18,9 @@ export type Element =
   | DatePickerElement
   | DateTimePickerElement
   | EmailInputElement
+  | FeedbackButtonsElement
+  | FileInputElement
+  | IconButtonElement
   | ImageElement
   | MultiStaticSelectElement
   | MultiExternalSelectElement
@@ -26,6 +31,7 @@ export type Element =
   | OverflowMenuElement
   | PlainTextInputElement
   | RadioButtonsElement
+  | RichTextInputElement
   | StaticSelectElement
   | ExternalSelectElement
   | UsersSelectElement
@@ -33,6 +39,8 @@ export type Element =
   | ChannelsSelectElement
   | TimePickerElement
   | UrlTextInputElement
+  | UrlSourceElement
+  | WorkflowButtonElement
   | RichTextBlockElement;
 
 export type ButtonElement = {
@@ -657,4 +665,61 @@ export type UrlTextInputElement = {
    * A {@link https://api.slack.com/reference/block-kit/composition-objects#text ***plain_text*** only text object} that defines the placeholder text shown in the URL input. Maximum length for the text in this field is 150 characters.
    */
   placeholder?: TextObject<"plain_text">;
+};
+
+export type FeedbackButtonsElement = {
+  type: "feedback_buttons";
+  positive_button: {
+    text: TextObject<"plain_text">;
+    value: string;
+    accessibility_label?: string;
+  };
+  negative_button: {
+    text: TextObject<"plain_text">;
+    value: string;
+    accessibility_label?: string;
+  };
+  action_id?: string;
+};
+
+export type FileInputElement = {
+  type: "file_input";
+  action_id?: string;
+  filetypes?: string[];
+  max_files?: number;
+};
+
+export type IconButtonElement = {
+  type: "icon_button";
+  icon: string;
+  text: TextObject<"plain_text">;
+  action_id?: string;
+  value?: string;
+  confirm?: ConfirmDialogObject;
+  accessibility_label?: string;
+  visible_to_user_ids?: string[];
+};
+
+export type RichTextInputElement = {
+  type: "rich_text_input";
+  action_id: string;
+  initial_value?: RichTextBlock;
+  dispatch_action_config?: DispatchActionConfigObject;
+  focus_on_load?: boolean;
+  placeholder?: TextObject<"plain_text">;
+};
+
+export type UrlSourceElement = {
+  type: "url";
+  url: string;
+  text: string;
+};
+
+export type WorkflowButtonElement = {
+  type: "workflow_button";
+  text: TextObject<"plain_text">;
+  workflow: WorkflowObject;
+  action_id: string;
+  style?: Omit<Style, "confirm"> | undefined;
+  accessibility_label?: string;
 };

@@ -1,5 +1,5 @@
 import { ActionsBlock } from "../../types";
-import { ButtonElement, StaticSelectElement } from "../elements";
+import { getElementComponent } from "..";
 
 type ActionsProps = {
   data: ActionsBlock;
@@ -14,26 +14,11 @@ export const Actions = (props: ActionsProps) => {
       className="mb-2 text-primary flex w-full text-black-primary dark:text-dark-text-primary items-center slack_blocks_to_jsx__actions"
     >
       <div className="flex flex-wrap">
-        {elements.map((element, i) => {
-          if (element.type === "button") {
-            return (
-              <div key={i} className="mt-2 mr-2">
-                <ButtonElement data={element} />
-              </div>
-            );
-          }
-
-          if (element.type === "static_select") {
-            return (
-              <div key={i} className="mt-2 mr-2">
-                <StaticSelectElement data={element} />
-              </div>
-            );
-          }
-
-          // TODO: HANDLE OTHER ELEMENTS
-          return <div key={i} className="mt-2 mr-2"></div>;
-        })}
+        {elements.map((element, i) => (
+          <div key={i} className="mt-2 mr-2">
+            {getElementComponent(element)}
+          </div>
+        ))}
       </div>
     </div>
   );

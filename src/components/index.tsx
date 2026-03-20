@@ -6,12 +6,16 @@ import {
   Image,
   Section,
   Context,
+  ContextActions,
   Actions,
   File,
   Header,
   Input,
+  MarkdownBlockComponent,
+  Plan,
   RichText,
   Table,
+  TaskCard,
   Video,
 } from "./blocks";
 import {
@@ -20,63 +24,83 @@ import {
   ImageElement,
   PlaintTextInput,
   UsersSelectElement,
+  DatePickerElement,
+  TimePickerElement,
+  DateTimePickerElement,
+  EmailInputElement,
+  UrlInputElement,
+  NumberInputElement,
+  RadioButtonsElement,
+  OverflowMenuElement,
+  StaticSelectElement,
+  ExternalSelectElement,
+  ConversationsSelectElement,
+  ChannelsSelectElement,
+  MultiStaticSelectElement,
+  MultiExternalSelectElement,
+  MultiUsersSelectElement,
+  MultiConversationsSelectElement,
+  MultiChannelsSelectElement,
+  FeedbackButtonsElement,
+  IconButtonElement,
+  FileInputElement,
+  RichTextInputElement,
+  UrlSourceElement,
+  WorkflowButtonElement,
 } from "./elements";
 
 export const getBlockComponent = (block: Block): ReactNode => {
-  // ✅ DONE
   if (block.type === "divider") return <Divider data={block} />;
-  // ✅ DONE
   if (block.type === "section") return <Section data={block} />;
-  // ✅ DONE
   if (block.type === "image") return <Image data={block} />;
-  // ✅ DONE
   if (block.type === "context") return <Context data={block} />;
   if (block.type === "actions") return <Actions data={block} />;
+  if (block.type === "context_actions") return <ContextActions data={block} />;
   if (block.type === "file") return <File data={block} />;
-  // ✅ DONE
   if (block.type === "header") return <Header data={block} />;
-  // ✅ PARTIALLY DONE
   if (block.type === "input") return <Input data={block} />;
-  // ✅ DONE
   if (block.type === "video") return <Video data={block} />;
-  // ✅ DONE
   if (block.type === "rich_text") return <RichText data={block} />;
-  // ✅ DONE
   if (block.type === "table") return <Table data={block} />;
+  if (block.type === "markdown") return <MarkdownBlockComponent data={block} />;
+  if (block.type === "plan") return <Plan data={block} />;
+  if (block.type === "task_card") return <TaskCard data={block} />;
 
   return null;
 };
 
 export const getElementComponent = (element: Element): ReactNode => {
-  // ✅ PARTIALLY DONE, CONFIRM MODAL NOT IMPLEMENTED
   if (element.type === "button") return <ButtonElement data={element} />;
-  // ✅ PARTIALLY DONE, CONFIRM MODAL NOT IMPLEMENTED
   if (element.type === "checkboxes") return <CheckboxesElement data={element} />;
-  // ✅ DONE
   if (element.type === "image") return <ImageElement data={element} />;
-  // ✅ PARTIALLY DONE
   if (element.type === "plain_text_input") return <PlaintTextInput data={element} />;
-  // ✅ PARTIALLY DONE
   if (element.type === "users_select") return <UsersSelectElement data={element} />;
-
-  //
-  if (element.type === "datepicker") return null;
-  if (element.type === "datetimepicker") return null;
-  if (element.type === "email_text_input") return null;
-  if (element.type === "multi_static_select") return null;
-  if (element.type === "multi_external_select") return null;
-  if (element.type === "multi_users_select") return null;
-  if (element.type === "multi_conversations_select") return null;
-  if (element.type === "multi_channels_select") return null;
-  if (element.type === "number_input") return null;
-  if (element.type === "overflow") return null;
-  if (element.type === "radio_buttons") return null;
-  if (element.type === "static_select") return null;
-  if (element.type === "external_select") return null;
-  if (element.type === "conversations_select") return null;
-  if (element.type === "channels_select") return null;
-  if (element.type === "timepicker") return null;
-  if (element.type === "url_text_input") return null;
+  if (element.type === "datepicker") return <DatePickerElement data={element} />;
+  if (element.type === "timepicker") return <TimePickerElement data={element} />;
+  if (element.type === "datetimepicker") return <DateTimePickerElement data={element} />;
+  if (element.type === "email_text_input") return <EmailInputElement data={element} />;
+  if (element.type === "url_text_input") return <UrlInputElement data={element} />;
+  if (element.type === "number_input") return <NumberInputElement data={element} />;
+  if (element.type === "radio_buttons") return <RadioButtonsElement data={element} />;
+  if (element.type === "overflow") return <OverflowMenuElement data={element} />;
+  if (element.type === "static_select") return <StaticSelectElement data={element} />;
+  if (element.type === "external_select") return <ExternalSelectElement data={element} />;
+  if (element.type === "conversations_select") return <ConversationsSelectElement data={element} />;
+  if (element.type === "channels_select") return <ChannelsSelectElement data={element} />;
+  if (element.type === "multi_static_select") return <MultiStaticSelectElement data={element} />;
+  if (element.type === "multi_external_select")
+    return <MultiExternalSelectElement data={element} />;
+  if (element.type === "multi_users_select") return <MultiUsersSelectElement data={element} />;
+  if (element.type === "multi_conversations_select")
+    return <MultiConversationsSelectElement data={element} />;
+  if (element.type === "multi_channels_select")
+    return <MultiChannelsSelectElement data={element} />;
+  if (element.type === "feedback_buttons") return <FeedbackButtonsElement data={element} />;
+  if (element.type === "icon_button") return <IconButtonElement data={element} />;
+  if (element.type === "file_input") return <FileInputElement data={element} />;
+  if (element.type === "rich_text_input") return <RichTextInputElement data={element} />;
+  if (element.type === "url") return <UrlSourceElement data={element} />;
+  if (element.type === "workflow_button") return <WorkflowButtonElement data={element} />;
 
   return null;
 };

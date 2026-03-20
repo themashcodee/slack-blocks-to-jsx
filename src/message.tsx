@@ -4,7 +4,7 @@ import { getBlockComponent } from "./components";
 import { Header } from "./header";
 import { GlobalProvider, GlobalStore } from "./store";
 import { Block } from "./types";
-import { merge_classes } from "./utils";
+import { merge_classes, sanitizeBlocksForSlack } from "./utils";
 
 type Props = {
   /**
@@ -98,7 +98,11 @@ export const Message = (props: Props) => {
 
   return (
     <GlobalProvider data={data} hooks={hooks}>
-      <div id="slack_blocks_to_jsx" data-theme={activeTheme} className="dark:text-dark-text-primary dark:bg-dark-bg-primary">
+      <div
+        id="slack_blocks_to_jsx"
+        data-theme={activeTheme}
+        className="dark:text-dark-text-primary dark:bg-dark-bg-primary"
+      >
         <section
           className={merge_classes([
             "dark:text-dark-text-primary dark:bg-dark-bg-primary",
@@ -113,7 +117,7 @@ export const Message = (props: Props) => {
               target="_blank"
               rel="noopener noreferrer"
               href={`https://app.slack.com/block-kit-builder#${encodeURIComponent(
-                JSON.stringify({ blocks }),
+                JSON.stringify({ blocks: sanitizeBlocksForSlack(blocks) }),
               )}`}
               className="text-xs absolute right-0 top-0 text-blue-500 underline"
             >

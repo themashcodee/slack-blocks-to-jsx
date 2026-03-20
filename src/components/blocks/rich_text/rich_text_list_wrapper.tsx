@@ -12,5 +12,9 @@ export const RichTextListWrapper = (props: Props) => {
     return <ul {...rest}>{children}</ul>;
   }
 
-  return <ol {...rest}>{children}</ol>;
+  return (
+    <ol start={element.offset != null ? element.offset + 1 : undefined} {...rest}>
+      {children}
+    </ol>
+  );
 };

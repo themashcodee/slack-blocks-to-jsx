@@ -1,4 +1,4 @@
-import { TextObject } from "./objects";
+import { TextObject, SlackFileObject } from "./objects";
 import {
   CheckboxesElement,
   DatePickerElement,
@@ -9,6 +9,21 @@ import {
   RadioButtonsElement,
   StaticSelectElement,
   UsersSelectElement,
+  EmailInputElement,
+  UrlTextInputElement,
+  NumberInputElement,
+  TimePickerElement,
+  DateTimePickerElement,
+  ExternalSelectElement,
+  ConversationsSelectElement,
+  ChannelsSelectElement,
+  MultiExternalSelectElement,
+  MultiUsersSelectElement,
+  MultiConversationsSelectElement,
+  MultiChannelsSelectElement,
+  FileInputElement,
+  RichTextInputElement,
+  UrlSourceElement,
 } from ".";
 import { RichTextBlockElement } from "../types";
 import { ComponentPropsWithoutRef } from "react";
@@ -16,13 +31,17 @@ import { ComponentPropsWithoutRef } from "react";
 export type Block =
   | ActionsBlock
   | ContextBlock
+  | ContextActionsBlock
   | DividerBlock
   | FileBlock
   | HeaderBlock
   | ImageBlock
   | InputBlock
+  | MarkdownBlock
+  | PlanBlock
   | SectionBlock
   | TableBlock
+  | TaskCardBlock
   | VideoBlock
   | RichTextBlock;
 
@@ -141,7 +160,11 @@ export type ImageBlock = {
   /**
    * The URL of the image to be displayed. Maximum length for this field is 3000 characters.
    */
-  image_url: string;
+  image_url?: string;
+  /**
+   * A Slack image file object. Either image_url or slack_file must be provided.
+   */
+  slack_file?: SlackFileObject;
   /** Width of image in pixels (NOT PRESENT IN THE SLACK API BUT THEY ADD IT DYNAMICALLY) */
   image_width?: number;
   /** Height of image in pixels (NOT PRESENT IN THE SLACK API BUT THEY ADD IT DYNAMICALLY) */
@@ -191,8 +214,22 @@ export type InputBlock = {
     | RadioButtonsElement
     | StaticSelectElement
     | MultiStaticSelectElement
+    | MultiExternalSelectElement
+    | MultiUsersSelectElement
+    | MultiConversationsSelectElement
+    | MultiChannelsSelectElement
     | DatePickerElement
-    | UsersSelectElement;
+    | DateTimePickerElement
+    | TimePickerElement
+    | UsersSelectElement
+    | ExternalSelectElement
+    | ConversationsSelectElement
+    | ChannelsSelectElement
+    | EmailInputElement
+    | UrlTextInputElement
+    | NumberInputElement
+    | FileInputElement
+    | RichTextInputElement;
   /**
    * A boolean that indicates whether or not the use of elements in this block should dispatch a {@link https://api.slack.com/reference/interaction-payloads/block-actions ***block_actions*** payload}. Defaults to false.
    */
@@ -237,6 +274,10 @@ export type SectionBlock = {
    * One of the available {@link https://api.slack.com/reference/messaging/block-elements element objects}.
    */
   accessory?: Element;
+  /**
+   * When set to true, the full text is always displayed. When false or omitted, long text may be truncated with a "see more" option.
+   */
+  expand?: boolean;
 };
 
 export type VideoBlock = {
@@ -377,4 +418,34 @@ export type RichTextBlock = {
    * An array of rich text objects - rich_text_section, rich_text_list, rich_text_preformatted, and rich_text_quote. See your specific desired element below for more details.
    */
   elements: RichTextBlockElement[];
+};
+
+export type ContextActionsBlock = {
+  type: "context_actions";
+  elements: Element[];
+  block_id?: string;
+};
+
+export type MarkdownBlock = {
+  type: "markdown";
+  text: string;
+  block_id?: string;
+};
+
+export type PlanBlock = {
+  type: "plan";
+  title: string;
+  tasks?: TaskCardBlock[];
+  block_id?: string;
+};
+
+export type TaskCardBlock = {
+  type: "task_card";
+  task_id: string;
+  title: string;
+  details?: RichTextBlock;
+  output?: RichTextBlock;
+  sources?: UrlSourceElement[];
+  status?: "pending" | "in_progress" | "complete" | "error";
+  block_id?: string;
 };

@@ -26,7 +26,7 @@ export const RichTextSectionUserGroup = (props: Props) => {
         style?.italic ? "italic" : "",
         style?.strike ? "line-through" : "",
         style?.underline ? "underline" : "",
-        style?.bold ? "font-bold" : "",
+        style?.bold ? "font-semibold" : "",
       ])}
     >
       @{label}

@@ -25,7 +25,7 @@ export const RichTextSectionLink = (props: Props) => {
             style?.strike ? "line-through" : "",
             style?.underline ? "underline" : "",
             style?.code ? "slack_inline_code" : "",
-            style?.bold ? "font-bold" : "",
+            style?.bold ? "font-semibold" : "",
           ]),
           children: linkText,
         })}
@@ -45,7 +45,7 @@ export const RichTextSectionLink = (props: Props) => {
         style?.strike ? "line-through" : "",
         style?.underline ? "underline" : "",
         style?.code ? "slack_inline_code" : "",
-        style?.bold ? "font-bold" : "",
+        style?.bold ? "font-semibold" : "",
       ])}
     >
       {linkText}

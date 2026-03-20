@@ -25,7 +25,7 @@ export const Video = (props: VideoProps) => {
     <div className="py-2 slack_blocks_to_jsx__video" id={block_id}>
       {author_name && (
         <div className="slack_blocks_to_jsx__video_author text-black-primary dark:text-dark-text-primary">
-          <span className="font-bold">{author_name}</span>
+          <span className="font-semibold">{author_name}</span>
         </div>
       )}
 
@@ -105,7 +105,12 @@ const RenderLink = ({ url, title }: { url: string; title: TextObjectType<"plain_
   }
 
   return (
-    <a href={url} className="text-blue-primary dark:text-dark-link" target="_blank" rel="noopener noreferrer">
+    <a
+      href={url}
+      className="text-blue-primary dark:text-dark-link"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <TextObject data={title} />
     </a>
   );

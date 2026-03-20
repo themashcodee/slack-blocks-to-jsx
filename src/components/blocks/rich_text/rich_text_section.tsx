@@ -3,6 +3,7 @@ import { merge_classes } from "../../../utils";
 import { SlackDate } from "../../../utils/markdown_parser/sub_elements";
 import { RichTextSectionBroadcast } from "./rich_text_section_broadcast";
 import { RichTextSectionChannel } from "./rich_text_section_channel";
+import { RichTextSectionColor } from "./rich_text_section_color";
 import { RichTextSectionEmoji } from "./rich_text_section_emoji";
 import { RichTextSectionLink } from "./rich_text_section_link";
 import { RichTextSectionUser } from "./rich_text_section_user";
@@ -18,6 +19,7 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
   if (element.type === "user") return <RichTextSectionUser {...element} />;
   if (element.type === "channel") return <RichTextSectionChannel {...element} />;
   if (element.type === "broadcast") return <RichTextSectionBroadcast {...element} />;
+  if (element.type === "color") return <RichTextSectionColor {...element} />;
   if (element.type === "emoji") return <RichTextSectionEmoji {...element} />;
   if (element.type === "usergroup") return <RichTextSectionUserGroup {...element} />;
   if (element.type === "link") return <RichTextSectionLink {...element} />;
@@ -33,7 +35,7 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
           style?.strike ? "line-through" : "",
           style?.underline ? "underline" : "",
           style?.code ? "slack_inline_code" : "",
-          style?.bold ? "font-bold" : "",
+          style?.bold ? "font-semibold" : "",
         ])}
       >
         {text}
@@ -52,7 +54,7 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
           style?.strike ? "line-through" : "",
           style?.underline ? "underline" : "",
           style?.code ? "slack_inline_code" : "",
-          style?.bold ? "font-bold" : "",
+          style?.bold ? "font-semibold" : "",
         ])}
       >
         <SlackDate
