@@ -57,6 +57,19 @@ Or using pnpm:
 pnpm add slack-blocks-to-jsx
 ```
 
+### Next.js / SSR Setup
+
+Since `react-markdown` and `remark-gfm` are ESM-only packages, Next.js users need to add this to their `next.config.js` / `next.config.mjs`:
+
+```js
+const nextConfig = {
+  experimental: {
+    esmExternals: "loose",
+  },
+  transpilePackages: ["slack-blocks-to-jsx", "react-markdown", "remark-gfm"],
+};
+```
+
 ## Quick Start
 
 ### 1. Import the styles
@@ -637,16 +650,7 @@ Make sure you're either:
 
 ### Does this work with Next.js / SSR?
 
-Yes! The library is compatible with server-side rendering. Since `react-markdown` and `remark-gfm` are ESM-only packages, Next.js users need to add this to their `next.config.js` / `next.config.mjs`:
-
-```js
-const nextConfig = {
-  experimental: {
-    esmExternals: "loose",
-  },
-  transpilePackages: ["slack-blocks-to-jsx", "react-markdown", "remark-gfm"],
-};
-```
+Yes! See the [Next.js / SSR Setup](#nextjs--ssr-setup) section above for the required config.
 
 ### Can I use this with Tailwind CSS?
 
