@@ -4,6 +4,9 @@ A React library that renders Slack Block Kit components as JSX with pixel-perfec
 
 **[🎮 Live Playground](https://slack-block-to-jsx-playground.vercel.app/)** | **[📖 Blog Post](https://themashcodee.hashnode.dev/how-to-effortlessly-render-slack-blocks-in-react-with-slack-blocks-to-jsx)** | **[📦 NPM](https://www.npmjs.com/package/slack-blocks-to-jsx)**
 
+<img width="1512" height="922" alt="Screenshot 2026-04-02 at 12 56 03 AM 1" src="https://github.com/user-attachments/assets/d48c399d-b311-4501-b8e9-9fb2ea40934b" />
+
+
 ## Table of Contents
 
 - [Features](#features)
