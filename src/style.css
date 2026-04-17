@@ -517,7 +517,7 @@
 
   /* Alert Block */
   & .slack_blocks_to_jsx__alert {
-    @apply text-primary;
+    @apply text-base;
   }
 
   & .slack_blocks_to_jsx__alert_icon {
@@ -526,7 +526,7 @@
 
   /* Card Block */
   & .slack_blocks_to_jsx__card {
-    @apply text-primary;
+    @apply text-base;
   }
 
   & .slack_blocks_to_jsx__card_hero img {

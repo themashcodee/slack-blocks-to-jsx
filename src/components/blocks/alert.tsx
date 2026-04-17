@@ -119,7 +119,7 @@ export const Alert = (props: AlertProps) => {
       role="status"
       aria-label={config.label}
       data-level={level}
-      className={`my-2 flex items-start gap-2 rounded-md border px-3 py-2 text-primary slack_blocks_to_jsx__alert slack_blocks_to_jsx__alert_${level} ${config.containerClass}`}
+      className={`my-2 flex items-start gap-2 rounded-md border px-3 py-2 text-base slack_blocks_to_jsx__alert slack_blocks_to_jsx__alert_${level} ${config.containerClass}`}
     >
       <span className={`mt-[2px] shrink-0 slack_blocks_to_jsx__alert_icon ${config.iconClass}`}>
         {config.icon}

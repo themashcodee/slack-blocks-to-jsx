@@ -57,7 +57,7 @@ export const Card = (props: CardProps) => {
             )}
             <div className="flex-1 min-w-0">
               {title && (
-                <div className="text-primary font-semibold text-black-primary dark:text-dark-text-primary slack_blocks_to_jsx__card_title">
+                <div className="text-base font-semibold text-black-primary dark:text-dark-text-primary slack_blocks_to_jsx__card_title">
                   <TextObject data={title} />
                 </div>
               )}
@@ -71,7 +71,7 @@ export const Card = (props: CardProps) => {
         )}
 
         {body && (
-          <div className="text-primary text-black-primary dark:text-dark-text-primary slack_blocks_to_jsx__card_body mt-1">
+          <div className="text-base text-black-primary dark:text-dark-text-primary slack_blocks_to_jsx__card_body mt-1">
             <TextObject data={body} />
           </div>
         )}
