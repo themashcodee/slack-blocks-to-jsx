@@ -10,3 +10,5 @@ tailwind.config.js
 tsconfig.json
 .DS_Store
 postcss.config.js
+playground
+playground/

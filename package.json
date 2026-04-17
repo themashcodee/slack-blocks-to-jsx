@@ -27,7 +27,10 @@
     "new-version": "pnpm changeset",
     "lint": "tsc",
     "release": "pnpm run build && changeset publish",
-    "release-alpha-without-git": "pnpm run build && pnpm publish --tag alpha --no-git-checks"
+    "release-alpha-without-git": "pnpm run build && pnpm publish --tag alpha --no-git-checks",
+    "playground:install": "cd playground && npm install",
+    "playground": "cd playground && npm run dev",
+    "playground:build": "cd playground && npm run build"
   },
   "dependencies": {
     "node-emoji": "^2.1.3",

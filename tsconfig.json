@@ -13,5 +13,14 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "strict": true, /* Enable all strict type-checking options. */
     "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-  }
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "playground",
+    "test-blocks"
+  ]
 }

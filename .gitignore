@@ -5,3 +5,6 @@ dist
 PUBLISH_GUIDE.md
 test-blocks/
 RELEASE_NOTES.md
+playground/node_modules
+playground/dist
+playground/.vite

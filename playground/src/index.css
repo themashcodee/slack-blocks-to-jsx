@@ -1,0 +1,278 @@
+/*
+ * The library's own stylesheet. Vite will resolve it from ../src/style.css and
+ * run it through the playground's postcss pipeline (tailwind + nesting +
+ * autoprefixer). Every edit to ../src/style.css hot-reloads instantly.
+ */
+@import "../../src/style.css";
+
+/* ---------- Playground chrome (plain CSS, no Tailwind) ---------- */
+/* Kept outside the library's `#slack_blocks_to_jsx` scope on purpose. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  color: #1d1c1d;
+  background: #f6f6f6;
+}
+
+body.pg-dark {
+  color: #d1d2d3;
+  background: #1a1d21;
+}
+
+.pg-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+}
+
+.pg-sidebar {
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+body.pg-dark .pg-sidebar {
+  background: #232527;
+  border-right-color: #545454;
+}
+
+.pg-sidebar-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+body.pg-dark .pg-sidebar-header {
+  border-bottom-color: #545454;
+}
+
+.pg-sidebar-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.pg-sidebar-item {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+
+.pg-sidebar-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+body.pg-dark .pg-sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pg-sidebar-item.is-active {
+  background: rgba(29, 155, 209, 0.1);
+  border-left-color: #1264a3;
+  color: #1264a3;
+  font-weight: 500;
+}
+
+body.pg-dark .pg-sidebar-item.is-active {
+  background: rgba(29, 155, 209, 0.15);
+  border-left-color: #1d9bd1;
+  color: #1d9bd1;
+}
+
+.pg-sidebar-footer {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  color: #616061;
+}
+
+body.pg-dark .pg-sidebar-footer {
+  border-top-color: #545454;
+  color: #abacad;
+}
+
+.pg-theme-row {
+  display: flex;
+  gap: 6px;
+}
+
+.pg-theme-btn {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  background: #ffffff;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  color: inherit;
+}
+
+body.pg-dark .pg-theme-btn {
+  background: #1a1d21;
+  border-color: #545454;
+}
+
+.pg-theme-btn.is-active {
+  background: #1d1c1d;
+  color: #ffffff;
+  border-color: #1d1c1d;
+}
+
+body.pg-dark .pg-theme-btn.is-active {
+  background: #d1d2d3;
+  color: #1a1d21;
+  border-color: #d1d2d3;
+}
+
+.pg-main {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-width: 0;
+}
+
+.pg-toolbar {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  font-size: 13px;
+}
+
+body.pg-dark .pg-toolbar {
+  background: #232527;
+  border-bottom-color: #545454;
+}
+
+.pg-toolbar .pg-title {
+  font-weight: 600;
+}
+
+.pg-toolbar .pg-spacer {
+  flex: 1;
+}
+
+.pg-toolbar button {
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  background: transparent;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  color: inherit;
+}
+
+body.pg-dark .pg-toolbar button {
+  border-color: #545454;
+}
+
+.pg-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 0;
+}
+
+.pg-split > section {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.pg-editor {
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 12px;
+  background: #fbfbfb;
+}
+
+body.pg-dark .pg-editor {
+  background: #1a1d21;
+  border-right-color: #545454;
+}
+
+.pg-editor textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  resize: vertical;
+  padding: 10px 12px;
+  font:
+    13px/1.5 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  border-radius: 6px;
+  background: #ffffff;
+  color: inherit;
+  outline: none;
+}
+
+body.pg-dark .pg-editor textarea {
+  background: #232527;
+  border-color: #545454;
+}
+
+.pg-editor-error {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(224, 30, 90, 0.08);
+  color: #e01e5a;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+.pg-preview {
+  padding: 16px;
+  background: #f6f6f6;
+}
+
+body.pg-dark .pg-preview {
+  background: #1a1d21;
+}
+
+.pg-preview-surface {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+body.pg-dark .pg-preview-surface {
+  background: #232527;
+  border-color: #545454;
+}
