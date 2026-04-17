@@ -1,5 +1,6 @@
 import { TextObject, SlackFileObject } from "./objects";
 import {
+  ButtonElement,
   CheckboxesElement,
   DatePickerElement,
   Element,
@@ -30,6 +31,9 @@ import { ComponentPropsWithoutRef } from "react";
 
 export type Block =
   | ActionsBlock
+  | AlertBlock
+  | CardBlock
+  | CarouselBlock
   | ContextBlock
   | ContextActionsBlock
   | DividerBlock
@@ -447,5 +451,121 @@ export type TaskCardBlock = {
   output?: RichTextBlock;
   sources?: UrlSourceElement[];
   status?: "pending" | "in_progress" | "complete" | "error";
+  block_id?: string;
+};
+
+/**
+ * Severity level for an {@link AlertBlock}. Controls the icon and color accent.
+ */
+export type AlertLevel = "default" | "info" | "warning" | "error" | "success";
+
+export type AlertBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/alert-block/ View here}
+   *
+   * An ***alert*** block displays a single-line status notification with an optional severity
+   * level (***default***, ***info***, ***warning***, ***error***, or ***success***). Useful for
+   * build failures, monitoring notifications, and quick status updates.
+   */
+  type: "alert";
+  /**
+   * A text object containing the alert's message. Maximum length for the ***text*** is 3000
+   * characters. Supports mrkdwn formatting.
+   */
+  text: TextObject;
+  /**
+   * Severity level for the alert. Defaults to ***default*** when omitted. Slack renders a
+   * matching icon and color accent for each level.
+   */
+  level?: AlertLevel;
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+/**
+ * An image used inside a {@link CardBlock} (for the hero image or the icon slot).
+ */
+export type CardImage = {
+  /**
+   * The URL of the image to be displayed.
+   */
+  image_url?: string;
+  /**
+   * A Slack image file object. Either ***image_url*** or ***slack_file*** must be provided.
+   */
+  slack_file?: SlackFileObject;
+  /**
+   * A plain-text summary of the image. Required for accessibility.
+   */
+  alt_text: string;
+};
+
+export type CardBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/card-block/ View here}
+   *
+   * A ***card*** block is a rich container with a title, optional subtitle and body text,
+   * optional hero image and icon, and up to five action buttons. Cards can stand alone or be
+   * nested inside a {@link CarouselBlock}.
+   */
+  type: "card";
+  /**
+   * A plain-text title for the card. Maximum length is 150 characters.
+   */
+  title?: TextObject<"plain_text">;
+  /**
+   * A plain-text subtitle. Rendered below the title in a smaller, muted style.
+   * Maximum length is 150 characters.
+   */
+  subtitle?: TextObject<"plain_text">;
+  /**
+   * The card's main text. Supports mrkdwn when a {@link TextObject} of type ***mrkdwn*** is
+   * passed. Maximum length is 200 characters (Slack truncates beyond that).
+   */
+  body?: TextObject;
+  /**
+   * Large header image rendered above the title. Matches the {@link ImageBlock} element shape.
+   */
+  hero_image?: CardImage;
+  /**
+   * Small icon rendered next to the title (e.g. an app logo).
+   */
+  icon?: CardImage;
+  /**
+   * An array of up to 5 button elements. Rendered as a row of buttons below the card body.
+   */
+  actions?: ButtonElement[];
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+export type CarouselBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/carousel-block/ View here}
+   *
+   * A ***carousel*** block displays a horizontally-scrollable gallery of 1–10 cards.
+   * Ideal for product listings, search results, and "pick one of these" selection flows.
+   */
+  type: "carousel";
+  /**
+   * An array of {@link CardBlock} entries. Minimum 1, maximum 10.
+   */
+  elements: CardBlock[];
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
   block_id?: string;
 };

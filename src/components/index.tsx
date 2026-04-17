@@ -2,18 +2,21 @@ import { ReactNode } from "react";
 import { Block, Element } from "../types";
 
 import {
-  Divider,
-  Image,
-  Section,
+  Actions,
+  Alert,
+  Card,
+  Carousel,
   Context,
   ContextActions,
-  Actions,
+  Divider,
   File,
   Header,
+  Image,
   Input,
   MarkdownBlockComponent,
   Plan,
   RichText,
+  Section,
   Table,
   TaskCard,
   Video,
@@ -65,6 +68,9 @@ export const getBlockComponent = (block: Block): ReactNode => {
   if (block.type === "markdown") return <MarkdownBlockComponent data={block} />;
   if (block.type === "plan") return <Plan data={block} />;
   if (block.type === "task_card") return <TaskCard data={block} />;
+  if (block.type === "alert") return <Alert data={block} />;
+  if (block.type === "card") return <Card data={block} />;
+  if (block.type === "carousel") return <Carousel data={block} />;
 
   return null;
 };

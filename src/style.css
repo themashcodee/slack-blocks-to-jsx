@@ -515,6 +515,49 @@
     @apply border border-black-primary/30 dark:border-dark-border rounded p-2 min-h-[80px] focus:outline-none focus:border-blue-primary dark:bg-dark-bg-secondary dark:text-dark-text-primary;
   }
 
+  /* Alert Block */
+  & .slack_blocks_to_jsx__alert {
+    @apply text-primary;
+  }
+
+  & .slack_blocks_to_jsx__alert_icon {
+    @apply flex items-center;
+  }
+
+  /* Card Block */
+  & .slack_blocks_to_jsx__card {
+    @apply text-primary;
+  }
+
+  & .slack_blocks_to_jsx__card_hero img {
+    @apply block;
+  }
+
+  & .slack_blocks_to_jsx__card_title {
+    @apply leading-snug;
+  }
+
+  & .slack_blocks_to_jsx__card_subtitle {
+    @apply leading-snug;
+  }
+
+  & .slack_blocks_to_jsx__card_actions .slack_blocks_to_jsx__button_element {
+    @apply min-w-0;
+  }
+
+  /* Carousel Block */
+  & .slack_blocks_to_jsx__carousel_track {
+    scroll-behavior: smooth;
+  }
+
+  & .slack_blocks_to_jsx__carousel_track::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  & .slack_blocks_to_jsx__carousel_track::-webkit-scrollbar-thumb {
+    @apply bg-black-primary/[0.2] dark:bg-dark-border rounded-full;
+  }
+
   /* #endregion */
 }
 
