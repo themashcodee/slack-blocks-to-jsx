@@ -7,6 +7,9 @@ import type {
 } from "@yozora/core-tokenizer";
 import { SlackBroadcastType, type IDelimiter, type IThis, type IToken, type T } from "./types";
 
+const AT_TARGETS = ["@everyone", "@here", "@channel"];
+const BRACKET_TARGETS = ["<!everyone>", "<!here>", "<!channel>"];
+
 export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = function (api) {
   return { findDelimiter, processSingleDelimiter };
 
@@ -15,22 +18,27 @@ export const match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = func
     const blockStartIndex: number = api.getBlockStartIndex();
     const blockEndIndex: number = api.getBlockEndIndex();
 
-    const targets = ["@everyone", "@here", "@channel"];
     const potentialDelimiters: IDelimiter[] = [];
 
     for (let i = blockStartIndex; i < blockEndIndex; ++i) {
-      if (nodePoints[i]?.codePoint === AsciiCodePoint.AT_SIGN) {
-        for (const target of targets) {
-          if (matchTarget(nodePoints, i, target)) {
-            potentialDelimiters.push({
-              type: "full",
-              startIndex: i,
-              endIndex: i + target.length,
-              thickness: target.length,
-            });
-            i += target.length - 1; // Skip past the matched target
-            break;
-          }
+      const cp = nodePoints[i]?.codePoint;
+      const targets =
+        cp === AsciiCodePoint.AT_SIGN
+          ? AT_TARGETS
+          : cp === AsciiCodePoint.OPEN_ANGLE
+            ? BRACKET_TARGETS
+            : null;
+      if (!targets) continue;
+      for (const target of targets) {
+        if (matchTarget(nodePoints, i, target)) {
+          potentialDelimiters.push({
+            type: "full",
+            startIndex: i,
+            endIndex: i + target.length,
+            thickness: target.length,
+          });
+          i += target.length - 1;
+          break;
         }
       }
     }
