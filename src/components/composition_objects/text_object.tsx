@@ -12,7 +12,11 @@ export const TextObject = (props: TextObjectProps) => {
   const { className = "" } = props;
   const { channels, users, hooks } = useGlobalData();
 
-  const parsed = text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<");
+  // Order matters: decode `&gt;` and `&lt;` before `&amp;` so a literal escaped `&gt;`
+  // (which arrives as `&amp;gt;`) doesn't get double-decoded.
+  // The `&gt;` → `"> "` trailing space is intentional — it keeps blockquote line detection
+  // (`^>` in parser.tsx) working when Slack escapes the `>` of a quote line.
+  const parsed = text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<").replace(/&amp;/g, "&");
 
   if (type === "plain_text")
     return (

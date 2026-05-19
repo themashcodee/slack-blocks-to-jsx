@@ -1,7 +1,9 @@
 import YozoraParser from "@yozora/parser";
 import { ReactNode } from "react";
 import { GlobalStore } from "../../store";
+import { renderTextWithDirectives } from "./directives";
 import { Blockquote, Code, Paragraph } from "./elements";
+import { maskProtectedRegions } from "./preparse";
 import {
   SlackBroadcastTokenizer,
   SlackChannelMentionTokenizer,
@@ -14,6 +16,12 @@ import { MarkdownElement } from "./types";
 
 const parser = new YozoraParser()
   .unmountTokenizer("@yozora/tokenizer-list")
+  // Slack directives like `<!subteam^S1|@team>` and `<@U1|name>` contain `@` chars in their
+  // fallback labels. Yozora's autolink tokenizers misread these as email autolinks and steal
+  // them from our directive tokenizers. Disable both — bare URL autolinking is already handled
+  // upstream by the `<X>` / `<X|Y>` regex rewrites that produce `[url](url)` markdown links.
+  .unmountTokenizer("@yozora/tokenizer-autolink")
+  .unmountTokenizer("@yozora/tokenizer-autolink-extension")
   .useTokenizer(new SlackUserMentionTokenizer())
   .useTokenizer(new SlackChannelMentionTokenizer())
   .useTokenizer(new SlackUserGroupMentionTokenizer())
@@ -29,7 +37,6 @@ type Options = {
   hooks: GlobalStore["hooks"];
 };
 
-// Helper function to check if a string is a valid URL
 function isValidURL(string: string) {
   try {
     new URL(string);
@@ -42,15 +49,35 @@ function isValidURL(string: string) {
 export const markdown_parser = (markdown: string, options: Options): ReactNode => {
   if (!markdown) return null;
 
-  // If verbatim is true, return plain text without any parsing
+  // In verbatim mode, Slack semantics say markdown formatting (`*bold*`, `_italic_`, `~strike~`,
+  // bare URLs, code spans) should render as literal text, but Slack-formed directives are atoms
+  // that must still resolve through hooks. Split the text by directive boundaries and render
+  // each segment, preserving newlines as <br/>s.
   if (options.verbatim) {
-    return <div>{markdown}</div>;
+    const segments = renderTextWithDirectives(markdown);
+    return (
+      <div>
+        {segments.map((segment, i) => {
+          if (typeof segment === "string") {
+            return renderVerbatimText(segment, i);
+          }
+          return segment;
+        })}
+      </div>
+    );
   }
 
   let text_string = markdown;
 
-  // TRANSFORM ``` TO MAKE IT A CODE BLOCK INSTEAD OF INLINE CODE BLOCK
+  // Normalize fenced code so yozora can recognize ``` blocks.
   text_string = text_string.replace(/```/g, `\n\`\`\`\n`);
+
+  // Mask fenced code, inline code, and directive atoms so the regex transforms below
+  // cannot mangle their interiors. Restore before handing to yozora — yozora's own
+  // tokenizers parse the original directive/code text.
+  const mask = maskProtectedRegions(text_string);
+  text_string = mask.masked;
+
   // REPLACE SINGLE asterisk WITH DOUBLE asterisk
   text_string = text_string.replace(/(?<!\*)\*(?!\*)([^*]+)\*(?!\*)/g, "**$1**");
   // REPLACE SINGLE tilde WITH DOUBLE tilde
@@ -74,23 +101,16 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   // HANDLE CONSECUTIVE LINE BREAKS
   // We need to keep \n\n so Yozora can properly separate paragraphs and parse formatting.
   // For additional newlines beyond \n\n, we add LBKS markers to preserve visual line breaks.
-  // \n\n = paragraph break (no LBKS needed, just normal paragraph separation)
-  // \n\n\n = paragraph break + 1 blank line (add 1 LBKS)
-  // \n\n\n\n = paragraph break + 2 blank lines (add 2 LBKS)
   text_string = text_string.replace(/\n\n(\n*)/g, (_, extraNewlines) => {
     return "\n\n" + "LBKS".repeat(extraNewlines.length);
   });
 
   // Insert a blank line after blockquote lines if the next line is not a blockquote
-  // This ensures only the line starting with '>' is treated as the blockquote.
   text_string = text_string.replace(/^>.*$(?!\n>)/gm, "$&\n");
 
-  // REPLACE <!here> with @here
-  text_string = text_string.replace(/<!here>/g, "@here");
-  // REPLACE <!everyone> with @everyone
-  text_string = text_string.replace(/<!everyone>/g, "@everyone");
-  // REPLACE <!channel> with @channel
-  text_string = text_string.replace(/<!channel>/g, "@channel");
+  // Restore the originally-masked fenced code, inline code, and directive atoms so yozora
+  // sees their native shape. Directive tokenizers will tokenize them at parse time.
+  text_string = mask.restore(text_string);
 
   const parsed_data = parser.parse(text_string);
 
@@ -108,4 +128,15 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
       })}
     </div>
   );
+};
+
+const renderVerbatimText = (text: string, baseKey: number): ReactNode => {
+  if (!text.includes("\n")) return text;
+  const lines = text.split("\n");
+  const out: ReactNode[] = [];
+  lines.forEach((line, idx) => {
+    if (idx > 0) out.push(<br key={`br-${baseKey}-${idx}`} />);
+    if (line) out.push(line);
+  });
+  return <span key={`v-${baseKey}`}>{out}</span>;
 };
