@@ -1,4 +1,5 @@
 import { useGlobalData } from "../../../store";
+import { decodeEntities } from "../decode_entities";
 import { LinkSubElement } from "../types";
 import { Delete } from "./delete";
 import { Emphasis } from "./emphasis";
@@ -13,12 +14,13 @@ type Props = {
 export const Link = (props: Props) => {
   const { element } = props;
   const { hooks } = useGlobalData();
+  const href = decodeEntities(element.url);
 
   if (hooks.link) {
     return (
       <>
         {hooks.link({
-          href: element.url,
+          href,
           children: (
             <>
               {element.children.map((child, i) => {
@@ -38,7 +40,7 @@ export const Link = (props: Props) => {
   }
 
   return (
-    <a href={element.url} className="slack_link">
+    <a href={href} className="slack_link">
       {element.children.map((child, i) => {
         if (child.type === "delete") return <Delete key={i} element={child} />;
         if (child.type === "emphasis") return <Emphasis key={i} element={child} />;

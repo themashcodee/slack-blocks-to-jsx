@@ -201,6 +201,56 @@ describe("escaped entities", () => {
     expect(anchor!.getAttribute("href")).toBe("https://example.test/?a=1&b=2");
     expect(anchor!.textContent).toBe("report");
   });
+
+  // Slack escapes literal `<`, `>`, `&` in user-typed text. If the user typed `<@U123>`
+  // literally (not as a directive), Slack delivers `&lt;@U123&gt;` in the payload. Our
+  // renderer must keep this as literal text — NOT resolve it as a user mention. Slack's
+  // own renderer behaves the same way (empirically verified — the "escaped" row in the PR
+  // description's side-by-side stays as literal `<@U123>`).
+  it("does NOT resolve a user-typed escaped directive as a mention", () => {
+    const user = vi.fn();
+    const { container } = renderMrkdwn(`escaped: &lt;@U123&gt;`, false, {
+      hooks: { user },
+      data: { users: [{ id: "U123", name: "alice" }] },
+    });
+    expect(user).not.toHaveBeenCalled();
+    expect(container.textContent).toContain("<@U123>");
+  });
+
+  it("does NOT resolve a user-typed escaped channel mention", () => {
+    const channel = vi.fn();
+    const { container } = renderMrkdwn(`escaped: &lt;#C123&gt;`, false, {
+      hooks: { channel },
+      data: { channels: [{ id: "C123", name: "general" }] },
+    });
+    expect(channel).not.toHaveBeenCalled();
+    expect(container.textContent).toContain("<#C123>");
+  });
+
+  it("does NOT resolve a user-typed escaped broadcast", () => {
+    const atHere = vi.fn();
+    const { container } = renderMrkdwn(`escaped: &lt;!here&gt;`, false, {
+      hooks: { atHere },
+    });
+    expect(atHere).not.toHaveBeenCalled();
+    expect(container.textContent).toContain("<!here>");
+  });
+
+  it("decodes escaped entities in plain text rendering", () => {
+    const { container } = renderMrkdwn(`a &amp; b &lt; c &gt; d`, false);
+    expect(container.textContent).toContain("a & b < c > d");
+  });
+
+  it("decodes escaped entities inside inline code", () => {
+    const { container } = renderMrkdwn("`&lt;script&gt;alert(1)&lt;/script&gt;`", false);
+    expect(container.querySelector("code")?.textContent).toBe("<script>alert(1)</script>");
+  });
+
+  it("decodes escaped entities inside fenced code", () => {
+    const { container } = renderMrkdwn("```\n&lt;script&gt;\n```", false);
+    const code = container.querySelector("code");
+    expect(code?.textContent).toContain("<script>");
+  });
 });
 
 describe("regression — non-directive markdown", () => {
