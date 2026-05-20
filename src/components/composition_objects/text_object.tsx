@@ -12,22 +12,19 @@ export const TextObject = (props: TextObjectProps) => {
   const { className = "" } = props;
   const { channels, users, hooks } = useGlobalData();
 
-  // Order matters: decode `&gt;` and `&lt;` before `&amp;` so a literal escaped `&gt;`
-  // (which arrives as `&amp;gt;`) doesn't get double-decoded.
-  // The `&gt;` → `"> "` trailing space is intentional — it keeps blockquote line detection
-  // (`^>` in parser.tsx) working when Slack escapes the `>` of a quote line.
-  const parsed = text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<").replace(/&amp;/g, "&");
-
+  // HTML entity decoding is deferred to the leaf renderers (Text, HTML, InlineCode, Code,
+  // Link) so escaped sequences like `&lt;@U123&gt;` (user typed `<@U123>` literally) don't
+  // get tokenized as directives. See decode_entities.ts.
   if (type === "plain_text")
     return (
       <div className={className + " dark:text-dark-text-primary"}>
-        {markdown_parser(parsed, { markdown: false, verbatim, users, channels, hooks })}
+        {markdown_parser(text, { markdown: false, verbatim, users, channels, hooks })}
       </div>
     );
 
   return (
     <div className={className + " dark:text-dark-text-primary"}>
-      {markdown_parser(parsed, { markdown: true, verbatim, users, channels, hooks })}
+      {markdown_parser(text, { markdown: true, verbatim, users, channels, hooks })}
     </div>
   );
 };
