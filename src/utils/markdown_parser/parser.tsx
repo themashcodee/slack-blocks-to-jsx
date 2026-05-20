@@ -1,7 +1,6 @@
 import YozoraParser from "@yozora/parser";
 import { ReactNode } from "react";
 import { GlobalStore } from "../../store";
-import { renderTextWithDirectives } from "./directives";
 import { Blockquote, Code, Paragraph } from "./elements";
 import { maskProtectedRegions } from "./preparse";
 import {
@@ -14,23 +13,37 @@ import {
 } from "./tokenizers";
 import { MarkdownElement } from "./types";
 
-const parser = new YozoraParser()
-  .unmountTokenizer("@yozora/tokenizer-list")
-  // Slack directives like `<!subteam^S1|@team>` and `<@U1|name>` contain `@` chars in their
-  // fallback labels. Yozora's autolink tokenizers misread these as email autolinks and steal
-  // them from our directive tokenizers. Disable both — bare URL autolinking is already handled
-  // upstream by the `<X>` / `<X|Y>` regex rewrites that produce `[url](url)` markdown links.
-  .unmountTokenizer("@yozora/tokenizer-autolink")
-  .unmountTokenizer("@yozora/tokenizer-autolink-extension")
-  .useTokenizer(new SlackUserMentionTokenizer())
-  .useTokenizer(new SlackChannelMentionTokenizer())
-  .useTokenizer(new SlackUserGroupMentionTokenizer())
-  .useTokenizer(new SlackBroadcastTokenizer())
-  .useTokenizer(new SlackDateTokenizer())
-  .useTokenizer(new SlackEmojiTokenizer());
+// Slack directives like `<!subteam^S1|@team>` and `<@U1|name>` contain `@` chars in their
+// fallback labels. Yozora's autolink tokenizers misread these as email autolinks and steal
+// them from our directive tokenizers. Disable both — bare URL autolinking is already handled
+// upstream by the `<X>` / `<X|Y>` regex rewrites that produce `[url](url)` markdown links.
+const buildParser = (matchTypedBroadcast: boolean) =>
+  new YozoraParser()
+    .unmountTokenizer("@yozora/tokenizer-list")
+    .unmountTokenizer("@yozora/tokenizer-autolink")
+    .unmountTokenizer("@yozora/tokenizer-autolink-extension")
+    .useTokenizer(new SlackUserMentionTokenizer())
+    .useTokenizer(new SlackChannelMentionTokenizer())
+    .useTokenizer(new SlackUserGroupMentionTokenizer())
+    .useTokenizer(new SlackBroadcastTokenizer({ matchTypedBroadcast }))
+    .useTokenizer(new SlackDateTokenizer())
+    .useTokenizer(new SlackEmojiTokenizer());
+
+// Slack's `verbatim` flag is effectively a no-op in section/mrkdwn rendering EXCEPT for one
+// case: it suppresses interpolation of typed-out `@here` / `@channel` / `@everyone` (without
+// the `<!…>` brackets). Empirically verified — see PR description for the side-by-side. We
+// honor that by using a parser without the bare-form broadcast match in verbatim mode.
+const parserDefault = buildParser(true);
+const parserVerbatim = buildParser(false);
 
 type Options = {
   markdown: boolean;
+  // In Slack's renderer, `verbatim` only changes two things in section/mrkdwn (empirically
+  // verified): it suppresses bare-URL autolinking, and it suppresses interpolation of bare
+  // `@here` / `@channel` / `@everyone`. Everything else — directives in `<…>` form, markdown
+  // sugar, code spans, angle-bracket URLs — renders identically in both modes. This library
+  // doesn't autolink bare URLs in either mode, so the only thing we gate on `verbatim` is the
+  // bare-broadcast tokenizer match.
   verbatim: boolean;
   users: GlobalStore["users"];
   channels: GlobalStore["channels"];
@@ -48,24 +61,6 @@ function isValidURL(string: string) {
 
 export const markdown_parser = (markdown: string, options: Options): ReactNode => {
   if (!markdown) return null;
-
-  // In verbatim mode, Slack semantics say markdown formatting (`*bold*`, `_italic_`, `~strike~`,
-  // bare URLs, code spans) should render as literal text, but Slack-formed directives are atoms
-  // that must still resolve through hooks. Split the text by directive boundaries and render
-  // each segment, preserving newlines as <br/>s.
-  if (options.verbatim) {
-    const segments = renderTextWithDirectives(markdown);
-    return (
-      <div>
-        {segments.map((segment, i) => {
-          if (typeof segment === "string") {
-            return renderVerbatimText(segment, i);
-          }
-          return segment;
-        })}
-      </div>
-    );
-  }
 
   let text_string = markdown;
 
@@ -112,7 +107,7 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
   // sees their native shape. Directive tokenizers will tokenize them at parse time.
   text_string = mask.restore(text_string);
 
-  const parsed_data = parser.parse(text_string);
+  const parsed_data = (options.verbatim ? parserVerbatim : parserDefault).parse(text_string);
 
   const elements = parsed_data.children as unknown as MarkdownElement[];
 
@@ -128,15 +123,4 @@ export const markdown_parser = (markdown: string, options: Options): ReactNode =
       })}
     </div>
   );
-};
-
-const renderVerbatimText = (text: string, baseKey: number): ReactNode => {
-  if (!text.includes("\n")) return text;
-  const lines = text.split("\n");
-  const out: ReactNode[] = [];
-  lines.forEach((line, idx) => {
-    if (idx > 0) out.push(<br key={`br-${baseKey}-${idx}`} />);
-    if (line) out.push(line);
-  });
-  return <span key={`v-${baseKey}`}>{out}</span>;
 };
