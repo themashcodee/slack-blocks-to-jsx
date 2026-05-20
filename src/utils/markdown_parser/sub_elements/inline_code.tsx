@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { decodeEntities } from "../decode_entities";
 import { InlineCodeSubElement } from "../types";
 
 type Props = {
@@ -62,7 +63,8 @@ function parseInlineCodeValue(value: string): ParsedPart[] {
 
 export const InlineCode = (props: Props) => {
   const { element } = props;
-  const parts = parseInlineCodeValue(element.value);
+  const value = decodeEntities(element.value);
+  const parts = parseInlineCodeValue(value);
 
   // If the entire value is just a single link, render without code wrapper
   const firstPart = parts[0];
@@ -83,7 +85,7 @@ export const InlineCode = (props: Props) => {
   if (parts.every((part) => part.type === "text")) {
     return (
       <code className="slack_code_inline inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] dark:border-dark-code-border bg-black-primary/[0.04] dark:bg-dark-code-bg text-red-primary dark:text-dark-text-primary font-mono">
-        {element.value}
+        {value}
       </code>
     );
   }
