@@ -301,7 +301,7 @@ All block components live in `src/components/blocks/`. 17 block types are suppor
 | --------- | ------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `section` | `section.tsx` | `text`, `fields`, `accessory`, `expand`, `block_id` | Workhorse block; accessory can stack vertically (see `utils/is_accessory_stacked.ts`) |
 | `divider` | `divider.tsx` | `block_id`                                          | Horizontal rule                                                                       |
-| `header`  | `header.tsx`  | `text` (plain_text, ≤150), `block_id`               | Big bold title                                                                        |
+| `header`  | `header.tsx`  | `text` (plain_text, ≤150), `block_id`, `level?` (1-4) | Big bold title. `level` 1-4 maps to H1-H4 (size-distinguished); omit for legacy single-size rendering. |
 
 ### 4.2 Media blocks
 
