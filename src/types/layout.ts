@@ -149,6 +149,14 @@ export type HeaderBlock = {
    * A string acting as a unique identifier for a block. If not specified, one will be generated. Maximum length for this field is 255 characters. ***block_id*** should be unique for each message and each iteration of a message. If a message is updated, use a new ***block_id***.
    */
   block_id?: string;
+  /**
+   * Heading level. Values ***1*** through ***4*** correspond to ***H1***-***H4*** heading levels respectively and control the rendered size of the header.
+   *
+   * Added to Slack's `header` block schema in the 2026-03-06 Block Kit refresh ({@link https://docs.slack.dev/changelog/2026/03/06/block-kit-rich-text/ changelog}). When omitted, Slack and this renderer fall back to the pre-rollout single-size header rendering (equivalent to ***H3***).
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/header-block View here}
+   */
+  level?: 1 | 2 | 3 | 4;
 };
 
 export type ImageBlock = {
