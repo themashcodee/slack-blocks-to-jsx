@@ -20,4 +20,10 @@ export interface IDelimiter extends ITokenDelimiter {
 }
 
 export type IThis = ITokenizer;
-export type ITokenizerProps = Partial<IBaseInlineTokenizerProps>;
+export type ITokenizerProps = Partial<IBaseInlineTokenizerProps> & {
+  // When false, the tokenizer only matches the bracket-form `<!here>` etc. and ignores bare
+  // `@here` / `@everyone` / `@channel`. Slack suppresses typed-broadcast interpolation in
+  // `verbatim: true` mode (empirically verified), so the verbatim parser instance should set
+  // this to false. Defaults to true.
+  matchTypedBroadcast?: boolean;
+};

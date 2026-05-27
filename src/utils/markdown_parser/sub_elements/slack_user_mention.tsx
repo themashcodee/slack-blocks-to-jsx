@@ -9,13 +9,26 @@ export const SlackUserMention = (props: Props) => {
   const { element } = props;
   const { hooks, users } = useGlobalData();
 
-  const user_id = element.value;
-  const user = users.find((u) => u.id === user_id || u.name === user_id);
-  if (hooks.user) return <>{hooks.user(user || { id: user_id, name: user_id })}</>;
-  const label = user?.name || user_id;
+  const raw = element.value;
+  const id_part = raw.split("|")[0] ?? raw;
+  const fallback_label = raw.split("|")[1];
+  const user = users.find((u) => u.id === id_part || u.name === id_part);
+  const label = user?.name || fallback_label || id_part;
+
+  if (hooks.user) {
+    return (
+      <>
+        {hooks.user(
+          user
+            ? { ...user, style: undefined }
+            : { id: id_part, name: label, style: undefined },
+        )}
+      </>
+    );
+  }
 
   return (
-    <span className="slack_user" data-user-id={user?.id || user_id}>
+    <span className="slack_user" data-user-id={user?.id || id_part}>
       @{label}
     </span>
   );
