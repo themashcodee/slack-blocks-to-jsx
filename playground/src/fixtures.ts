@@ -206,4 +206,26 @@ export const FIXTURES: Fixture[] = [
       },
     ],
   },
+  {
+    id: "markdown-emoji",
+    label: "Markdown · emoji",
+    blocks: [
+      {
+        type: "markdown",
+        text: [
+          "Emoji now render inside `markdown` blocks, just like in `section` blocks:",
+          "",
+          "- Standard: :tada: :smile: :rocket:",
+          "- Aliases: :thumbsup: :hankey:",
+          "- Skin tone: :wave::skin-tone-3:",
+          "",
+          "Inside code they stay literal — inline `:tada:` and fenced:",
+          "",
+          "```",
+          ":no_entry: :tada:",
+          "```",
+        ].join("\n"),
+      },
+    ],
+  },
 ];
