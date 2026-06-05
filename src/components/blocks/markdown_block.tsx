@@ -8,11 +8,9 @@ type MarkdownBlockProps = {
   data: MarkdownBlock;
 };
 
-// Renders the placeholder element emitted by remarkSlackEmoji through the same
-// <SlackEmoji> component the mrkdwn parser uses, so the `markdown` block honors
-// custom emoji (`hooks.emoji`), standard emoji, aliases and skin tones exactly
-// like every other block type. The emoji name is read from the hast node's
-// properties (set via `hProperties` in the remark plugin).
+// Renders the placeholder emitted by remarkSlackEmoji through the same
+// <SlackEmoji> component the mrkdwn parser uses (so custom/standard/alias/
+// skin-tone emoji match). The emoji name comes from the hast node properties.
 const MarkdownEmoji = ({ node }: { node?: { properties?: { name?: unknown } } }) => {
   const name = typeof node?.properties?.name === "string" ? node.properties.name : "";
   return <SlackEmoji element={{ type: "slack_emoji", value: name }} />;

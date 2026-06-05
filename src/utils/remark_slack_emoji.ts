@@ -1,19 +1,8 @@
-// A remark (mdast) plugin used only by the `markdown` block.
-//
-// Every other block type renders through the library's mrkdwn parser
-// (utils/markdown_parser), which has a `slack_emoji` tokenizer rule. The
-// `markdown` block instead renders through react-markdown + remark-gfm, and that
-// pipeline has no emoji rule — so `:shortcode:` would otherwise show up as
-// literal text. This plugin splits mdast text nodes on `:shortcode:` and emits
-// placeholder elements (tag name `SLACK_EMOJI_TAG`) that markdown_block.tsx maps
-// back to the SAME <SlackEmoji> component the mrkdwn parser uses. Reusing that
-// component means custom emoji (consumer `hooks.emoji`), standard emoji
-// (shortcode -> unicode / node-emoji), aliases and skin tones all behave
-// identically across every block type, with no divergent logic.
-//
-// `code` (fenced) and `inlineCode` are literal mdast nodes whose content lives
-// in `value`, not in child `text` nodes, so they are never split here — Slack
-// does not interpolate emoji inside code, and neither do we.
+// remark/mdast plugin for the `markdown` block (react-markdown + remark-gfm),
+// which — unlike every other block type — has no emoji rule. It splits text
+// nodes on `:shortcode:` into `SLACK_EMOJI_TAG` placeholders that markdown_block
+// renders via the same <SlackEmoji> component the mrkdwn parser uses, so custom,
+// standard, alias and skin-tone emoji all match. Code spans/blocks are never split.
 
 // Tag name emitted into the hast tree via `data.hName`. markdown_block.tsx maps
 // this through react-markdown's `components` prop.

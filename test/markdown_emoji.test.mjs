@@ -1,15 +1,8 @@
-// Emoji interpolation in the `markdown` block.
-//
-// The `markdown` block renders through react-markdown + remark-gfm (unlike every
-// other block type, which uses the mrkdwn parser). It previously had no emoji
-// rule, so `:shortcode:` rendered as literal text. These tests lock in that the
-// markdown block now interpolates emoji identically to the mrkdwn blocks —
-// standard, aliases, skin tones, and custom emoji via `hooks.emoji` — while
-// leaving code spans untouched.
-//
-// They run against the built package (dist/) so no test framework / transform
-// is needed: just Node's built-in runner + react-dom/server. CI builds before
-// running tests.
+// Emoji interpolation in the `markdown` block — it renders through react-markdown
+// (not the mrkdwn parser) and previously showed `:shortcode:` as literal text.
+// These lock in parity with mrkdwn blocks: standard, aliases, skin tones, custom
+// emoji via hooks, and code-span exclusion. Run against the built dist/ via Node's
+// built-in runner (no test framework needed); CI builds before testing.
 
 import test from "node:test";
 import assert from "node:assert/strict";
