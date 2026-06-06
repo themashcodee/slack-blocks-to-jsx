@@ -71,22 +71,32 @@ const fail = (m) => {
 /**
  * @param {string} cmd
  * @param {string[]} args
- * @param {{ capture?: boolean, allowFail?: boolean }} [opts]
+ * @param {{ capture?: boolean, allowFail?: boolean, env?: NodeJS.ProcessEnv }} [opts]
  * @returns {string|null} trimmed stdout when capturing, "" otherwise, null when allowFail and it failed
  */
 function run(cmd, args, opts = {}) {
-  const { capture = false, allowFail = false } = opts;
+  const { capture = false, allowFail = false, env } = opts;
   try {
     const out = execFileSync(cmd, args, {
       cwd: root,
       encoding: "utf8",
       stdio: capture ? ["ignore", "pipe", "pipe"] : "inherit",
+      env: env || process.env,
     });
     return capture ? (out || "").trim() : "";
   } catch (err) {
     if (allowFail) return null;
     throw err;
   }
+}
+
+// When several gh accounts are logged in, prefer the token of the account that
+// matches the repo owner — the globally-active account may only have read access
+// here. Returns an env to pass to gh, or undefined to use gh's default account.
+function ghEnvForOwner(owner) {
+  if (!owner) return undefined;
+  const token = run("gh", ["auth", "token", "--user", owner], { capture: true, allowFail: true });
+  return token ? { ...process.env, GH_TOKEN: token } : undefined;
 }
 
 // ── argument parsing ─────────────────────────────────────────────────────────
@@ -213,6 +223,11 @@ async function main() {
   const repoUrl = String(pkg.repository?.url || pkg.repository || "")
     .replace(/^git\+/, "")
     .replace(/\.git$/, "");
+  // owner/repo (e.g. "themashcodee/slack-blocks-to-jsx") used for an explicit
+  // `gh --repo`, which avoids gh's "No default remote repository" error.
+  const repoMatch = /github\.com[/:]+([^/]+)\/([^/.]+)/.exec(repoUrl);
+  const repoSlug = repoMatch ? `${repoMatch[1]}/${repoMatch[2]}` : null;
+  const ghEnv = repoSlug ? ghEnvForOwner(repoSlug.split("/")[0]) : undefined;
 
   log(c.bold(`\nReleasing ${pkg.name}`) + (dryRun ? c.yellow("  (dry run)") : ""));
 
@@ -239,8 +254,12 @@ async function main() {
     guard(`Local "${branch}" is ${behind} commit(s) behind origin. Pull first.`);
   }
 
-  if (run("gh", ["auth", "status"], { capture: true, allowFail: true }) === null) {
+  if (run("gh", ["auth", "status"], { capture: true, allowFail: true, env: ghEnv }) === null) {
     guard("GitHub CLI is not authenticated. Run: gh auth login");
+  } else {
+    // Show which gh account the GitHub release will be created as.
+    const ghUser = run("gh", ["api", "user", "--jq", ".login"], { capture: true, allowFail: true, env: ghEnv });
+    if (ghUser) info(`gh user: ${c.bold(ghUser)}`);
   }
 
   const npmUser = run("npm", ["whoami"], { capture: true, allowFail: true });
@@ -295,6 +314,7 @@ async function main() {
   let committed = false;
   let tagged = false;
   let published = false;
+  let pushed = false;
   try {
     step(`Bumping version to ${next}`, () => {
       pkg.version = next;
@@ -315,15 +335,17 @@ async function main() {
     });
     step("Pushing commit + tag to GitHub", () => {
       run("git", ["push", "--follow-tags", "origin", branch]);
+      pushed = true;
     });
     step("Creating GitHub release", () => {
       const ghArgs = ["release", "create", tagName, "--title", tagName, "--generate-notes"];
+      if (repoSlug) ghArgs.push("--repo", repoSlug);
       if (isPrerelease || distTag !== "latest") ghArgs.push("--prerelease");
-      run("gh", ghArgs);
+      run("gh", ghArgs, { env: ghEnv });
     });
   } catch (err) {
     log("");
-    fail(buildRecoveryMessage({ committed, tagged, published, tagName, distTag, next, pkgName: pkg.name }, err));
+    fail(buildRecoveryMessage({ committed, tagged, published, pushed, tagName, next, pkgName: pkg.name, repoSlug }, err));
   }
 
   // done ----------------------------------------------------------------------
@@ -350,12 +372,10 @@ function step(label, fn, { always = false } = {}) {
 function buildRecoveryMessage(state, err) {
   const lines = [`Release failed: ${err?.message || err}`, ""];
   if (state.published) {
-    lines.push(
-      `npm publish of ${state.pkgName}@${state.next} SUCCEEDED but a later step failed.`,
-      `Finish manually:`,
-      `  git push --follow-tags origin main`,
-      `  gh release create ${state.tagName} --title ${state.tagName} --generate-notes`,
-    );
+    const repoArg = state.repoSlug ? ` --repo ${state.repoSlug}` : "";
+    lines.push(`npm publish of ${state.pkgName}@${state.next} SUCCEEDED but a later step failed.`, `Finish manually:`);
+    if (!state.pushed) lines.push(`  git push --follow-tags origin main`);
+    lines.push(`  gh release create ${state.tagName}${repoArg} --title ${state.tagName} --generate-notes`);
   } else if (state.committed || state.tagged) {
     lines.push("Nothing was published or pushed. Undo the local version bump with:");
     if (state.tagged) lines.push(`  git tag -d ${state.tagName}`);
