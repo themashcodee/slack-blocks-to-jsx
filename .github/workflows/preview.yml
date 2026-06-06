@@ -1,0 +1,35 @@
+name: Preview Release
+
+# Publishes an installable preview build of every PR (and of `main`) to pkg.pr.new,
+# so contributors and testers can `npm install` a branch WITHOUT it ever touching the
+# real `slack-blocks-to-jsx` npm package or needing your npm token.
+#
+# Each new commit on a PR republishes and updates the PR comment with a fresh install
+# command — no version bumping or cleanup needed. See the "more commits" note in RELEASING.md.
+#
+# ONE-TIME SETUP: install the pkg.pr.new GitHub App on this repo (only an owner can):
+#   https://github.com/apps/pkg-pr-new
+# No secrets/tokens are required — it works for fork PRs too.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions: {}
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm dlx pkg-pr-new publish

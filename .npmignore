@@ -1,5 +1,6 @@
-.changeset
 .github
+scripts
+RELEASING.md
 node_modules
 src
 .env
