@@ -60,6 +60,18 @@ Or using pnpm:
 pnpm add slack-blocks-to-jsx
 ```
 
+### Trying a prerelease (beta / alpha)
+
+New features are sometimes published as a `beta` (or `alpha`) before they land in the default
+release, so you can test them early. Opt in with a dist-tag:
+
+```bash
+npm install slack-blocks-to-jsx@beta     # latest beta build
+npm install slack-blocks-to-jsx@alpha    # latest alpha build
+```
+
+A plain `npm install slack-blocks-to-jsx` always gives you the stable `latest` version.
+
 ### Next.js / SSR Setup
 
 Since `react-markdown` and `remark-gfm` are ESM-only packages, Next.js users need to add this to their `next.config.js` / `next.config.mjs`:

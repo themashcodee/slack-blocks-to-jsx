@@ -612,8 +612,11 @@ Input: `src/style.css`. Output: `dist/style.css` (~40 KB).
 | `dev`                       | tsup watch                                 |
 | `dev:css`                   | PostCSS watch                              |
 | `lint`                      | `tsc --noEmit`                             |
-| `release`                   | `pnpm run build && changeset publish`      |
-| `release-alpha-without-git` | Publish `--tag alpha --no-git-checks`      |
+| `test`                      | `tsc --noEmit` (typecheck; no unit tests)  |
+| `release`                   | `node scripts/release.mjs` (see Ch. 11)    |
+| `release:dry`               | Preview a release; changes nothing         |
+| `release:beta`              | Publish next `beta` prerelease (tag: beta) |
+| `release:alpha`             | Publish next `alpha` prerelease (tag: alpha) |
 
 ### 10.4 dist/ output
 
@@ -626,7 +629,7 @@ Input: `src/style.css`. Output: `dist/style.css` (~40 KB).
 
 ### 10.5 npm publish hygiene
 
-`.npmignore` excludes: `.changeset`, `.github`, `node_modules`, `src`, `.env`, `.prettierrc`, `CHANGELOG.md`, `pnpm-lock.yaml`, `tailwind.config.js`, `tsconfig.json`, `.DS_Store`, `postcss.config.js`.
+`.npmignore` excludes: `.github`, `scripts`, `RELEASING.md`, `node_modules`, `src`, `.env`, `.prettierrc`, `CHANGELOG.md`, `pnpm-lock.yaml`, `tailwind.config.js`, `tsconfig.json`, `.DS_Store`, `postcss.config.js`.
 
 `.npmrc`: `auto-install-peers=true`.
 
@@ -636,14 +639,37 @@ Input: `src/style.css`. Output: `dist/style.css` (~40 KB).
 
 ## Chapter 11 — Release process
 
-From `PUBLISH_GUIDE.md`, in short:
+Releasing is a single local command: **`pnpm release`** (see `RELEASING.md`). It is driven by
+`scripts/release.mjs` — a dependency-free Node script that, in order:
 
-1. Commit source changes.
-2. `pnpm changeset` — pick patch / minor / major; write summary.
-3. `git push origin main` — triggers GitHub Actions (`.github/workflows/`).
-4. CI runs lint + build.
-5. Changesets bot opens a "Version Packages" PR (bumps version, updates `CHANGELOG.md`).
-6. Merge that PR → publish workflow runs `pnpm run release` → `pnpm run build && changeset publish`.
+1. **Pre-flight checks** — clean working tree, on `main`, not behind `origin/main`, and authenticated
+   to both npm (`npm whoami`) and GitHub (`gh auth status`).
+2. **Lint / typecheck** (`pnpm run lint`) and **build** (`pnpm run build`).
+3. **Bumps the version** in `package.json` (interactive patch/minor/major/custom, or passed as an arg).
+4. **Commits** (`chore: release vX.Y.Z`) and **tags** (`vX.Y.Z`).
+5. **Publishes to npm** (`pnpm publish --no-git-checks --tag <dist-tag>`).
+6. **Pushes** the commit + tag, then **creates a GitHub release** via `gh release create --generate-notes`.
+
+`pnpm release:dry` previews the whole thing (runs checks + build, mutates nothing).
+
+**Prereleases (beta / alpha):** `pnpm release:beta` / `pnpm release:alpha` cut the next prerelease
+(`1.0.4` → `1.0.5-beta.0` → `-beta.1` …). Each publishes under its own npm dist-tag (`beta`, `alpha`,
+`rc`…) so it never becomes `latest`, and is flagged as a pre-release on GitHub — testers opt in with
+`npm install slack-blocks-to-jsx@beta`. Bump types `prepatch`/`preminor`/`premajor`/`prerelease` plus
+`--preid=<id>` give finer control; a normal `pnpm release patch` on a prerelease graduates it to stable
+(`1.0.5-beta.2` → `1.0.5`). The version maths mirror semver's `inc`. See `RELEASING.md`.
+
+The old Changesets flow (`pnpm changeset` + the `publish.yml` "Version Packages" bot) has been removed
+in favour of this. CI (`.github/workflows/main.yml`) still runs lint + build on every push/PR, but no
+longer publishes — releasing is now a deliberate local action. There is no `CHANGELOG.md`; release notes
+are auto-generated from merged PRs/commits on each GitHub release.
+
+**PR preview releases:** `.github/workflows/preview.yml` publishes every PR (and `main`) to
+[pkg.pr.new](https://github.com/stackblitz-labs/pkg.pr.new) so reviewers can `npm install`
+a branch (`https://pkg.pr.new/slack-blocks-to-jsx@<commit-or-PR>`) without it ever hitting the
+real npm package. It needs no npm token, works for fork PRs, and re-publishes + updates the PR
+comment on every new commit. Requires the pkg.pr.new GitHub App installed on the repo. These
+previews are distinct from intentional `pnpm release:beta` prereleases (which do go to npm).
 
 `RELEASE_NOTES.md` tells the story of v1.0.1 — the "full Block Kit parity" release — after 80+ iterative releases. Major breaking changes from that version:
 
@@ -683,8 +709,9 @@ Folder: `test-blocks/`. Used as manual/visual test inputs. Each file is a comple
 
 ```
 slack blocks to jsx library/
-├── .changeset/
 ├── .github/
+├── scripts/
+│   └── release.mjs                       # One-command release (see Ch. 11)
 ├── dist/
 │   ├── index.js  index.mjs  index.d.ts  index.d.mts  style.css
 ├── src/
@@ -751,7 +778,7 @@ slack blocks to jsx library/
 │       ├── main.tsx  App.tsx  fixtures.ts  index.css
 ├── package.json  tsconfig.json  tsup.config.ts
 ├── tailwind.config.js  postcss.config.js  .prettierrc
-├── readme.md  PUBLISH_GUIDE.md  RELEASE_NOTES.md
+├── readme.md  RELEASING.md  KNOWLEDGE_BASE.md
 ├── .npmignore  .npmrc  .env  .gitignore
 └── pnpm-lock.yaml
 ```
@@ -771,7 +798,7 @@ Rules worth knowing before making changes:
 7. **Externalization:** `react-markdown`, `remark-gfm`, `node-emoji` must stay external in tsup config — bundling them again will break Next.js ESM interop.
 8. **Accessibility:** preserve the `accessibility_label` prop on buttons; use semantic tags (button, a, input) — this mirrors Slack's own a11y posture.
 9. **Type-first:** every block/element addition requires a matching interface in `src/types/` before the component lands.
-10. **Changesets:** any user-facing change needs a changeset before merge.
+10. **Releasing:** versioning + publishing is a single local command, `pnpm release` (see Ch. 11 / `RELEASING.md`). No changeset files are needed.
 
 ---
 
@@ -856,3 +883,4 @@ The sidebar picks it up automatically on next HMR. Keep fixtures small (≤ 10 b
 | 2026-04-17 | Claude + Mash | Added Ch. 0 — How to use this knowledge base (usage, reading strategy, update triggers, update procedure, style rules, ownership).                                                                                                                                                                                                                                                                                                             |
 | 2026-04-17 | Claude + Mash | v1.1.0 release prep: added three new blocks (`alert`, `card`, `carousel`) matching Slack's 2026-04-16 Block Kit launch. Ch. 4 block count 14 → 17 (new §4.6 "Status & rich-container blocks"). Ch. 6.1 type list updated with `AlertBlock`, `CardBlock`, `CarouselBlock`, `CardImage`, `AlertLevel`. Ch. 12 gained `11-alert-card-carousel.json` fixture. Ch. 13 file tree updated. Changeset: `.changeset/add-alert-card-carousel-blocks.md`. |
 | 2026-04-17 | Claude + Mash | Added Ch. 15 — Playground. New `playground/` folder (Vite + React 18) that source-aliases `slack-blocks-to-jsx` to `../src/index.ts` for instant HMR. Committed to git, excluded from npm via `.npmignore`. Ch. 15 renumbered from change log → playground; change log moved to Ch. 16. Root `package.json` gained `playground`, `playground:install`, `playground:build` scripts. Ch. 13 file tree extended.                                  |
+| 2026-06-06 | Claude + Mash | Replaced the Changesets release flow with a single local command `pnpm release` (`scripts/release.mjs`): checks → lint → build → bump → commit/tag → npm publish → push → GitHub release. Removed `.changeset/`, `@changesets/cli`, and `.github/workflows/publish.yml`; added `test`/`release`/`release:dry` scripts and `RELEASING.md`. Rewrote Ch. 11, updated §10.3/§10.5 scripts + hygiene, Ch. 13 file tree (`scripts/`), and Ch. 14 rule 10. Added first-class beta/alpha prereleases: `release:beta`/`release:alpha` scripts, `prepatch`/`preminor`/`premajor`/`prerelease` bump types + `--preid`, auto dist-tag per channel, prerelease graduation, and a "Trying a prerelease" section in `readme.md`. Added `.github/workflows/preview.yml` (pkg.pr.new) for automatic per-PR/per-commit preview installs (no npm token, fork-safe). |
