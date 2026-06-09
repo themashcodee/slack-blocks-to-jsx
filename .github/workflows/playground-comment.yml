@@ -1,0 +1,46 @@
+name: Playground Comment
+
+# Greets every new PR with a one-click way to test the changes live: the pkg.pr.new
+# preview build (published by preview.yml) loaded into the hosted playground — no install,
+# no release needed.
+#
+# Uses `pull_request_target` so it can comment on PRs from forks too (the default
+# `pull_request` token is read-only for fork PRs). This is safe here because the job NEVER
+# checks out or runs PR code — it only posts a static comment via the GitHub API.
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    # Skip bot-authored PRs (e.g. dependabot) — the playground note isn't useful there.
+    if: ${{ github.event.pull_request.user.type != 'Bot' }}
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.issue.number;
+            const author = context.payload.pull_request.user.login;
+            const build = `https://pkg.pr.new/slack-blocks-to-jsx@${pr}`;
+            const body = [
+              `👋 Thanks for the PR, @${author}!`,
+              ``,
+              `You can try these changes **live, before any release** — no install needed.`,
+              `Once the preview build finishes (see the **pkg-pr-new** bot comment), open the playground and load this PR's build:`,
+              ``,
+              `🛝 **Playground:** https://slack-block-to-jsx-playground.vercel.app/`,
+              `📦 **This PR's build:** \`${build}\``,
+              ``,
+              `Paste the build URL into the **Library package** field (or hit the **pkg.pr #${pr}** preset) and click **Load build** — your blocks render against this exact PR. 🎉`,
+            ].join("\n");
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr,
+              body,
+            });
