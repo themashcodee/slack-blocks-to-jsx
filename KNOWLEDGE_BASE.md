@@ -325,7 +325,7 @@ All block components live in `src/components/blocks/`. 17 block types are suppor
 | ---------- | -------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `context`  | `context.tsx`        | Up to 10 mixed text + image elements                                                                            |
 | `table`    | `table.tsx`          | `cells: Cell[][]`, optional `size`; cell alignment; bordered                                                    |
-| `markdown` | `markdown_block.tsx` | Renders **standard** GFM via `react-markdown` + `remark-gfm`; tables, task lists, code blocks, syntax highlight |
+| `markdown` | `markdown_block.tsx` | Renders **standard** GFM via `react-markdown` + `remark-gfm`; tables, task lists, code blocks, syntax highlight. Emoji shortcodes are interpolated by the `remarkSlackEmoji` plugin, reusing the same `<SlackEmoji>` component (and `hooks.emoji`) as the mrkdwn parser |
 
 ### 4.5 AI/workflow blocks
 
@@ -752,6 +752,7 @@ slack blocks to jsx library/
 │       ├── is_accessory_stacked.ts
 │       ├── merge_classes.ts
 │       ├── numbers.ts
+│       ├── remark_slack_emoji.ts        # emoji rule for the markdown block (react-markdown/mdast)
 │       ├── sanitize_for_slack.ts
 │       ├── emojis/{parser.ts, list.ts}
 │       └── markdown_parser/

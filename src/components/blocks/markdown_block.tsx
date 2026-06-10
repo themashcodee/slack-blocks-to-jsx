@@ -1,10 +1,24 @@
-import Markdown from "react-markdown";
+import Markdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { MarkdownBlock } from "../../types";
+import { SlackEmoji } from "../../utils/markdown_parser/sub_elements/slack_emoji";
+import { remarkSlackEmoji, SLACK_EMOJI_TAG } from "../../utils/remark_slack_emoji";
 
 type MarkdownBlockProps = {
   data: MarkdownBlock;
 };
+
+// Renders the placeholder emitted by remarkSlackEmoji through the same
+// <SlackEmoji> component the mrkdwn parser uses (so custom/standard/alias/
+// skin-tone emoji match). The emoji name comes from the hast node properties.
+const MarkdownEmoji = ({ node }: { node?: { properties?: { name?: unknown } } }) => {
+  const name = typeof node?.properties?.name === "string" ? node.properties.name : "";
+  return <SlackEmoji element={{ type: "slack_emoji", value: name }} />;
+};
+
+// react-markdown's `Components` type only allows known HTML tag names as keys,
+// so the custom `slack-emoji` element is registered through a cast.
+const emojiComponents = { [SLACK_EMOJI_TAG]: MarkdownEmoji } as Components;
 
 export const MarkdownBlockComponent = (props: MarkdownBlockProps) => {
   const { text, block_id } = props.data;
@@ -18,8 +32,9 @@ export const MarkdownBlockComponent = (props: MarkdownBlockProps) => {
       className="mt-2 mb-1 text-primary text-black-primary dark:text-dark-text-primary slack_blocks_to_jsx__markdown_block"
     >
       <Markdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkSlackEmoji]}
         components={{
+          ...emojiComponents,
           h1: ({ children }) => (
             <h1 className="text-header font-semibold text-black-primary dark:text-dark-text-primary mb-0.5">
               {children}
