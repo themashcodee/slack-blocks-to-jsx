@@ -83,10 +83,28 @@ const areaMulti = {
   chart: {
     type: "area",
     series: [
-      { name: "Desktop", data: [{ label: "Mon", value: 2800 }, { label: "Tue", value: 3000 }] },
-      { name: "Mobile", data: [{ label: "Mon", value: 1400 }, { label: "Tue", value: 1500 }] },
+      {
+        name: "Desktop",
+        data: [
+          { label: "Mon", value: 2800 },
+          { label: "Tue", value: 3000 },
+          { label: "Wed", value: 3400 },
+          { label: "Thu", value: 3200 },
+          { label: "Fri", value: 3500 },
+        ],
+      },
+      {
+        name: "Mobile",
+        data: [
+          { label: "Mon", value: 1400 },
+          { label: "Tue", value: 1500 },
+          { label: "Wed", value: 1700 },
+          { label: "Thu", value: 1600 },
+          { label: "Fri", value: 1800 },
+        ],
+      },
     ],
-    axis_config: { categories: ["Mon", "Tue"], x_label: "Day", y_label: "Users" },
+    axis_config: { categories: ["Mon", "Tue", "Wed", "Thu", "Fri"], x_label: "Day", y_label: "Users" },
   },
 };
 
@@ -147,6 +165,12 @@ test("area chart: aria-label uses the Area phrasing", () => {
     /aria-label="Area chart: Concurrent users by platform\. The X axis is Day, the Y axis is Users\. There are 2 series: Desktop and Mobile\."/,
   );
   assert.match(out, /<path/);
+});
+
+test("line and area charts render smooth (curved) paths", () => {
+  // monotone-cubic interpolation emits cubic bézier (C) commands rather than straight L segments
+  assert.match(render([lineMulti]), /<path[^>]*d="M[^"]* C /);
+  assert.match(render([areaMulti]), /<path[^>]*d="M[^"]* C /);
 });
 
 test("pie chart: aria-label lists segments with percentages summing to 100", () => {

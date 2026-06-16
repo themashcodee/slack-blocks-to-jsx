@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { PointerEvent as ReactPointerEvent, ReactNode, useRef, useState } from "react";
 import {
   DataVisualizationBlock,
   DataVizCartesianChart,
@@ -15,6 +15,9 @@ const PALETTE = ["rgb(191, 77, 26)", "rgb(38, 59, 156)", "rgb(16, 111, 77)", "rg
 const colorAt = (i: number) => PALETTE[i % PALETTE.length]!;
 
 // #region helpers ---------------------------------------------------------------
+
+const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+const r2 = (n: number) => Math.round(n * 100) / 100;
 
 const niceNum = (range: number, round: boolean) => {
   const exp = Math.floor(Math.log10(range || 1));
@@ -64,6 +67,9 @@ const formatTick = (n: number): string => {
   return n.toLocaleString("en-US");
 };
 
+// Full, grouped number for tooltips (e.g. 1600 -> "1,600").
+const formatFull = (n: number) => n.toLocaleString("en-US");
+
 // "a", "a and b", "a, b, and c" (oxford) / "a, b and c".
 const joinList = (items: string[], oxford: boolean): string => {
   if (items.length === 0) return "";
@@ -71,6 +77,57 @@ const joinList = (items: string[], oxford: boolean): string => {
   if (items.length === 2) return `${items[0]} and ${items[1]}`;
   const head = items.slice(0, -1).join(", ");
   return `${head}${oxford ? "," : ""} and ${items[items.length - 1]}`;
+};
+
+// Monotone cubic (Fritsch–Carlson) spline through x-ordered points. Produces a smooth
+// curve that never overshoots the data — safe for negative values and flat runs.
+const smoothLine = (pts: [number, number][]): string => {
+  const n = pts.length;
+  if (n === 0) return "";
+  if (n === 1) return `M ${r2(pts[0]![0])} ${r2(pts[0]![1])}`;
+  if (n === 2) return `M ${r2(pts[0]![0])} ${r2(pts[0]![1])} L ${r2(pts[1]![0])} ${r2(pts[1]![1])}`;
+
+  const xs = pts.map((p) => p[0]);
+  const ys = pts.map((p) => p[1]);
+  const dx: number[] = [];
+  const slope: number[] = [];
+  for (let i = 0; i < n - 1; i++) {
+    dx[i] = xs[i + 1]! - xs[i]!;
+    slope[i] = dx[i] === 0 ? 0 : (ys[i + 1]! - ys[i]!) / dx[i]!;
+  }
+
+  const tangent: number[] = new Array(n);
+  tangent[0] = slope[0]!;
+  tangent[n - 1] = slope[n - 2]!;
+  for (let i = 1; i < n - 1; i++) {
+    if (slope[i - 1]! * slope[i]! <= 0) tangent[i] = 0;
+    else tangent[i] = (slope[i - 1]! + slope[i]!) / 2;
+  }
+  for (let i = 0; i < n - 1; i++) {
+    if (slope[i] === 0) {
+      tangent[i] = 0;
+      tangent[i + 1] = 0;
+      continue;
+    }
+    const a = tangent[i]! / slope[i]!;
+    const b = tangent[i + 1]! / slope[i]!;
+    const h = Math.hypot(a, b);
+    if (h > 3) {
+      const t = 3 / h;
+      tangent[i] = t * a * slope[i]!;
+      tangent[i + 1] = t * b * slope[i]!;
+    }
+  }
+
+  const d = [`M ${r2(xs[0]!)} ${r2(ys[0]!)}`];
+  for (let i = 0; i < n - 1; i++) {
+    const c1x = xs[i]! + dx[i]! / 3;
+    const c1y = ys[i]! + (tangent[i]! * dx[i]!) / 3;
+    const c2x = xs[i + 1]! - dx[i]! / 3;
+    const c2y = ys[i + 1]! - (tangent[i + 1]! * dx[i]!) / 3;
+    d.push(`C ${r2(c1x)} ${r2(c1y)} ${r2(c2x)} ${r2(c2y)} ${r2(xs[i + 1]!)} ${r2(ys[i + 1]!)}`);
+  }
+  return d.join(" ");
 };
 
 const csvCell = (v: string) => (/[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
@@ -147,6 +204,51 @@ const buildPieModel = (chart: DataVizPieChart): PieModel => {
 
 // #endregion
 
+// #region tooltip ---------------------------------------------------------------
+
+type TooltipRow = { name: string; value: string; color: string };
+
+const ChartTooltip = (props: {
+  left: string;
+  top: number;
+  flip: boolean;
+  header?: string;
+  rows: TooltipRow[];
+}) => (
+  <div
+    className="absolute z-20 pointer-events-none whitespace-nowrap rounded-lg border border-black-primary/[0.13] dark:border-dark-border bg-white-primary dark:bg-dark-bg-secondary px-3 py-2 text-small shadow-lg slack_blocks_to_jsx__data_visualization_tooltip"
+    style={{
+      left: props.left,
+      top: props.top,
+      transform: `translate(${props.flip ? "calc(-100% - 12px)" : "12px"}, -50%)`,
+    }}
+  >
+    {props.header && (
+      <div className="mb-1 font-medium text-black-primary dark:text-dark-text-primary">
+        {props.header}
+      </div>
+    )}
+    <div className="flex flex-col gap-1">
+      {props.rows.map((row, i) => (
+        <div key={i} className="flex items-center justify-between gap-6">
+          <span className="flex items-center gap-2">
+            <span
+              className="inline-block w-2.5 h-2.5 rounded-full shrink-0"
+              style={{ backgroundColor: row.color }}
+            />
+            <span className="text-black-secondary dark:text-dark-text-secondary">{row.name}</span>
+          </span>
+          <span className="font-semibold tabular-nums text-black-primary dark:text-dark-text-primary">
+            {row.value}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+// #endregion
+
 // #region cartesian chart -------------------------------------------------------
 
 const VIEW_W = 520;
@@ -160,6 +262,9 @@ const CartesianChart = (props: {
 }) => {
   const { model, type, ariaLabel } = props;
   const { categories, series, xLabel, yLabel } = model;
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hover, setHover] = useState<{ index: number; x: number; y: number } | null>(null);
 
   const plotLeft = MARGIN.left;
   const plotRight = VIEW_W - MARGIN.right;
@@ -198,154 +303,229 @@ const CartesianChart = (props: {
   const groupWidth = bandWidth * 0.7;
   const barWidth = series.length > 0 ? groupWidth / series.length : groupWidth;
 
+  // Pixel positions a series occupies along the x-axis, used for smooth paths and markers.
+  const seriesPoints = (s: { values: (number | null)[] }): [number, number][] => {
+    const pts: [number, number][] = [];
+    s.values.forEach((v, i) => {
+      if (v != null) pts.push([xPoint(i), yOf(v)]);
+    });
+    return pts;
+  };
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const el = containerRef.current;
+    if (!el || count === 0) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.width === 0) return;
+    const x = e.clientX - rect.left;
+    const y = clamp(e.clientY - rect.top, 44, Math.max(44, rect.height - 44));
+    const vbX = (x / rect.width) * VIEW_W;
+    let index =
+      type === "bar"
+        ? Math.floor((vbX - plotLeft) / bandWidth)
+        : count <= 1
+          ? 0
+          : Math.round((vbX - plotLeft) / (plotW / (count - 1)));
+    index = clamp(index, 0, count - 1);
+    setHover({ index, x, y });
+  };
+
+  const guideX = hover ? (type === "bar" ? xBand(hover.index) : xPoint(hover.index)) : null;
+  const leftPct = guideX != null ? (guideX / VIEW_W) * 100 : 0;
+  const flip = leftPct > 58;
+
   return (
-    <svg
-      viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-      role="img"
-      aria-label={ariaLabel}
-      preserveAspectRatio="xMidYMid meet"
-      className="w-full h-auto text-black-secondary dark:text-dark-text-max slack_blocks_to_jsx__data_visualization_chart"
-      style={{ fontFamily: "Lato, Slack-Lato, sans-serif" }}
+    <div
+      ref={containerRef}
+      className="relative slack_blocks_to_jsx__data_visualization_plot"
+      onPointerMove={onPointerMove}
+      onPointerDown={onPointerMove}
+      onPointerLeave={() => setHover(null)}
     >
-      {/* gridlines + y-axis ticks */}
-      {ticks.map((t, i) => {
-        const y = yOf(t);
-        return (
-          <g key={`grid-${i}`}>
-            <line
-              x1={plotLeft}
-              y1={y}
-              x2={plotRight}
-              y2={y}
-              stroke="currentColor"
-              strokeOpacity={t === 0 && showZeroLine ? 0.45 : 0.16}
-            />
-            <text
-              x={plotLeft - 8}
-              y={y}
-              textAnchor="end"
-              dominantBaseline="central"
-              fill="currentColor"
-              fontSize={11}
-            >
-              {formatTick(t)}
-            </text>
-          </g>
-        );
-      })}
-
-      {/* area fills (drawn under the lines) */}
-      {type === "area" &&
-        series.map((s, si) => {
-          const pts = s.values
-            .map((v, i) => (v == null ? null : ([xPoint(i), yOf(v)] as [number, number])))
-            .filter((p): p is [number, number] => p !== null);
-          if (pts.length === 0) return null;
-          const line = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`).join(" ");
-          const area = `${line} L ${pts[pts.length - 1]![0]} ${baselineY} L ${pts[0]![0]} ${baselineY} Z`;
+      <svg
+        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+        role="img"
+        aria-label={ariaLabel}
+        preserveAspectRatio="xMidYMid meet"
+        className="w-full h-auto text-black-secondary dark:text-dark-text-max slack_blocks_to_jsx__data_visualization_chart"
+        style={{ fontFamily: "Lato, Slack-Lato, sans-serif" }}
+      >
+        {/* gridlines + y-axis ticks */}
+        {ticks.map((t, i) => {
+          const y = yOf(t);
           return (
-            <g key={`area-${si}`}>
-              <path d={area} fill={s.color} fillOpacity={0.22} />
-              <path
-                d={line}
-                fill="none"
-                stroke={s.color}
-                strokeWidth={2}
-                strokeLinejoin="round"
-                strokeLinecap="round"
+            <g key={`grid-${i}`}>
+              <line
+                x1={plotLeft}
+                y1={y}
+                x2={plotRight}
+                y2={y}
+                stroke="currentColor"
+                strokeOpacity={t === 0 && showZeroLine ? 0.45 : 0.16}
               />
+              <text
+                x={plotLeft - 8}
+                y={y}
+                textAnchor="end"
+                dominantBaseline="central"
+                fill="currentColor"
+                fontSize={11}
+              >
+                {formatTick(t)}
+              </text>
             </g>
           );
         })}
 
-      {/* lines */}
-      {type === "line" &&
-        series.map((s, si) => {
-          const pts = s.values
-            .map((v, i) => (v == null ? null : ([xPoint(i), yOf(v)] as [number, number])))
-            .filter((p): p is [number, number] => p !== null);
-          if (pts.length === 0) return null;
-          const line = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`).join(" ");
-          return (
-            <g key={`line-${si}`}>
-              <path
-                d={line}
-                fill="none"
-                stroke={s.color}
-                strokeWidth={2}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              {pts.map(([x, y], i) => (
-                <circle key={i} cx={x} cy={y} r={2.5} fill={s.color} />
-              ))}
-            </g>
-          );
-        })}
-
-      {/* bars */}
-      {type === "bar" &&
-        series.map((s, si) => (
-          <g key={`bar-${si}`}>
-            {s.values.map((v, i) => {
-              if (v == null) return null;
-              const groupStart = xBand(i) - groupWidth / 2;
-              const x = groupStart + si * barWidth;
-              const valueY = yOf(v);
-              const y = Math.min(valueY, baselineY);
-              const h = Math.max(1, Math.abs(valueY - baselineY));
-              return (
-                <rect
-                  key={i}
-                  x={x}
-                  y={y}
-                  width={Math.max(1, barWidth - 1)}
-                  height={h}
-                  rx={2}
-                  fill={s.color}
+        {/* area fills (drawn under the lines) */}
+        {type === "area" &&
+          series.map((s, si) => {
+            const pts = seriesPoints(s);
+            if (pts.length === 0) return null;
+            const top = smoothLine(pts);
+            const area = `${top} L ${r2(pts[pts.length - 1]![0])} ${r2(baselineY)} L ${r2(pts[0]![0])} ${r2(baselineY)} Z`;
+            return (
+              <g key={`area-${si}`}>
+                <path d={area} fill={s.color} fillOpacity={0.22} />
+                <path
+                  d={top}
+                  fill="none"
+                  stroke={s.color}
+                  strokeWidth={2}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
                 />
-              );
-            })}
-          </g>
+              </g>
+            );
+          })}
+
+        {/* lines */}
+        {type === "line" &&
+          series.map((s, si) => {
+            const pts = seriesPoints(s);
+            if (pts.length === 0) return null;
+            return (
+              <path
+                key={`line-${si}`}
+                d={smoothLine(pts)}
+                fill="none"
+                stroke={s.color}
+                strokeWidth={2}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+              />
+            );
+          })}
+
+        {/* bars */}
+        {type === "bar" &&
+          series.map((s, si) => (
+            <g key={`bar-${si}`}>
+              {s.values.map((v, i) => {
+                if (v == null) return null;
+                const groupStart = xBand(i) - groupWidth / 2;
+                const x = groupStart + si * barWidth;
+                const valueY = yOf(v);
+                const y = Math.min(valueY, baselineY);
+                const h = Math.max(1, Math.abs(valueY - baselineY));
+                return (
+                  <rect
+                    key={i}
+                    x={x}
+                    y={y}
+                    width={Math.max(1, barWidth - 1)}
+                    height={h}
+                    rx={2}
+                    fill={s.color}
+                  />
+                );
+              })}
+            </g>
+          ))}
+
+        {/* x-axis category labels */}
+        {categories.map((c, i) => (
+          <text
+            key={`x-${i}`}
+            x={type === "bar" ? xBand(i) : xPoint(i)}
+            y={plotBottom + 16}
+            textAnchor="middle"
+            fill="currentColor"
+            fontSize={11}
+          >
+            {c}
+          </text>
         ))}
 
-      {/* x-axis category labels */}
-      {categories.map((c, i) => (
-        <text
-          key={`x-${i}`}
-          x={type === "bar" ? xBand(i) : xPoint(i)}
-          y={plotBottom + 16}
-          textAnchor="middle"
-          fill="currentColor"
-          fontSize={11}
-        >
-          {c}
-        </text>
-      ))}
+        {/* axis titles */}
+        {xLabel && (
+          <text
+            x={(plotLeft + plotRight) / 2}
+            y={VIEW_H - 6}
+            textAnchor="middle"
+            fill="currentColor"
+            fontSize={12}
+          >
+            {xLabel}
+          </text>
+        )}
+        {yLabel && (
+          <text
+            transform={`translate(14 ${(plotTop + plotBottom) / 2}) rotate(-90)`}
+            textAnchor="middle"
+            fill="currentColor"
+            fontSize={12}
+          >
+            {yLabel}
+          </text>
+        )}
 
-      {/* axis titles */}
-      {xLabel && (
-        <text
-          x={(plotLeft + plotRight) / 2}
-          y={VIEW_H - 6}
-          textAnchor="middle"
-          fill="currentColor"
-          fontSize={12}
-        >
-          {xLabel}
-        </text>
+        {/* hover guide line + value markers (drawn on top) */}
+        {guideX != null && (
+          <line
+            x1={guideX}
+            y1={plotTop}
+            x2={guideX}
+            y2={plotBottom}
+            stroke="currentColor"
+            strokeWidth={1}
+            strokeDasharray="4 4"
+            strokeOpacity={0.7}
+          />
+        )}
+        {hover &&
+          type !== "bar" &&
+          series.map((s, si) => {
+            const v = s.values[hover.index];
+            if (v == null) return null;
+            return (
+              <circle
+                key={`dot-${si}`}
+                cx={xPoint(hover.index)}
+                cy={yOf(v)}
+                r={4}
+                style={{ fill: s.color }}
+                strokeWidth={1.5}
+                className="stroke-white-primary dark:stroke-dark-bg-secondary"
+              />
+            );
+          })}
+      </svg>
+
+      {hover && (
+        <ChartTooltip
+          left={`${leftPct}%`}
+          top={hover.y}
+          flip={flip}
+          header={categories[hover.index]}
+          rows={series.map((s) => ({
+            name: s.name,
+            value: s.values[hover.index] == null ? "—" : formatFull(s.values[hover.index]!),
+            color: s.color,
+          }))}
+        />
       )}
-      {yLabel && (
-        <text
-          transform={`translate(14 ${(plotTop + plotBottom) / 2}) rotate(-90)`}
-          textAnchor="middle"
-          fill="currentColor"
-          fontSize={12}
-        >
-          {yLabel}
-        </text>
-      )}
-    </svg>
+    </div>
   );
 };
 
@@ -362,50 +542,101 @@ const pieSlice = (cx: number, cy: number, r: number, start: number, end: number)
   const [sx, sy] = polar(cx, cy, r, start);
   const [ex, ey] = polar(cx, cy, r, end);
   const large = end - start > 180 ? 1 : 0;
-  return `M ${cx} ${cy} L ${sx} ${sy} A ${r} ${r} 0 ${large} 1 ${ex} ${ey} Z`;
+  return `M ${r2(cx)} ${r2(cy)} L ${r2(sx)} ${r2(sy)} A ${r} ${r} 0 ${large} 1 ${r2(ex)} ${r2(ey)} Z`;
 };
+
+const PIE_CX = 110;
+const PIE_CY = 110;
+const PIE_R = 92;
 
 const PieChart = (props: { model: PieModel; ariaLabel: string }) => {
   const { model, ariaLabel } = props;
-  const cx = 110;
-  const cy = 110;
-  const r = 92;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hover, setHover] = useState<{ seg: number; x: number; y: number } | null>(null);
 
   const segs = model.segments.filter((s) => Math.max(0, s.value) > 0);
   if (segs.length === 0 || model.total <= 0) return null;
 
   let angle = 0;
-  const arcs = segs.map((s) => {
+  const arcs = segs.map((s, i) => {
     const fraction = Math.max(0, s.value) / model.total;
     const start = angle;
     const end = angle + fraction * 360;
     angle = end;
-    return { color: s.color, start, end, full: fraction >= 0.999 };
+    return { seg: s, index: i, start, end, full: fraction >= 0.999 };
   });
 
+  const pointToSeg = (i: number, e: ReactPointerEvent<Element>) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = clamp(e.clientY - rect.top, 18, Math.max(18, rect.height - 18));
+    setHover({ seg: i, x, y });
+  };
+
+  // Hovered slice is rendered last (on top) and slightly larger, growing from the pie center.
+  const ordered = hover
+    ? [...arcs.filter((a) => a.index !== hover.seg), arcs.find((a) => a.index === hover.seg)!]
+    : arcs;
+
+  const hovered = hover ? arcs.find((a) => a.index === hover.seg) : undefined;
+  const containerWidth = containerRef.current?.clientWidth ?? 200;
+  const flip = hover ? hover.x > containerWidth * 0.58 : false;
+
   return (
-    <svg
-      viewBox="0 0 220 220"
-      role="img"
-      aria-label={ariaLabel}
-      preserveAspectRatio="xMidYMid meet"
-      className="w-[200px] h-[200px] max-w-full text-white-primary dark:text-dark-bg-secondary slack_blocks_to_jsx__data_visualization_chart"
+    <div
+      ref={containerRef}
+      className="relative inline-block"
+      onPointerLeave={() => setHover(null)}
     >
-      {arcs.map((a, i) =>
-        a.full ? (
-          <circle key={i} cx={cx} cy={cy} r={r} fill={a.color} stroke="currentColor" strokeWidth={2} />
-        ) : (
-          <path
-            key={i}
-            d={pieSlice(cx, cy, r, a.start, a.end)}
-            fill={a.color}
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinejoin="round"
-          />
-        ),
+      <svg
+        viewBox="0 0 220 220"
+        role="img"
+        aria-label={ariaLabel}
+        preserveAspectRatio="xMidYMid meet"
+        className="w-[200px] h-[200px] max-w-full text-white-primary dark:text-dark-bg-secondary slack_blocks_to_jsx__data_visualization_chart"
+      >
+        {ordered.map((a) => {
+          const r = hover && hover.seg === a.index ? PIE_R * 1.07 : PIE_R;
+          const handlers = {
+            onPointerEnter: (e: ReactPointerEvent<Element>) => pointToSeg(a.index, e),
+            onPointerMove: (e: ReactPointerEvent<Element>) => pointToSeg(a.index, e),
+          };
+          return a.full ? (
+            <circle
+              key={a.index}
+              cx={PIE_CX}
+              cy={PIE_CY}
+              r={r}
+              style={{ fill: a.seg.color }}
+              stroke="currentColor"
+              strokeWidth={2}
+              {...handlers}
+            />
+          ) : (
+            <path
+              key={a.index}
+              d={pieSlice(PIE_CX, PIE_CY, r, a.start, a.end)}
+              style={{ fill: a.seg.color }}
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinejoin="round"
+              {...handlers}
+            />
+          );
+        })}
+      </svg>
+
+      {hover && hovered && (
+        <ChartTooltip
+          left={`${hover.x}px`}
+          top={hover.y}
+          flip={flip}
+          rows={[{ name: hovered.seg.label, value: formatFull(hovered.seg.value), color: hovered.seg.color }]}
+        />
       )}
-    </svg>
+    </div>
   );
 };
 
