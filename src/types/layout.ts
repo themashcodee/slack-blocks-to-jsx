@@ -36,6 +36,7 @@ export type Block =
   | CarouselBlock
   | ContextBlock
   | ContextActionsBlock
+  | DataVisualizationBlock
   | DividerBlock
   | FileBlock
   | HeaderBlock
@@ -571,6 +572,134 @@ export type CarouselBlock = {
    * An array of {@link CardBlock} entries. Minimum 1, maximum 10.
    */
   elements: CardBlock[];
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+/**
+ * A single ⟨label, value⟩ pair plotted on a cartesian chart (line, bar, or area).
+ */
+export type DataVizDataPoint = {
+  /**
+   * The category this point belongs to. Matches an entry in
+   * {@link DataVizAxisConfig.categories}.
+   */
+  label: string;
+  /**
+   * The numeric value for this point. May be negative.
+   */
+  value: number;
+};
+
+/**
+ * A named collection of {@link DataVizDataPoint data points} rendered as one line,
+ * one set of bars, or one filled area. The ***name*** is shown in the chart legend.
+ */
+export type DataVizSeries = {
+  /**
+   * The series name, shown in the chart legend.
+   */
+  name: string;
+  /**
+   * The data points for this series — typically one per category.
+   */
+  data: DataVizDataPoint[];
+};
+
+/**
+ * Axis configuration for cartesian charts (***line***, ***bar***, ***area***). Pie charts
+ * do not use this object.
+ */
+export type DataVizAxisConfig = {
+  /**
+   * The ordered category labels rendered along the X axis.
+   */
+  categories?: string[];
+  /**
+   * A label for the X axis.
+   */
+  x_label?: string;
+  /**
+   * A label for the Y axis.
+   */
+  y_label?: string;
+};
+
+/**
+ * A single slice of a pie chart.
+ */
+export type DataVizSegment = {
+  /**
+   * The segment name, shown in the legend and used to compute its percentage.
+   */
+  label: string;
+  /**
+   * The segment value. Percentages are computed from the sum of all segment values.
+   */
+  value: number;
+};
+
+/**
+ * A ***line***, ***bar***, or ***area*** chart. These plot one or more {@link DataVizSeries series}
+ * against a shared set of categories described by {@link DataVizAxisConfig axis_config}.
+ */
+export type DataVizCartesianChart = {
+  type: "line" | "bar" | "area";
+  /**
+   * The series to plot. Each series is drawn in the next color from the palette and listed
+   * in the legend.
+   */
+  series: DataVizSeries[];
+  /**
+   * Axis configuration — categories and X / Y axis labels.
+   */
+  axis_config?: DataVizAxisConfig;
+};
+
+/**
+ * A ***pie*** chart. Pie charts render a set of {@link DataVizSegment segments} and do not use
+ * ***series*** or ***axis_config***.
+ */
+export type DataVizPieChart = {
+  type: "pie";
+  /**
+   * The pie segments. Each segment's percentage is computed from the sum of all values.
+   */
+  segments: DataVizSegment[];
+};
+
+/**
+ * The chart definition for a {@link DataVisualizationBlock}. The shape depends on the chart
+ * ***type***: ***line*** / ***bar*** / ***area*** use {@link DataVizCartesianChart}, while ***pie***
+ * uses {@link DataVizPieChart}.
+ */
+export type DataVizChart = DataVizCartesianChart | DataVizPieChart;
+
+export type DataVisualizationBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/data-visualization-block View here}
+   *
+   * A ***data_visualization*** block displays data visually as a ***pie***, ***bar***, ***area***,
+   * or ***line*** chart. Line, bar, and area charts plot one or more {@link DataVizSeries series}
+   * against a shared set of categories; pie charts render a set of {@link DataVizSegment segments}.
+   *
+   * Added to Block Kit in Slack's 2026-06-16 release
+   * ({@link https://docs.slack.dev/changelog/2026/06/16/block-kit-data-visualization-block changelog}).
+   */
+  type: "data_visualization";
+  /**
+   * A plain-text title rendered above the chart (as an ***h3***).
+   */
+  title?: string;
+  /**
+   * The chart definition. The shape depends on ***chart.type***.
+   */
+  chart: DataVizChart;
   /**
    * A string acting as a unique identifier for a block. If not specified, one will be generated.
    * Maximum length for this field is 255 characters.

@@ -4,6 +4,7 @@ export * from "./card";
 export * from "./carousel";
 export * from "./context";
 export * from "./context_actions";
+export * from "./data_visualization";
 export * from "./divider";
 export * from "./file";
 export * from "./header";

@@ -566,6 +566,19 @@
     @apply bg-black-primary/[0.2] dark:bg-dark-border rounded-full;
   }
 
+  /* Data Visualization Block */
+  & .slack_blocks_to_jsx__data_visualization_chart {
+    user-select: none;
+  }
+
+  & .slack_blocks_to_jsx__data_visualization_title {
+    @apply text-header;
+  }
+
+  & .slack_blocks_to_jsx__data_visualization_table td {
+    font-variant-numeric: tabular-nums;
+  }
+
   /* #endregion */
 }
 

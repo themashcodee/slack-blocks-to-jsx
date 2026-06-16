@@ -142,6 +142,7 @@ const blocks: Block[] = [
 | Markdown        | ✅ Full | Standard markdown with GFM (tables, task lists, code blocks) |
 | Plan            | ✅ Full | Sequential task display with status indicators               |
 | Task Card       | ✅ Full | Individual task with title, details, output, sources, status |
+| Data Visualization | ✅ Full | Line, bar, area, and pie charts with legend, axes, and "view as table" / CSV export |
 
 ## Supported Elements
 
