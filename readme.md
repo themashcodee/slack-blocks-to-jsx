@@ -125,24 +125,27 @@ const blocks: Block[] = [
 
 ## Supported Blocks
 
-| Block Type      | Status  | Notes                                                        |
-| --------------- | ------- | ------------------------------------------------------------ |
-| Section         | ✅ Full | Text, fields, accessories, `expand` property                 |
-| Divider         | ✅ Full | Horizontal divider                                           |
-| Image           | ✅ Full | Collapsible with alt text, `slack_file` support              |
-| Context         | ✅ Full | Images and text elements                                     |
-| Header          | ✅ Full | Large bold text                                              |
-| Rich Text       | ✅ Full | Lists, quotes, preformatted, sections, color elements        |
-| Video           | ✅ Full | Collapsible video embed                                      |
-| Table           | ✅ Full | Rows, columns, alignment                                     |
-| Actions         | ✅ Full | All interactive element types supported                      |
-| Input           | ✅ Full | All input element types supported                            |
-| File            | ✅ Full | Remote file display                                          |
-| Context Actions | ✅ Full | Feedback buttons and icon buttons                            |
-| Markdown        | ✅ Full | Standard markdown with GFM (tables, task lists, code blocks) |
-| Plan            | ✅ Full | Sequential task display with status indicators               |
-| Task Card       | ✅ Full | Individual task with title, details, output, sources, status |
-| Data Visualization | ✅ Full | Line, bar, area, and pie charts with legend, axes, and "view as table" / CSV export |
+| Block Type         | Status  | Notes                                                        |
+| ------------------ | ------- | ------------------------------------------------------------ |
+| Section            | ✅ Full | Text, fields, accessories, `expand` property                 |
+| Divider            | ✅ Full | Horizontal divider                                           |
+| Image              | ✅ Full | Collapsible with alt text, `slack_file` support              |
+| Context            | ✅ Full | Images and text elements                                     |
+| Header             | ✅ Full | Large bold text with `level` (H1–H4) heading sizes           |
+| Rich Text          | ✅ Full | Lists, quotes, preformatted, sections, color elements        |
+| Video              | ✅ Full | Collapsible video embed                                      |
+| Table              | ✅ Full | Rows, columns, alignment                                     |
+| Actions            | ✅ Full | All interactive element types supported                      |
+| Input              | ✅ Full | All input element types supported                            |
+| File               | ✅ Full | Remote file display                                          |
+| Context Actions    | ✅ Full | Feedback buttons and icon buttons                            |
+| Markdown           | ✅ Full | Standard markdown with GFM (tables, task lists, code blocks) |
+| Alert              | ✅ Full | Status banner with info / warning / error / success levels   |
+| Card               | ✅ Full | Title, subtitle, body, image, icon, and action buttons       |
+| Carousel           | ✅ Full | Horizontally-scrollable gallery of up to 10 cards            |
+| Plan               | ✅ Full | Sequential task display with status indicators               |
+| Task Card          | ✅ Full | Individual task with title, details, output, sources, status |
+| Data Visualization | ✅ Full | Line, bar, area, and pie charts; legend, axes, table & CSV   |
 
 ## Supported Elements
 
