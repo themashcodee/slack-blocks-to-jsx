@@ -1,4 +1,4 @@
-import { PointerEvent as ReactPointerEvent, ReactNode, useRef, useState } from "react";
+import { PointerEvent as ReactPointerEvent, ReactNode, useMemo, useRef, useState } from "react";
 import {
   DataVisualizationBlock,
   DataVizCartesianChart,
@@ -255,6 +255,18 @@ const VIEW_W = 520;
 const VIEW_H = 300;
 const MARGIN = { top: 14, right: 16, bottom: 48, left: 60 };
 
+// Shared stroked path for line and area series (identical styling in both).
+const SeriesStroke = (props: { d: string; color: string }) => (
+  <path
+    d={props.d}
+    fill="none"
+    stroke={props.color}
+    strokeWidth={2}
+    strokeLinejoin="round"
+    strokeLinecap="round"
+  />
+);
+
 const CartesianChart = (props: {
   model: CartesianModel;
   type: "line" | "bar" | "area";
@@ -266,51 +278,100 @@ const CartesianChart = (props: {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState<{ index: number; x: number; y: number } | null>(null);
 
-  const plotLeft = MARGIN.left;
-  const plotRight = VIEW_W - MARGIN.right;
-  const plotTop = MARGIN.top;
-  const plotBottom = VIEW_H - MARGIN.bottom;
-  const plotW = plotRight - plotLeft;
-  const plotH = plotBottom - plotTop;
+  // All hover-independent geometry — domain, ticks, scales, and the (costly) monotone-cubic
+  // path strings — is memoized so it is computed once per data change, NOT on every
+  // pointer-move. `model` keeps a stable identity across hover re-renders (hover state is
+  // local to this component), so the memo only recomputes when the data or chart type changes.
+  const geom = useMemo(() => {
+    const plotLeft = MARGIN.left;
+    const plotRight = VIEW_W - MARGIN.right;
+    const plotTop = MARGIN.top;
+    const plotBottom = VIEW_H - MARGIN.bottom;
+    const plotW = plotRight - plotLeft;
+    const plotH = plotBottom - plotTop;
 
-  const values: number[] = [];
-  series.forEach((s) => s.values.forEach((v) => v != null && values.push(v)));
-  let dataMin = values.length ? Math.min(...values) : 0;
-  let dataMax = values.length ? Math.max(...values) : 1;
-  // Bars and areas are anchored at zero; lines reference zero only when they cross it.
-  if (type !== "line") {
-    dataMin = Math.min(0, dataMin);
-    dataMax = Math.max(0, dataMax);
-  } else if (dataMin < 0) {
-    dataMax = Math.max(0, dataMax);
-  }
+    const values: number[] = [];
+    series.forEach((s) => s.values.forEach((v) => v != null && values.push(v)));
+    let dataMin = values.length ? Math.min(...values) : 0;
+    let dataMax = values.length ? Math.max(...values) : 1;
+    // Bars and areas are anchored at zero; lines reference zero only when they cross it.
+    if (type !== "line") {
+      dataMin = Math.min(0, dataMin);
+      dataMax = Math.max(0, dataMax);
+    } else if (dataMin < 0) {
+      dataMax = Math.max(0, dataMax);
+    }
 
-  const ticks = niceTicks(dataMin, dataMax, 5);
-  const domainMin = ticks[0]!;
-  const domainMax = ticks[ticks.length - 1]!;
-  const span = domainMax - domainMin || 1;
+    const ticks = niceTicks(dataMin, dataMax, 5);
+    const domainMin = ticks[0]!;
+    const domainMax = ticks[ticks.length - 1]!;
+    const span = domainMax - domainMin || 1;
 
-  const yOf = (v: number) => plotTop + (1 - (v - domainMin) / span) * plotH;
-  const count = categories.length;
-  const xPoint = (i: number) =>
-    count <= 1 ? plotLeft + plotW / 2 : plotLeft + (i / (count - 1)) * plotW;
-  const bandWidth = count > 0 ? plotW / count : plotW;
-  const xBand = (i: number) => plotLeft + (i + 0.5) * bandWidth;
+    const yOf = (v: number) => plotTop + (1 - (v - domainMin) / span) * plotH;
+    const count = categories.length;
+    const xPoint = (i: number) =>
+      count <= 1 ? plotLeft + plotW / 2 : plotLeft + (i / (count - 1)) * plotW;
+    const bandWidth = count > 0 ? plotW / count : plotW;
+    const xBand = (i: number) => plotLeft + (i + 0.5) * bandWidth;
 
-  const baselineY = yOf(Math.min(Math.max(0, domainMin), domainMax));
-  const showZeroLine = domainMin < 0 && domainMax > 0;
+    const baselineY = yOf(Math.min(Math.max(0, domainMin), domainMax));
+    const showZeroLine = domainMin < 0 && domainMax > 0;
 
-  const groupWidth = bandWidth * 0.7;
-  const barWidth = series.length > 0 ? groupWidth / series.length : groupWidth;
+    const groupWidth = bandWidth * 0.7;
+    const barWidth = series.length > 0 ? groupWidth / series.length : groupWidth;
 
-  // Pixel positions a series occupies along the x-axis, used for smooth paths and markers.
-  const seriesPoints = (s: { values: (number | null)[] }): [number, number][] => {
-    const pts: [number, number][] = [];
-    s.values.forEach((v, i) => {
-      if (v != null) pts.push([xPoint(i), yOf(v)]);
+    // Smooth (monotone-cubic) path per series + its area-fill variant — the expensive part.
+    const seriesPaths = series.map((s) => {
+      const pts: [number, number][] = [];
+      s.values.forEach((v, i) => {
+        if (v != null) pts.push([xPoint(i), yOf(v)]);
+      });
+      const line = pts.length > 0 ? smoothLine(pts) : "";
+      const area =
+        pts.length > 0
+          ? `${line} L ${r2(pts[pts.length - 1]![0])} ${r2(baselineY)} L ${r2(pts[0]![0])} ${r2(baselineY)} Z`
+          : "";
+      return { color: s.color, line, area };
     });
-    return pts;
-  };
+
+    return {
+      plotLeft,
+      plotRight,
+      plotTop,
+      plotBottom,
+      plotW,
+      ticks,
+      yOf,
+      count,
+      xPoint,
+      bandWidth,
+      xBand,
+      baselineY,
+      showZeroLine,
+      groupWidth,
+      barWidth,
+      seriesPaths,
+    };
+  }, [model, type]);
+
+  const {
+    plotLeft,
+    plotRight,
+    plotTop,
+    plotBottom,
+    plotW,
+    ticks,
+    yOf,
+    count,
+    xPoint,
+    bandWidth,
+    xBand,
+    baselineY,
+    showZeroLine,
+    groupWidth,
+    barWidth,
+    seriesPaths,
+  } = geom;
 
   const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
     const el = containerRef.current;
@@ -377,45 +438,22 @@ const CartesianChart = (props: {
           );
         })}
 
-        {/* area fills (drawn under the lines) */}
+        {/* area fills (drawn under the smooth lines) */}
         {type === "area" &&
-          series.map((s, si) => {
-            const pts = seriesPoints(s);
-            if (pts.length === 0) return null;
-            const top = smoothLine(pts);
-            const area = `${top} L ${r2(pts[pts.length - 1]![0])} ${r2(baselineY)} L ${r2(pts[0]![0])} ${r2(baselineY)} Z`;
-            return (
+          seriesPaths.map((sp, si) =>
+            sp.area ? (
               <g key={`area-${si}`}>
-                <path d={area} fill={s.color} fillOpacity={0.22} />
-                <path
-                  d={top}
-                  fill="none"
-                  stroke={s.color}
-                  strokeWidth={2}
-                  strokeLinejoin="round"
-                  strokeLinecap="round"
-                />
+                <path d={sp.area} fill={sp.color} fillOpacity={0.22} />
+                <SeriesStroke d={sp.line} color={sp.color} />
               </g>
-            );
-          })}
+            ) : null,
+          )}
 
         {/* lines */}
         {type === "line" &&
-          series.map((s, si) => {
-            const pts = seriesPoints(s);
-            if (pts.length === 0) return null;
-            return (
-              <path
-                key={`line-${si}`}
-                d={smoothLine(pts)}
-                fill="none"
-                stroke={s.color}
-                strokeWidth={2}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-            );
-          })}
+          seriesPaths.map((sp, si) =>
+            sp.line ? <SeriesStroke key={`line-${si}`} d={sp.line} color={sp.color} /> : null,
+          )}
 
         {/* bars */}
         {type === "bar" &&

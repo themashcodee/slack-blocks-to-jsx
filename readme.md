@@ -412,11 +412,16 @@ import type {
   InputBlock,
   RichTextBlock,
   VideoBlock,
+  TableBlock,
   FileBlock,
   ContextActionsBlock,
   MarkdownBlock,
   PlanBlock,
   TaskCardBlock,
+  AlertBlock,
+  CardBlock,
+  CarouselBlock,
+  DataVisualizationBlock,
 
   // Element types
   ButtonElement,
