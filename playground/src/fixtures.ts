@@ -238,4 +238,119 @@ export const FIXTURES: Fixture[] = [
       },
     ],
   },
+  {
+    id: "data-visualization",
+    label: "Data visualization · charts",
+    blocks: [
+      {
+        type: "data_visualization",
+        block_id: "viz-line-multi",
+        title: "Weekly active users by platform",
+        chart: {
+          type: "line",
+          series: [
+            {
+              name: "Desktop",
+              data: [
+                { label: "Mon", value: 800 },
+                { label: "Tue", value: 920 },
+                { label: "Wed", value: 880 },
+                { label: "Thu", value: 1010 },
+                { label: "Fri", value: 1120 },
+              ],
+            },
+            {
+              name: "Mobile",
+              data: [
+                { label: "Mon", value: 400 },
+                { label: "Tue", value: 530 },
+                { label: "Wed", value: 500 },
+                { label: "Thu", value: 590 },
+                { label: "Fri", value: 600 },
+              ],
+            },
+          ],
+          axis_config: {
+            categories: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+            x_label: "Day",
+            y_label: "Users",
+          },
+        },
+      },
+      {
+        type: "data_visualization",
+        block_id: "viz-bar-negative",
+        title: "Net headcount change",
+        chart: {
+          type: "bar",
+          series: [
+            {
+              name: "Delta",
+              data: [
+                { label: "Mon", value: 4 },
+                { label: "Tue", value: -2 },
+                { label: "Wed", value: 6 },
+                { label: "Thu", value: -1 },
+                { label: "Fri", value: 3 },
+              ],
+            },
+          ],
+          axis_config: {
+            categories: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+            x_label: "Day",
+            y_label: "People (delta)",
+          },
+        },
+      },
+      {
+        type: "data_visualization",
+        block_id: "viz-area-multi",
+        title: "Concurrent users by platform",
+        chart: {
+          type: "area",
+          series: [
+            {
+              name: "Desktop",
+              data: [
+                { label: "Mon", value: 2800 },
+                { label: "Tue", value: 3000 },
+                { label: "Wed", value: 3400 },
+                { label: "Thu", value: 3200 },
+                { label: "Fri", value: 3500 },
+              ],
+            },
+            {
+              name: "Mobile",
+              data: [
+                { label: "Mon", value: 1400 },
+                { label: "Tue", value: 1500 },
+                { label: "Wed", value: 1700 },
+                { label: "Thu", value: 1600 },
+                { label: "Fri", value: 1800 },
+              ],
+            },
+          ],
+          axis_config: {
+            categories: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+            x_label: "Day",
+            y_label: "Users",
+          },
+        },
+      },
+      {
+        type: "data_visualization",
+        block_id: "viz-pie-multi",
+        title: "Plan distribution by tier",
+        chart: {
+          type: "pie",
+          segments: [
+            { label: "Free", value: 4200 },
+            { label: "Pro", value: 2300 },
+            { label: "Business+", value: 1100 },
+            { label: "Enterprise", value: 480 },
+          ],
+        },
+      },
+    ],
+  },
 ];
