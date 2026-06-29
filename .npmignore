@@ -1,4 +1,5 @@
 .github
+.claude
 scripts
 RELEASING.md
 node_modules
