@@ -1,4 +1,4 @@
-name: Playground Comment
+name: Playground Preview
 
 # Greets every new PR with a one-click way to test the changes live: the pkg.pr.new
 # preview build (published by preview.yml) loaded into the hosted playground — no install,
@@ -32,6 +32,8 @@ jobs:
             const build = `https://pkg.pr.new/slack-blocks-to-jsx@${pr}`;
             const playground = `https://slack-block-to-jsx-playground.vercel.app/?package=${encodeURIComponent(build)}&pr=${pr}`;
             const body = [
+              `### 🛝 Playground Preview`,
+              ``,
               `👋 Thanks for the PR, @${author}!`,
               ``,
               `You can try these changes **live, before any release** — no install needed.`,
