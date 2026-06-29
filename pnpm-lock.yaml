@@ -29,7 +29,7 @@ importers:
         version: 17.0.93
       '@types/react-dom':
         specifier: ^17 || ^18 || ^19
-        version: 17.0.26(@types/react@17.0.93)
+        version: 19.0.1
       '@yozora/ast':
         specifier: ^2.3.2
         version: 2.3.12
@@ -403,10 +403,8 @@ packages:
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
 
-  '@types/react-dom@17.0.26':
-    resolution: {integrity: sha512-Z+2VcYXJwOqQ79HreLU/1fyQ88eXSSFh6I3JdrEHQIfYSI0kCQpTGvOrbE6jFGGYXKsHuwY9tBa/w5Uo6KzrEg==}
-    peerDependencies:
-      '@types/react': ^17.0.0
+  '@types/react-dom@19.0.1':
+    resolution: {integrity: sha512-hljHij7MpWPKF6u5vojuyfV0YA4YURsQG7KT6SzV0Zs2BXAtgdTxG6A229Ub/xiWV4w/7JL8fi6aAyjshH4meA==}
 
   '@types/react@17.0.93':
     resolution: {integrity: sha512-KM4Ty/ZTLZupiYxZVAlP+InNJS3De6uBMdq0ePa6/04+eG9Y7ftnWfst1xTLQ5rwAhgHwQ4momt/O4KepdGBTw==}
@@ -2035,7 +2033,7 @@ snapshots:
 
   '@types/prop-types@15.7.15': {}
 
-  '@types/react-dom@17.0.26(@types/react@17.0.93)':
+  '@types/react-dom@19.0.1':
     dependencies:
       '@types/react': 17.0.93
 
