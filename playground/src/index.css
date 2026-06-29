@@ -198,6 +198,21 @@ body.pg-dark .pg-toolbar button {
   border-color: #545454;
 }
 
+.pg-toolbar .pg-pkg-input {
+  width: 280px;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  background: transparent;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  color: inherit;
+}
+
+body.pg-dark .pg-toolbar .pg-pkg-input {
+  border-color: #545454;
+}
+
 .pg-split {
   display: grid;
   grid-template-columns: 1fr 1fr;

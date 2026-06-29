@@ -2,10 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Message, type Block } from "slack-blocks-to-jsx";
 import { FIXTURES } from "./fixtures";
 
-// Optional ?package= override: load a different build of the library at runtime
-// (a version string like `1.1.0`, or a full ESM url like the esm.sh /pr/ build
-// the PR-preview comment links to) instead of the bundled local source.
-const PACKAGE_PARAM = new URLSearchParams(window.location.search).get("package");
+// Library-package override. The "Library package" field (and the ?package= query
+// param the PR-preview comment links to) load a different build of the library at
+// runtime instead of the bundled local source. ?pr=N adds a one-click preset for
+// that PR's pkg.pr.new build.
+const REPO = "themashcodee/slack-blocks-to-jsx";
+const PKG = "slack-blocks-to-jsx";
+
+const QUERY = new URLSearchParams(window.location.search);
+const INITIAL_PACKAGE = QUERY.get("package") ?? "";
+const PR_NUMBER = QUERY.get("pr");
+const PRESET_BUILD = PR_NUMBER ? `https://pkg.pr.new/${PKG}@${PR_NUMBER}` : null;
 
 // esm.sh serves one shared React instance per pinned version, so pinning the
 // override build, our React, and ReactDOM all to 18.3.1 keeps a single instance
@@ -13,10 +20,21 @@ const PACKAGE_PARAM = new URLSearchParams(window.location.search).get("package")
 const REACT_URL = "https://esm.sh/react@18.3.1";
 const REACT_DOM_URL = "https://esm.sh/react-dom@18.3.1/client";
 
+// Turn a field value — a version (`1.1.0`), a pkg.pr.new build URL, or any ESM
+// URL — into a browser-loadable esm.sh module URL with React pinned.
 const resolveBuildUrl = (pkg: string): string => {
-  const base = /^https?:\/\//.test(pkg)
-    ? pkg
-    : `https://esm.sh/slack-blocks-to-jsx@${pkg.includes("@") ? pkg.slice(pkg.lastIndexOf("@") + 1) : pkg}`;
+  let base: string;
+  if (pkg.startsWith("https://pkg.pr.new/")) {
+    // A pkg.pr.new tarball isn't browser-ESM; route it through esm.sh's /pr/.
+    // Compact form (`pkg@ref`) lacks the owner/repo esm.sh needs, so add it.
+    const rest = pkg.slice("https://pkg.pr.new/".length);
+    base = rest.includes("/") ? `https://esm.sh/pr/${rest}` : `https://esm.sh/pr/${REPO}/${rest}`;
+  } else if (/^https?:\/\//.test(pkg)) {
+    base = pkg;
+  } else {
+    const version = pkg.includes("@") ? pkg.slice(pkg.lastIndexOf("@") + 1) : pkg;
+    base = `https://esm.sh/${PKG}@${version}`;
+  }
   return base + (base.includes("?") ? "&" : "?") + "deps=react@18.3.1,react-dom@18.3.1";
 };
 
@@ -133,9 +151,24 @@ export const App = () => {
 
   const { blocks, error: parseError } = useMemo(() => parseBlocks(jsonText), [jsonText]);
 
+  // The "Library package" field, and which build (if any) is currently loaded.
+  const [pkgInput, setPkgInput] = useState<string>(INITIAL_PACKAGE);
+  const [activePkg, setActivePkg] = useState<string | null>(INITIAL_PACKAGE || null);
+
+  // Load `value` (or fall back to local ../src when empty), keeping ?package= in
+  // the URL so the current build stays shareable/bookmarkable.
+  const loadBuild = (value: string) => {
+    const v = value.trim();
+    setActivePkg(v || null);
+    const url = new URL(window.location.href);
+    if (v) url.searchParams.set("package", v);
+    else url.searchParams.delete("package");
+    window.history.replaceState(null, "", url);
+  };
+
   const overrideUrl = useMemo(
-    () => (PACKAGE_PARAM ? resolveBuildUrl(PACKAGE_PARAM) : null),
-    [],
+    () => (activePkg ? resolveBuildUrl(activePkg) : null),
+    [activePkg],
   );
 
   return (
@@ -184,13 +217,41 @@ export const App = () => {
       <main className="pg-main">
         <div className="pg-toolbar">
           <span className="pg-title">slack-blocks-to-jsx playground</span>
-          {overrideUrl && (
-            <code
-              title={overrideUrl}
-              style={{ fontSize: 11, opacity: 0.7, maxWidth: 360, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+          <input
+            type="text"
+            className="pg-pkg-input"
+            placeholder="Library package (version or build URL)"
+            title="Load a published version (e.g. 1.1.0) or a build URL (e.g. https://pkg.pr.new/slack-blocks-to-jsx@93). Empty = local ../src."
+            value={pkgInput}
+            onChange={(e) => setPkgInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && loadBuild(pkgInput)}
+          />
+          <button type="button" onClick={() => loadBuild(pkgInput)}>
+            Load build
+          </button>
+          {PRESET_BUILD && (
+            <button
+              type="button"
+              title={PRESET_BUILD}
+              onClick={() => {
+                setPkgInput(PRESET_BUILD);
+                loadBuild(PRESET_BUILD);
+              }}
             >
-              build: {PACKAGE_PARAM}
-            </code>
+              pkg.pr #{PR_NUMBER}
+            </button>
+          )}
+          {overrideUrl && (
+            <button
+              type="button"
+              title="Switch back to the local ../src build"
+              onClick={() => {
+                setPkgInput("");
+                loadBuild("");
+              }}
+            >
+              Use local build
+            </button>
           )}
           <span className="pg-spacer" />
           <button
