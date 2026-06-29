@@ -1,6 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Message, type Block } from "slack-blocks-to-jsx";
 import { FIXTURES } from "./fixtures";
+
+// Optional ?package= override: load a different build of the library at runtime
+// (a version string like `1.1.0`, or a full ESM url like the esm.sh /pr/ build
+// the PR-preview comment links to) instead of the bundled local source.
+const PACKAGE_PARAM = new URLSearchParams(window.location.search).get("package");
+
+// esm.sh serves one shared React instance per pinned version, so pinning the
+// override build, our React, and ReactDOM all to 18.3.1 keeps a single instance
+// (no "invalid hook call" from two Reacts).
+const REACT_URL = "https://esm.sh/react@18.3.1";
+const REACT_DOM_URL = "https://esm.sh/react-dom@18.3.1/client";
+
+const resolveBuildUrl = (pkg: string): string => {
+  const base = /^https?:\/\//.test(pkg)
+    ? pkg
+    : `https://esm.sh/slack-blocks-to-jsx@${pkg.includes("@") ? pkg.slice(pkg.lastIndexOf("@") + 1) : pkg}`;
+  return base + (base.includes("?") ? "&" : "?") + "deps=react@18.3.1,react-dom@18.3.1";
+};
 
 // A 1x1 transparent pixel so <Message>'s required `logo` prop has something
 // to render — the playground doesn't care about the Slack-chrome avatar.
@@ -31,6 +49,64 @@ const parseBlocks = (text: string): ParseResult => {
   }
 };
 
+// Renders the ?package= override build in its OWN React root (loaded from esm.sh),
+// fully isolated from the playground's bundled React. Props are plain data, so we
+// just (re)render imperatively when they change.
+const OverrideMessage = ({ url, blocks, theme }: { url: string; blocks: Block[]; theme: Theme }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const runtimeRef = useRef<{ R: any; root: any; Message: any } | null>(null);
+  const [status, setStatus] = useState<"loading" | "ready" | { error: string }>("loading");
+
+  useEffect(() => {
+    let cancelled = false;
+    setStatus("loading");
+    Promise.all([
+      import(/* @vite-ignore */ url),
+      import(/* @vite-ignore */ REACT_URL),
+      import(/* @vite-ignore */ REACT_DOM_URL),
+    ])
+      .then(([mod, react, reactDom]) => {
+        if (cancelled || !containerRef.current) return;
+        const R = react.default ?? react;
+        const createRoot = reactDom.createRoot ?? reactDom.default.createRoot;
+        runtimeRef.current = { R, root: createRoot(containerRef.current), Message: mod.Message };
+        setStatus("ready");
+      })
+      .catch((err: Error) => !cancelled && setStatus({ error: err.message }));
+    return () => {
+      cancelled = true;
+      runtimeRef.current?.root.unmount();
+      runtimeRef.current = null;
+    };
+  }, [url]);
+
+  useEffect(() => {
+    const rt = runtimeRef.current;
+    if (!rt) return;
+    rt.root.render(
+      rt.R.createElement(rt.Message, {
+        blocks,
+        theme,
+        logo: PLACEHOLDER_LOGO,
+        name: "Playground",
+        showBlockKitDebug: true,
+      }),
+    );
+  }, [blocks, theme, status]);
+
+  return (
+    <>
+      {status === "loading" && (
+        <p style={{ margin: 0, opacity: 0.7, fontSize: 13 }}>Loading build…</p>
+      )}
+      {typeof status === "object" && (
+        <div className="pg-editor-error">Failed to load build: {status.error}</div>
+      )}
+      <div ref={containerRef} />
+    </>
+  );
+};
+
 export const App = () => {
   const [fixtureId, setFixtureId] = useState<string>(FIXTURES[0]!.id);
   const [theme, setTheme] = useState<Theme>(() => readStoredTheme());
@@ -56,6 +132,11 @@ export const App = () => {
   };
 
   const { blocks, error: parseError } = useMemo(() => parseBlocks(jsonText), [jsonText]);
+
+  const overrideUrl = useMemo(
+    () => (PACKAGE_PARAM ? resolveBuildUrl(PACKAGE_PARAM) : null),
+    [],
+  );
 
   return (
     <div className="pg-shell">
@@ -103,6 +184,14 @@ export const App = () => {
       <main className="pg-main">
         <div className="pg-toolbar">
           <span className="pg-title">slack-blocks-to-jsx playground</span>
+          {overrideUrl && (
+            <code
+              title={overrideUrl}
+              style={{ fontSize: 11, opacity: 0.7, maxWidth: 360, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+            >
+              build: {PACKAGE_PARAM}
+            </code>
+          )}
           <span className="pg-spacer" />
           <button
             type="button"
@@ -126,13 +215,17 @@ export const App = () => {
           <section className="pg-preview">
             <div className="pg-preview-surface">
               {blocks ? (
-                <Message
-                  blocks={blocks}
-                  theme={theme}
-                  logo={PLACEHOLDER_LOGO}
-                  name="Playground"
-                  showBlockKitDebug
-                />
+                overrideUrl ? (
+                  <OverrideMessage url={overrideUrl} blocks={blocks} theme={theme} />
+                ) : (
+                  <Message
+                    blocks={blocks}
+                    theme={theme}
+                    logo={PLACEHOLDER_LOGO}
+                    name="Playground"
+                    showBlockKitDebug
+                  />
+                )
               ) : (
                 <p style={{ margin: 0, opacity: 0.7, fontSize: 13 }}>
                   Fix the JSON on the left to see a preview.

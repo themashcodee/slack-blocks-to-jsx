@@ -26,17 +26,19 @@ jobs:
           script: |
             const pr = context.issue.number;
             const author = context.payload.pull_request.user.login;
-            const build = `https://pkg.pr.new/slack-blocks-to-jsx@${pr}`;
+            // esm.sh serves this PR's pkg.pr.new build as a browser-loadable ESM
+            // module; the playground loads it via its ?package= override.
+            const build = `https://esm.sh/pr/${context.repo.owner}/${context.repo.repo}/slack-blocks-to-jsx@${pr}`;
+            const playground = `https://slack-block-to-jsx-playground.vercel.app/?package=${encodeURIComponent(build)}`;
             const body = [
               `👋 Thanks for the PR, @${author}!`,
               ``,
               `You can try these changes **live, before any release** — no install needed.`,
-              `Once the preview build finishes (see the **pkg-pr-new** bot comment), open the playground and load this PR's build:`,
+              `Once the preview build finishes (see the **pkg-pr-new** bot comment), open the playground with this PR's build pre-loaded:`,
               ``,
-              `🛝 **Playground:** https://slack-block-to-jsx-playground.vercel.app/`,
-              `📦 **This PR's build:** \`${build}\``,
+              `🛝 **Playground (this PR's build):** ${playground}`,
               ``,
-              `Paste the build URL into the **Library package** field (or hit the **pkg.pr #${pr}** preset) and click **Load build** — your blocks render against this exact PR. 🎉`,
+              `Your blocks render against this exact PR. 🎉`,
             ].join("\n");
             await github.rest.issues.createComment({
               owner: context.repo.owner,
