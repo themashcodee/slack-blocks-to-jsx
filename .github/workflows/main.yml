@@ -22,3 +22,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run lint && pnpm run build && pnpm test
+
+      # The playground is a separate npm project; build it too so its type-check
+      # (against the library's built types) can't silently rot. `playground:build`
+      # rebuilds the library first, so this also covers the dist it consumes.
+      - run: pnpm playground:install
+      - run: pnpm playground:build
