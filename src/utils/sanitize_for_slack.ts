@@ -37,6 +37,14 @@ const sanitizeBlock = (block: Block): unknown => {
     };
   }
 
+  // Recursively sanitize the child blocks of a container block
+  if (block.type === "container") {
+    return {
+      ...block,
+      child_blocks: block.child_blocks.map(sanitizeBlock),
+    };
+  }
+
   // Sanitize element in input blocks
   if (block.type === "input") {
     return {

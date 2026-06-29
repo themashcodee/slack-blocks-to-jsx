@@ -143,6 +143,7 @@ const blocks: Block[] = [
 | Alert              | ✅ Full | Status banner with info / warning / error / success levels   |
 | Card               | ✅ Full | Title, subtitle, body, image, icon, and action buttons       |
 | Carousel           | ✅ Full | Horizontally-scrollable gallery of up to 10 cards            |
+| Container          | ✅ Full | Groups child blocks; title, icon, `width`, collapse/expand   |
 | Plan               | ✅ Full | Sequential task display with status indicators               |
 | Task Card          | ✅ Full | Individual task with title, details, output, sources, status |
 | Data Visualization | ✅ Full | Line, bar, area, and pie charts; legend, axes, table & CSV   |

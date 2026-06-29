@@ -34,6 +34,7 @@ export type Block =
   | AlertBlock
   | CardBlock
   | CarouselBlock
+  | ContainerBlock
   | ContextBlock
   | ContextActionsBlock
   | DataVisualizationBlock
@@ -572,6 +573,60 @@ export type CarouselBlock = {
    * An array of {@link CardBlock} entries. Minimum 1, maximum 10.
    */
   elements: CardBlock[];
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+export type ContainerBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/container-block View here}
+   * * Changelog: {@link https://docs.slack.dev/changelog/2026/06/29/block-kit-container-block View here}
+   *
+   * A ***container*** block is a general-purpose wrapper that groups child blocks together
+   * with an optional title, subtitle and icon, a configurable ***width***, and optional
+   * collapse/expand behavior.
+   */
+  type: "container";
+  /**
+   * A plain-text title for the container, in the form of a {@link TextObject} of type
+   * ***plain_text***. Maximum length is 150 characters.
+   *
+   * Note: Slack's reference docs type this (and ***subtitle***) as a string, but the API
+   * actually expects a ***plain_text*** text object.
+   */
+  title: TextObject<"plain_text">;
+  /**
+   * An optional subtitle rendered below the title in a smaller, muted style. A
+   * {@link TextObject} of type ***plain_text*** or ***mrkdwn***. Maximum length is 150 characters.
+   */
+  subtitle?: TextObject;
+  /**
+   * An optional icon ({@link ImageElement}) rendered next to the title.
+   */
+  icon?: ImageElement;
+  /**
+   * The child blocks rendered inside the container. Maximum of 10 blocks.
+   */
+  child_blocks: Block[];
+  /**
+   * Controls the rendered width of the container. Defaults to ***standard***.
+   */
+  width?: "narrow" | "standard" | "wide" | "full";
+  /**
+   * When true, the container renders a clickable header that collapses and expands its
+   * content. Defaults to ***false***.
+   */
+  is_collapsible?: boolean;
+  /**
+   * When ***is_collapsible*** is true, controls whether the container starts collapsed.
+   * Defaults to ***false***.
+   */
+  default_collapsed?: boolean;
   /**
    * A string acting as a unique identifier for a block. If not specified, one will be generated.
    * Maximum length for this field is 255 characters.
