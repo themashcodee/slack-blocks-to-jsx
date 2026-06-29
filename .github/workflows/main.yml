@@ -23,8 +23,22 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run lint && pnpm run build && pnpm test
 
-      # The playground is a separate npm project; build it too so its type-check
-      # (against the library's built types) can't silently rot. `playground:build`
-      # rebuilds the library first, so this also covers the dist it consumes.
+  # Separate check: the playground is its own npm project. Type-checking it
+  # (against the library's built types) catches breakage the library's own
+  # lint/build won't. `playground:build` builds the library first for the dist
+  # it consumes, so this job is self-contained.
+  playground:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22.13
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
       - run: pnpm playground:install
       - run: pnpm playground:build
