@@ -2,6 +2,7 @@ export * from "./actions";
 export * from "./alert";
 export * from "./card";
 export * from "./carousel";
+export * from "./container";
 export * from "./context";
 export * from "./context_actions";
 export * from "./data_visualization";

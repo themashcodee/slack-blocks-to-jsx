@@ -6,6 +6,7 @@ import {
   Alert,
   Card,
   Carousel,
+  Container,
   Context,
   ContextActions,
   DataVisualization,
@@ -72,6 +73,7 @@ export const getBlockComponent = (block: Block): ReactNode => {
   if (block.type === "alert") return <Alert data={block} />;
   if (block.type === "card") return <Card data={block} />;
   if (block.type === "carousel") return <Carousel data={block} />;
+  if (block.type === "container") return <Container data={block} />;
   if (block.type === "data_visualization") return <DataVisualization data={block} />;
 
   return null;
