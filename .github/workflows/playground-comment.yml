@@ -1,4 +1,4 @@
-name: Playground Comment
+name: Playground Preview
 
 # Greets every new PR with a one-click way to test the changes live: the pkg.pr.new
 # preview build (published by preview.yml) loaded into the hosted playground — no install,
@@ -26,14 +26,20 @@ jobs:
           script: |
             const pr = context.issue.number;
             const author = context.payload.pull_request.user.login;
+            // The playground's ?package= override loads this build; ?pr= adds the
+            // one-click "pkg.pr #N" preset. It accepts the pkg.pr.new build URL and
+            // routes it through esm.sh to make it browser-loadable.
             const build = `https://pkg.pr.new/slack-blocks-to-jsx@${pr}`;
+            const playground = `https://slack-block-to-jsx-playground.vercel.app/?package=${encodeURIComponent(build)}&pr=${pr}`;
             const body = [
+              `### 🛝 Playground Preview`,
+              ``,
               `👋 Thanks for the PR, @${author}!`,
               ``,
               `You can try these changes **live, before any release** — no install needed.`,
-              `Once the preview build finishes (see the **pkg-pr-new** bot comment), open the playground and load this PR's build:`,
+              `Once the preview build finishes (see the **pkg-pr-new** bot comment), open the playground with this PR's build pre-loaded:`,
               ``,
-              `🛝 **Playground:** https://slack-block-to-jsx-playground.vercel.app/`,
+              `🛝 **Playground:** ${playground}`,
               `📦 **This PR's build:** \`${build}\``,
               ``,
               `Paste the build URL into the **Library package** field (or hit the **pkg.pr #${pr}** preset) and click **Load build** — your blocks render against this exact PR. 🎉`,
