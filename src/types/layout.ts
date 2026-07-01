@@ -29,11 +29,6 @@ import {
 import { RichTextBlockElement } from "../types";
 import { ComponentPropsWithoutRef } from "react";
 
-// ponytail: Slack's `data_table` block (canonical surfaces: Messages, Home tabs —
-// https://docs.slack.dev/reference/block-kit/blocks/data-table-block/) is intentionally
-// NOT modeled or rendered here. It carries interactive pagination/sorting/filtering that
-// this static renderer cannot reproduce, so it's out of scope until there's a concrete need.
-// Add a DataTableBlock type + renderer when a caller actually sends one.
 export type Block =
   | ActionsBlock
   | AlertBlock
