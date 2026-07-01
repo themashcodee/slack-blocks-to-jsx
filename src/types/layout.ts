@@ -373,7 +373,10 @@ export type VideoBlock = {
 
 export type TableBlock = {
   /**
-   * Available in surfaces: **Messages**, **Home tabs**
+   * Available in surfaces: **Messages**
+   *
+   * Note: Slack's blocks.json lists Home tabs too, but our testing shows the table block only
+   * renders in Messages — Modals and Home tabs don't support it.
    *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/table-block/ View here}
    *
