@@ -370,6 +370,9 @@ export type TableBlock = {
   /**
    * Available in surfaces: **Messages**
    *
+   * Note: Slack's blocks.json lists Home tabs too, but our testing shows the table block only
+   * renders in Messages — Modals and Home tabs don't support it.
+   *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/table-block/ View here}
    *
    * A ***table*** block displays data in a structured table format. It supports up to 100 rows with 20 cells each. Only one table is allowed per message.
@@ -435,18 +438,39 @@ export type RichTextBlock = {
 };
 
 export type ContextActionsBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/context-actions-block/ View here}
+   *
+   * Displays actions as contextual info, which can include both feedback buttons and icon buttons.
+   */
   type: "context_actions";
   elements: Element[];
   block_id?: string;
 };
 
 export type MarkdownBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/markdown-block/ View here}
+   *
+   * Displays formatted markdown text.
+   */
   type: "markdown";
   text: string;
   block_id?: string;
 };
 
 export type PlanBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/plan-block/ View here}
+   *
+   * Displays a plan made up of one or more {@link TaskCardBlock task cards}.
+   */
   type: "plan";
   title: string;
   tasks?: TaskCardBlock[];
@@ -454,6 +478,14 @@ export type PlanBlock = {
 };
 
 export type TaskCardBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/task-card-block/ View here}
+   *
+   * Displays a single task with a status, optional details, output, and sources. Task cards can
+   * stand alone or be nested inside a {@link PlanBlock}.
+   */
   type: "task_card";
   task_id: string;
   title: string;
@@ -471,7 +503,7 @@ export type AlertLevel = "default" | "info" | "warning" | "error" | "success";
 
 export type AlertBlock = {
   /**
-   * Available in surfaces: **Messages**
+   * Available in surfaces: **Modals**
    *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/alert-block/ View here}
    *
@@ -517,7 +549,7 @@ export type CardImage = {
 
 export type CardBlock = {
   /**
-   * Available in surfaces: **Messages**
+   * Available in surfaces: **Modals**, **Messages**, **Home tabs**
    *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/card-block/ View here}
    *
@@ -561,7 +593,7 @@ export type CardBlock = {
 
 export type CarouselBlock = {
   /**
-   * Available in surfaces: **Messages**
+   * Available in surfaces: **Messages**, **Home tabs**
    *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/carousel-block/ View here}
    *
