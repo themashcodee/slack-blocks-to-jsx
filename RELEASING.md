@@ -115,3 +115,9 @@ install the **pkg.pr.new GitHub App** → <https://github.com/apps/pkg-pr-new>.
   commits a release PR gathers have already been tested.
 - The release PR is created by the default `GITHUB_TOKEN`, so it does not itself trigger
   the CI workflow — that's why the publish job re-runs the checks.
+- `"include-component-in-tag": false` in `release-please-config.json` is load-bearing, and
+  JSON can't hold a comment explaining it. Without it, release-please looks for tags named
+  `slack-blocks-to-jsx-v1.1.1`, finds none — this repo's tags are `v1.1.1`, from years of
+  the manual script — concludes nothing has ever been released, and walks the whole history:
+  a changelog listing every commit back to v0, and a version bumped off long-released
+  `feat:` commits. Keep the tag format matching the tags that already exist.
