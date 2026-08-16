@@ -1,5 +1,7 @@
 # Slack Blocks to JSX
 
+[![npm version](https://img.shields.io/npm/v/slack-blocks-to-jsx)](https://www.npmjs.com/package/slack-blocks-to-jsx)
+
 A React library that renders Slack Block Kit components as JSX with pixel-perfect styling. Full parity with Slack's Block Kit specification.
 
 **[🎮 Live Playground](https://slack-block-to-jsx-playground.vercel.app/)** | **[📖 Blog Post](https://themashcodee.hashnode.dev/how-to-effortlessly-render-slack-blocks-in-react-with-slack-blocks-to-jsx)** | **[📦 NPM](https://www.npmjs.com/package/slack-blocks-to-jsx)**
