@@ -1,0 +1,76 @@
+name: Release Please
+
+# Automates the release: every push to main, release-please opens (or updates) a
+# "chore: release X.Y.Z" PR that bumps package.json and writes CHANGELOG.md from the
+# conventional-commit messages since the last release. Merging that PR tags the release
+# and publishes to npm. Nothing publishes until a human merges it.
+#
+# Publishing uses npm Trusted Publishing (OIDC) — no NPM_TOKEN secret. That requires a
+# one-time setup on npmjs.com linking the package to this repo and THIS workflow
+# filename (release-please.yml); see RELEASING.md.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      # Everything below runs only when the release PR was merged and a release was
+      # created. The release PR itself carries no code changes beyond the version and
+      # changelog, and the commits in it already went through CI — but the publish is
+      # gated on lint + tests + build anyway, since this is the job holding npm rights.
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+
+      - uses: pnpm/action-setup@v4
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        with:
+          node-version: 22.13
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+
+      - run: pnpm run lint
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+
+      - run: pnpm run build
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+
+      - run: pnpm test
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+
+      # Trusted Publishing (OIDC) needs npm CLI >= 11.5.1; Node 22 ships npm 10.x. Run the
+      # modern CLI through `npx` from its own cache rather than `npm install -g npm@latest`,
+      # which races against the running npm mid-install. npm 11+ also wants an explicit
+      # --tag for prereleases, so 1.2.0-beta.0 lands on the "beta" dist-tag, never "latest".
+      - name: Publish to npm
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [[ "$version" == *-* ]]; then
+            tag="${version#*-}"
+            tag="${tag%%.*}"
+            npx -y npm@latest publish --provenance --access public --tag "$tag"
+          else
+            npx -y npm@latest publish --provenance --access public
+          fi
