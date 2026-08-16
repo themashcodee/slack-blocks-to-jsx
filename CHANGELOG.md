@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.1.2...v1.2.0) (2026-08-16)
+
+
+### Features
+
+* load an arbitrary build in the playground via ?package= ([f2cc2e0](https://github.com/themashcodee/slack-blocks-to-jsx/commit/f2cc2e0d6f3df7bdbfbdba411fe8b04d61bed08e))
+
+
+### Bug Fixes
+
+* 🔒 restrict playground build loading to esm.sh and pkg.pr.new ([02edcac](https://github.com/themashcodee/slack-blocks-to-jsx/commit/02edcacca73fbf054779a33836566228035795c1))
+* harden the playground's ?package= build loader ([df4498c](https://github.com/themashcodee/slack-blocks-to-jsx/commit/df4498cd1429e76d80067e559533346ed31e52e2))
+
 ## [1.1.2](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.1.1...v1.1.2) (2026-08-16)
 
 
