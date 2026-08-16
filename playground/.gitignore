@@ -1,3 +1,8 @@
 node_modules
 dist
 .vite
+
+# `tsc -b` (via `pnpm playground:build`) emits these next to their sources
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
