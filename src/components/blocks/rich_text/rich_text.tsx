@@ -40,8 +40,16 @@ export const RichText = (props: RichTextProps) => {
             _consecutive_index_map[i as NonNullable<RichTextList["indent"]>] = 0;
           }
 
-          _local_index = _consecutive_index_map[indent];
-          _consecutive_index_map[indent] += element.elements.length;
+          if (element.style === "ordered") {
+            _local_index = _consecutive_index_map[indent];
+            _consecutive_index_map[indent] += element.elements.length;
+          } else {
+            // Only ordered lists carry a running count — Slack splits one ordered list
+            // into several rich_text_list elements when the indent changes, and the count
+            // is what makes the outer level resume at the right number. A bullet list at
+            // this indent is a different list, so it ends that run instead of extending it.
+            _consecutive_index_map[indent] = 0;
+          }
         }
 
         return (
