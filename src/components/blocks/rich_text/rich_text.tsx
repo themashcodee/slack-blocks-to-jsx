@@ -173,7 +173,11 @@ const Element = (props: ElementProps) => {
     const { elements } = element;
 
     return (
-      <p className="inline-block slack_blocks_to_jsx__rich_text_section_element">
+      // `block` (not `inline-block`) is load-bearing: Slack renders each section of a
+      // rich_text block on its own line, and the parent is a plain div with no column
+      // layout, so inline-block sections would flow onto a single line. Empty sections —
+      // which Slack emits between lines — stay zero-height as blocks, matching Slack.
+      <p className="block slack_blocks_to_jsx__rich_text_section_element">
         {elements.map((el, i) => {
           return <RichTextSectionElement key={`${el.type}__${i}`} element={el} />;
         })}
