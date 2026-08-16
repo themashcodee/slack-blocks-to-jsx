@@ -20,22 +20,47 @@ const PRESET_BUILD = PR_NUMBER ? `https://pkg.pr.new/${PKG}@${PR_NUMBER}` : null
 const REACT_URL = "https://esm.sh/react@18.3.1";
 const REACT_DOM_URL = "https://esm.sh/react-dom@18.3.1/client";
 
-// Turn a field value — a version (`1.1.0`), a pkg.pr.new build URL, or any ESM
+// The build URL is loaded with import(), so it must not be attacker-controlled:
+// ?package= comes from the query string, and anyone can hand out a crafted link.
+// Restricting the host to the two CDNs this feature actually needs keeps a link
+// from running arbitrary JS on the playground's origin.
+const ALLOWED_HOSTS = new Set(["esm.sh", "pkg.pr.new"]);
+const DEPS = "deps=react@18.3.1,react-dom@18.3.1";
+
+// pkg.pr.new spells a build as `<pkg>@<ref>` or `<owner>/<repo>/<pkg>@<ref>`, while
+// esm.sh's /pr/ endpoint always wants the fully-qualified `<owner>/<repo>/<pkg>@<ref>`.
+// Normalizing on the last path segment maps every spelling onto that one shape.
+const toEsmPrUrl = (u: URL): string =>
+  `https://esm.sh/pr/${REPO}/${u.pathname.split("/").filter(Boolean).pop()}`;
+
+type Resolved = { url: string } | { error: string };
+
+// Turn a field value — a version (`1.1.0`), a pkg.pr.new build URL, or an esm.sh
 // URL — into a browser-loadable esm.sh module URL with React pinned.
-const resolveBuildUrl = (pkg: string): string => {
+const resolveBuildUrl = (pkg: string): Resolved => {
   let base: string;
-  if (pkg.startsWith("https://pkg.pr.new/")) {
+
+  if (/^https?:\/\//i.test(pkg)) {
+    let parsed: URL;
+    try {
+      parsed = new URL(pkg);
+    } catch {
+      return { error: `Not a valid URL: ${pkg}` };
+    }
+    if (!ALLOWED_HOSTS.has(parsed.hostname)) {
+      return {
+        error: `Only esm.sh and pkg.pr.new builds can be loaded (got ${parsed.hostname}).`,
+      };
+    }
     // A pkg.pr.new tarball isn't browser-ESM; route it through esm.sh's /pr/.
-    // Compact form (`pkg@ref`) lacks the owner/repo esm.sh needs, so add it.
-    const rest = pkg.slice("https://pkg.pr.new/".length);
-    base = rest.includes("/") ? `https://esm.sh/pr/${rest}` : `https://esm.sh/pr/${REPO}/${rest}`;
-  } else if (/^https?:\/\//.test(pkg)) {
-    base = pkg;
+    base = parsed.hostname === "pkg.pr.new" ? toEsmPrUrl(parsed) : parsed.href;
   } else {
-    const version = pkg.includes("@") ? pkg.slice(pkg.lastIndexOf("@") + 1) : pkg;
+    // A bare version (`1.1.0`), or the redundant `slack-blocks-to-jsx@1.1.0` spelling.
+    const version = pkg.startsWith(`${PKG}@`) ? pkg.slice(PKG.length + 1) : pkg;
     base = `https://esm.sh/${PKG}@${version}`;
   }
-  return base + (base.includes("?") ? "&" : "?") + "deps=react@18.3.1,react-dom@18.3.1";
+
+  return { url: base + (base.includes("?") ? "&" : "?") + DEPS };
 };
 
 // A 1x1 transparent pixel so <Message>'s required `logo` prop has something
@@ -85,12 +110,27 @@ const OverrideMessage = ({ url, blocks, theme }: { url: string; blocks: Block[];
     ])
       .then(([mod, react, reactDom]) => {
         if (cancelled || !containerRef.current) return;
+        if (!mod.Message) {
+          setStatus({ error: `That build doesn't export "Message".` });
+          return;
+        }
         const R = react.default ?? react;
         const createRoot = reactDom.createRoot ?? reactDom.default.createRoot;
         runtimeRef.current = { R, root: createRoot(containerRef.current), Message: mod.Message };
         setStatus("ready");
       })
-      .catch((err: Error) => !cancelled && setStatus({ error: err.message }));
+      .catch((err: Error) => {
+        if (cancelled) return;
+        // A PR's preview build is published by a separate workflow, so the link in
+        // the PR comment can be clicked before the build exists. The native message
+        // for that ("Failed to fetch dynamically imported module") explains nothing.
+        const notPublished = /dynamically imported module|failed to fetch/i.test(err.message);
+        setStatus({
+          error: notPublished
+            ? "Couldn't fetch that build. If this is a PR preview, wait for the pkg-pr-new bot comment to appear, then reload."
+            : err.message,
+        });
+      });
     return () => {
       cancelled = true;
       runtimeRef.current?.root.unmount();
@@ -166,7 +206,7 @@ export const App = () => {
     window.history.replaceState(null, "", url);
   };
 
-  const overrideUrl = useMemo(
+  const resolved = useMemo(
     () => (activePkg ? resolveBuildUrl(activePkg) : null),
     [activePkg],
   );
@@ -241,7 +281,7 @@ export const App = () => {
               pkg.pr #{PR_NUMBER}
             </button>
           )}
-          {overrideUrl && (
+          {activePkg && (
             <button
               type="button"
               title="Switch back to the local ../src build"
@@ -276,8 +316,10 @@ export const App = () => {
           <section className="pg-preview">
             <div className="pg-preview-surface">
               {blocks ? (
-                overrideUrl ? (
-                  <OverrideMessage url={overrideUrl} blocks={blocks} theme={theme} />
+                resolved && "error" in resolved ? (
+                  <div className="pg-editor-error">{resolved.error}</div>
+                ) : resolved ? (
+                  <OverrideMessage url={resolved.url} blocks={blocks} theme={theme} />
                 ) : (
                   <Message
                     blocks={blocks}

@@ -26,23 +26,28 @@ jobs:
           script: |
             const pr = context.issue.number;
             const author = context.payload.pull_request.user.login;
-            // The playground's ?package= override loads this build; ?pr= adds the
-            // one-click "pkg.pr #N" preset. It accepts the pkg.pr.new build URL and
-            // routes it through esm.sh to make it browser-loadable.
+            // The deployed playground is NOT built from this repo's playground/ directory,
+            // so it does not read the ?package= / ?pr= params that playground/src/App.tsx
+            // supports — a link carrying them is silently ignored. It does have a "Library
+            // package" field and a "Load build" button, so link to it bare and tell the
+            // reviewer to paste. If the deployment is ever pointed at playground/, switch
+            // this back to a ?package= link that pre-loads the build.
             const build = `https://pkg.pr.new/slack-blocks-to-jsx@${pr}`;
-            const playground = `https://slack-block-to-jsx-playground.vercel.app/?package=${encodeURIComponent(build)}&pr=${pr}`;
+            const playground = `https://slack-block-to-jsx-playground.vercel.app/`;
             const body = [
               `### 🛝 Playground Preview`,
               ``,
               `👋 Thanks for the PR, @${author}!`,
               ``,
               `You can try these changes **live, before any release** — no install needed.`,
-              `Once the preview build finishes (see the **pkg-pr-new** bot comment), open the playground with this PR's build pre-loaded:`,
+              `Once the preview build finishes (see the **pkg-pr-new** bot comment), open the playground and load this PR's build:`,
               ``,
               `🛝 **Playground:** ${playground}`,
               `📦 **This PR's build:** \`${build}\``,
               ``,
-              `Paste the build URL into the **Library package** field (or hit the **pkg.pr #${pr}** preset) and click **Load build** — your blocks render against this exact PR. 🎉`,
+              `Paste the build URL into the **Library package** field and click **Load build** — your blocks then render against this exact PR. 🎉`,
+              ``,
+              `> ⚠️ This swaps the library's **JavaScript** only — styling still comes from the playground's bundled CSS, so a PR that changes \`style.css\` won't be fully reflected.`,
             ].join("\n");
             await github.rest.issues.createComment({
               owner: context.repo.owner,
