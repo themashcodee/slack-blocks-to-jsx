@@ -11,6 +11,7 @@ CHANELOG.md
 pnpm-lock.yaml
 tailwind.config.js
 tsconfig.json
+vitest.config.ts
 .DS_Store
 postcss.config.js
 playground
