@@ -389,3 +389,54 @@ describe("mixed content", () => {
     expect(container.textContent).toContain("!");
   });
 });
+
+// The pre-parse masking step swaps protected regions for `<sentinel><base36 id><sentinel>`
+// placeholders and restores them before yozora parses. If the private-use sentinels ever go
+// missing, the restore pattern degrades to /([0-9a-z]+)/g and starts rewriting ordinary words
+// with masked tokens. These cases all render correctly only while the sentinels are intact.
+describe("mask placeholder integrity", () => {
+  const mention = (n: number) => `<@U${n}>`;
+
+  it("keeps both mentions when two directives are adjacent", () => {
+    const user = vi.fn(({ id }) => <span data-testid={`u-${id}`}>@{id}</span>);
+    const { getByTestId } = renderMrkdwn(`${mention(1)}${mention(2)}`, false, {
+      hooks: { user },
+    });
+    expect(getByTestId("u-U1")).toBeTruthy();
+    expect(getByTestId("u-U2")).toBeTruthy();
+    expect(user).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not rewrite a single-letter word when 11+ directives are masked", () => {
+    const user = vi.fn(({ id }) => <span>@{id}</span>);
+    const payload = Array.from({ length: 11 }, (_, i) => mention(i)).join(" ") + " a dog";
+    const { container } = renderMrkdwn(payload, false, { hooks: { user } });
+
+    expect(user).toHaveBeenCalledTimes(11);
+    expect(container.textContent).toContain(" a dog");
+    // token 10 is the 11th mention; a degraded pattern would emit it twice and swallow "a"
+    expect(container.textContent).not.toContain("@U10 @U10");
+  });
+
+  it("does not rewrite a single-letter word when 11+ code spans are masked", () => {
+    const payload = Array.from({ length: 11 }, (_, i) => `\`c${i}\``).join(" ") + " a dog";
+    const { container } = renderMrkdwn(payload, false);
+
+    expect(container.querySelectorAll("code")).toHaveLength(11);
+    expect(container.textContent).toContain(" a dog");
+    expect(container.textContent).not.toContain("c10 c10");
+  });
+
+  it("ignores sentinel characters smuggled in via the payload", () => {
+    const user = vi.fn(({ id }) => <span data-testid={`u-${id}`}>@{id}</span>);
+    const forged = `${String.fromCharCode(0xe000)}0${String.fromCharCode(0xe001)}`;
+    const { container, getByTestId } = renderMrkdwn(`${forged} ${mention(9)}`, false, {
+      hooks: { user },
+    });
+
+    expect(getByTestId("u-U9")).toBeTruthy();
+    expect(user).toHaveBeenCalledTimes(1);
+    // the forged placeholder must not resolve to the real token 0
+    expect(container.textContent).not.toContain("@U9 @U9");
+  });
+});
