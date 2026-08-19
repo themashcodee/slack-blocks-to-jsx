@@ -1,3 +1,4 @@
+import { decodeEntities } from "../decode_entities";
 import { HTMLSubElement } from "../types";
 
 type Props = {
@@ -6,13 +7,14 @@ type Props = {
 
 export const HTML = (props: Props) => {
   const { element } = props;
+  const value = decodeEntities(element.value);
 
-  if (!element.value) return <span>{element.value}</span>;
-  if (element.value === " ") return <span>&nbsp;</span>;
+  if (!value) return <span>{value}</span>;
+  if (value === " ") return <span>&nbsp;</span>;
 
   return (
     <span>
-      {element.value.split("LBKS").map((line, index) => {
+      {value.split("LBKS").map((line, index) => {
         if (line === "") {
           return <span key={index} className="block h-2"></span>;
         }

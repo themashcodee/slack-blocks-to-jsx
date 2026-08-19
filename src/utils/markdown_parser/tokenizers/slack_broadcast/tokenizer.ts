@@ -4,7 +4,7 @@ import type {
   IParseInlineHookCreator,
 } from "@yozora/core-tokenizer";
 import { BaseInlineTokenizer, TokenizerPriority } from "@yozora/core-tokenizer";
-import { match } from "./match";
+import { createMatch } from "./match";
 import { parse } from "./parse";
 import {
   SlackBroadcastType,
@@ -20,13 +20,14 @@ export class SlackBroadcastTokenizer
   extends BaseInlineTokenizer<T, IDelimiter, IToken, INode, IThis>
   implements IInlineTokenizer<T, IDelimiter, IToken, INode, IThis>
 {
+  public override readonly match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis>;
+  public override readonly parse: IParseInlineHookCreator<T, IToken, INode, IThis> = parse;
+
   constructor(props: ITokenizerProps = {}) {
     super({
       name: SlackBroadcastType,
       priority: props.priority || TokenizerPriority.ATOMIC,
     });
+    this.match = createMatch(props.matchTypedBroadcast ?? true);
   }
-
-  public override readonly match: IMatchInlineHookCreator<T, IDelimiter, IToken, IThis> = match;
-  public override readonly parse: IParseInlineHookCreator<T, IToken, INode, IThis> = parse;
 }
