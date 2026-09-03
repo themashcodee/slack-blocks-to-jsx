@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useGlobalData } from "../../../store";
 import { InlineCodeSubElement } from "../types";
 
 type Props = {
@@ -62,6 +63,7 @@ function parseInlineCodeValue(value: string): ParsedPart[] {
 
 export const InlineCode = (props: Props) => {
   const { element } = props;
+  const { urlTransform } = useGlobalData();
   const parts = parseInlineCodeValue(element.value);
 
   // If the entire value is just a single link, render without code wrapper
@@ -69,7 +71,7 @@ export const InlineCode = (props: Props) => {
   if (parts.length === 1 && firstPart?.type === "link") {
     return (
       <a
-        href={firstPart.url}
+        href={urlTransform(firstPart.url, "link")}
         target="_blank"
         rel="noopener noreferrer"
         className="slack_code_inline inline-block px-1 text-xs whitespace-pre-wrap break-words rounded-[3px] border border-black-primary/[0.13] dark:border-dark-code-border bg-black-primary/[0.04] dark:bg-dark-code-bg text-red-primary dark:text-dark-text-primary font-mono hover:underline"
@@ -96,7 +98,7 @@ export const InlineCode = (props: Props) => {
     return (
       <a
         key={i}
-        href={part.url}
+        href={urlTransform(part.url, "link")}
         target="_blank"
         rel="noopener noreferrer"
         className="hover:underline"

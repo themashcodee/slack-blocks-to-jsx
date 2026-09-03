@@ -20,6 +20,7 @@ A React library that renders Slack Block Kit components as JSX with pixel-perfec
 - [Dark Mode](#dark-mode)
 - [Hooks API](#hooks-api)
 - [Data Props](#automatic-mention-replacement)
+- [URL Safety](#url-safety)
 - [TypeScript](#typescript-support)
 - [Theming & Customization](#theming--customization)
 - [FAQ](#faq)
@@ -356,6 +357,8 @@ Hooks allow you to customize how specific elements are rendered.
 />
 ```
 
+The hook is only called with a URL that passed [`urlTransform`](#url-safety). A rejected URL (a `javascript:` link, say) skips the hook and renders as an inert `<a>` with no `href`.
+
 ## Automatic Mention Replacement
 
 Pass user, channel, and usergroup data to automatically resolve mentions:
@@ -379,22 +382,51 @@ Pass user, channel, and usergroup data to automatically resolve mentions:
 
 When a mention like `<@U123456>` appears in blocks, it will automatically display "John Doe" instead of the raw ID.
 
+## URL Safety
+
+Block payloads are untrusted input: anything that can post to a channel controls the URLs in them. Every URL the library writes into an `href` or `src` — rich text and mrkdwn links, task card sources, video titles and embeds, image blocks, card and container icons, context images, select-menu avatars — is filtered through a scheme allowlist first. The allowlist depends on where the URL is going:
+
+| Kind    | Written to     | Allowed schemes                   |
+| ------- | -------------- | --------------------------------- |
+| `link`  | `<a href>`     | `http:`, `https:`, `mailto:`      |
+| `image` | `<img src>`    | `http:`, `https:`, `data:image/*` |
+| `frame` | `<iframe src>` | `http:`, `https:`                 |
+
+Relative and scheme-relative URLs pass through untouched. Anything else (`javascript:`, `vbscript:`, `data:text/html`, `file:`, custom app schemes, …) is dropped: the element still renders, but without its `href`/`src`, so it is inert. Scheme matching is case-insensitive and ignores the leading whitespace and embedded tabs/newlines browsers ignore, so `" JavaScript:"` and `"java\nscript:"` are rejected too.
+
+To allow more, pass your own `urlTransform`. It receives the raw URL and the kind of sink, and returns the URL to render or `undefined` to drop it. Wrap the exported default rather than replacing it:
+
+```tsx
+import { Message, safeUrl } from "slack-blocks-to-jsx";
+
+<Message
+  blocks={blocks}
+  urlTransform={(url, kind) => {
+    if (kind === "link" && url.startsWith("slack://")) return url; // deep links into Slack
+    return safeUrl(url, kind);
+  }}
+/>;
+```
+
+Return `undefined` to drop a URL — never `""`, which React renders as a link to the current page. The `link` and `date` hooks only ever receive URLs that passed the transform.
+
 ## Message Component Props
 
-| Prop                | Type                | Default  | Description                                                                    |
-| ------------------- | ------------------- | -------- | ------------------------------------------------------------------------------ |
-| `blocks`            | `Block[]`           | required | Array of Slack block objects                                                   |
-| `name`              | `string`            | required | Name of the sender/app                                                         |
-| `logo`              | `string`            | required | URL of the logo to display                                                     |
-| `time`              | `Date`              | -        | Timestamp for the message                                                      |
-| `theme`             | `"light" \| "dark"` | system   | Theme mode. Falls back to system preference if not set                         |
-| `className`         | `string`            | -        | Additional CSS classes                                                         |
-| `style`             | `CSSProperties`     | -        | Inline styles                                                                  |
-| `unstyled`          | `boolean`           | `false`  | Disable all included styles                                                    |
-| `withoutWrapper`    | `boolean`           | `false`  | Render blocks without wrapper                                                  |
-| `hooks`             | `Hooks`             | -        | Custom rendering hooks                                                         |
-| `data`              | `Data`              | -        | Users, channels, usergroups data                                               |
-| `showBlockKitDebug` | `boolean`           | `false`  | Show Block Kit Builder link (custom properties are sanitized from the payload) |
+| Prop                | Type                | Default   | Description                                                                    |
+| ------------------- | ------------------- | --------- | ------------------------------------------------------------------------------ |
+| `blocks`            | `Block[]`           | required  | Array of Slack block objects                                                   |
+| `name`              | `string`            | required  | Name of the sender/app                                                         |
+| `logo`              | `string`            | required  | URL of the logo to display                                                     |
+| `time`              | `Date`              | -         | Timestamp for the message                                                      |
+| `theme`             | `"light" \| "dark"` | system    | Theme mode. Falls back to system preference if not set                         |
+| `className`         | `string`            | -         | Additional CSS classes                                                         |
+| `style`             | `CSSProperties`     | -         | Inline styles                                                                  |
+| `unstyled`          | `boolean`           | `false`   | Disable all included styles                                                    |
+| `withoutWrapper`    | `boolean`           | `false`   | Render blocks without wrapper                                                  |
+| `hooks`             | `Hooks`             | -         | Custom rendering hooks                                                         |
+| `data`              | `Data`              | -         | Users, channels, usergroups data                                               |
+| `urlTransform`      | `UrlTransform`      | `safeUrl` | Filters every `href`/`src` URL before render — see [URL Safety](#url-safety)   |
+| `showBlockKitDebug` | `boolean`           | `false`   | Show Block Kit Builder link (custom properties are sanitized from the payload) |
 
 ## TypeScript Support
 
@@ -470,8 +502,14 @@ import type {
   SlackFileObject,
   WorkflowObject,
   TriggerObject,
+
+  // URL filtering (see URL Safety)
+  UrlKind,
+  UrlTransform,
 } from "slack-blocks-to-jsx";
 ```
+
+The default URL filter is exported as a value, `safeUrl`, so a custom `urlTransform` can extend it.
 
 ## Theming & Customization
 

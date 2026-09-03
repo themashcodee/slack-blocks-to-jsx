@@ -1,6 +1,7 @@
 import Markdown, { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { MarkdownBlock } from "../../types";
+import { useGlobalData } from "../../store";
 import { SlackEmoji } from "../../utils/markdown_parser/sub_elements/slack_emoji";
 import { remarkSlackEmoji, SLACK_EMOJI_TAG } from "../../utils/remark_slack_emoji";
 
@@ -22,6 +23,7 @@ const emojiComponents = { [SLACK_EMOJI_TAG]: MarkdownEmoji } as Components;
 
 export const MarkdownBlockComponent = (props: MarkdownBlockProps) => {
   const { text, block_id } = props.data;
+  const { urlTransform } = useGlobalData();
 
   // TO MAKE SURE THE EMOJIS RENDER CORRECTLY AFTER \N
   const transformedText = text.replace(/\n/g, " \n ");
@@ -33,6 +35,10 @@ export const MarkdownBlockComponent = (props: MarkdownBlockProps) => {
     >
       <Markdown
         remarkPlugins={[remarkGfm, remarkSlackEmoji]}
+        // Replaces react-markdown's own URL filter so markdown links and images follow the same
+        // allowlist (and the same consumer override) as every other sink. The `a` renderer below
+        // therefore receives an already-filtered `href`.
+        urlTransform={(url, key) => urlTransform(url, key === "src" ? "image" : "link")}
         components={{
           ...emojiComponents,
           h1: ({ children }) => (

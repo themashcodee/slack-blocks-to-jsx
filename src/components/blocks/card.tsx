@@ -1,4 +1,5 @@
 import { CardBlock, CardImage } from "../../types";
+import { useGlobalData } from "../../store";
 import { ButtonElement } from "../elements/button_element";
 import { TextObject } from "../composition_objects";
 
@@ -19,9 +20,10 @@ const resolveImageUrl = (img?: CardImage): string | undefined => {
 export const Card = (props: CardProps) => {
   const { title, subtitle, body, hero_image, icon, actions, block_id } = props.data;
   const inCarousel = props.inCarousel ?? false;
+  const { urlTransform } = useGlobalData();
 
-  const heroUrl = resolveImageUrl(hero_image);
-  const iconUrl = resolveImageUrl(icon);
+  const heroUrl = urlTransform(resolveImageUrl(hero_image), "image");
+  const iconUrl = urlTransform(resolveImageUrl(icon), "image");
   const boundedActions = actions ? actions.slice(0, 5) : undefined;
 
   return (
