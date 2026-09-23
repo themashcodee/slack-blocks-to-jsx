@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { UsersSelectElement as UsersSelectElementType } from "../../types";
+import { useGlobalData } from "../../store";
 import { TextObject } from "../composition_objects/text_object";
 
 type TextObjectProps = {
@@ -19,6 +20,7 @@ export const UsersSelectElement = (props: TextObjectProps) => {
   const [visible, setVisible] = useState(focus_on_load || false);
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState("");
+  const { urlTransform } = useGlobalData();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -60,6 +62,7 @@ export const UsersSelectElement = (props: TextObjectProps) => {
         >
           <div className="flex flex-col">
             {filteredOptions.map((option, i) => {
+              const image = urlTransform(option.image, "image");
               return (
                 <button
                   key={i}
@@ -71,14 +74,14 @@ export const UsersSelectElement = (props: TextObjectProps) => {
                     setSelected(option.id);
                   }}
                 >
-                  {option.image && (
+                  {image && (
                     <img
-                      src={option.image}
+                      src={image}
                       alt={option.name}
                       className="w-5 h-5 rounded-md overflow-hidden"
                     />
                   )}
-                  {!option.image && (
+                  {!image && (
                     <div className="w-5 h-5 rounded-md overflow-hidden bg-gray-300 dark:bg-dark-text-high text-black-primary dark:text-dark-text-primary font-semibold flex items-center justify-center">
                       <span>{option.name[0] || ""}</span>
                     </div>

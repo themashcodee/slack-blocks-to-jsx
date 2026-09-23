@@ -1,4 +1,5 @@
 import { TaskCardBlock } from "../../types";
+import { useGlobalData } from "../../store";
 import { RichText } from "./rich_text";
 
 type TaskCardProps = {
@@ -48,6 +49,7 @@ const StatusIndicator = ({ status }: { status: TaskCardBlock["status"] }) => {
 
 export const TaskCard = (props: TaskCardProps) => {
   const { task_id, title, details, output, sources, status = "pending", block_id } = props.data;
+  const { urlTransform } = useGlobalData();
 
   return (
     <div
@@ -79,7 +81,7 @@ export const TaskCard = (props: TaskCardProps) => {
           {sources.map((source, i) => (
             <a
               key={i}
-              href={source.url}
+              href={urlTransform(source.url, "link")}
               target="_blank"
               rel="noreferrer noopener"
               className="text-small text-blue-primary dark:text-dark-link hover:underline underline-offset-4"

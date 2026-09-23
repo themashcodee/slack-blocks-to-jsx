@@ -12,13 +12,14 @@ type Props = {
 
 export const Link = (props: Props) => {
   const { element } = props;
-  const { hooks } = useGlobalData();
+  const { hooks, urlTransform } = useGlobalData();
+  const href = urlTransform(element.url, "link");
 
-  if (hooks.link) {
+  if (hooks.link && href !== undefined) {
     return (
       <>
         {hooks.link({
-          href: element.url,
+          href,
           children: (
             <>
               {element.children.map((child, i) => {
@@ -38,7 +39,7 @@ export const Link = (props: Props) => {
   }
 
   return (
-    <a href={element.url} className="slack_link">
+    <a href={href} className="slack_link">
       {element.children.map((child, i) => {
         if (child.type === "delete") return <Delete key={i} element={child} />;
         if (child.type === "emphasis") return <Emphasis key={i} element={child} />;

@@ -58,6 +58,7 @@
 | 7   | [§7.1](#71-data-prop-users-channels-usergroups)                        | `data` prop                                             |
 | 7   | [§7.2](#72-hooks-prop-custom-renderers)                                | `hooks` prop                                            |
 | 7   | [§7.3](#73-useglobaldata-hook)                                         | `useGlobalData` internal hook                           |
+| 7   | [§7.4](#74-urltransform-prop-url-scheme-allowlist)                     | `urlTransform` prop (URL scheme allowlist)              |
 | 8   | [§8](#chapter-8--rendering-pipeline)                                   | Rendering pipeline                                      |
 | 8   | [§8.1](#81-dispatcher-flow)                                            | Dispatcher flow                                         |
 | 8   | [§8.2](#82-markdown-parser)                                            | Markdown parser (Yozora + custom Slack tokenizers)      |
@@ -230,6 +231,8 @@ All classes are prefixed under `#slack_blocks_to_jsx` (see §9.1) so they do not
 ```ts
 export * from "./message"; // Message, MessageProps
 export * from "./types"; // Block, Element, TextObject, etc.
+export { safeUrl } from "./utils/safe_url"; // default URL filter, for wrapping in a custom urlTransform
+export type { UrlKind, UrlTransform } from "./utils/safe_url";
 ```
 
 Nothing else is intentionally public.
@@ -256,6 +259,7 @@ type MessageProps = {
     user_groups?: { id: string; name: string }[];
   };
   hooks?: GlobalStore["hooks"]; // see §7.2
+  urlTransform?: UrlTransform; // default safeUrl; see §7.4
 };
 ```
 
@@ -513,9 +517,32 @@ type Hooks = {
 
 Useful for wiring mentions to internal routing or using Next.js `<Link>` for URLs.
 
+`link` and `date` only receive URLs that passed `urlTransform` (§7.4). A rejected link skips the `link` hook and renders as an inert `<a>` with no `href`; a rejected date link reaches the `date` hook as `link: null`.
+
 ### 7.3 `useGlobalData` hook
 
-Internal hook used by every component that needs access to `data` or `hooks`. Don't re-export; keep private.
+Internal hook used by every component that needs access to `data`, `hooks` or `urlTransform`. Don't re-export; keep private.
+
+### 7.4 `urlTransform` prop (URL scheme allowlist)
+
+File: `src/utils/safe_url.ts` (default) and `src/store/useGlobalContext.tsx` (plumbing).
+
+Block URLs are attacker-controlled input, and there is no single choke point: 19 `href=`/`src=` sinks across 13 files. Each sink therefore calls `urlTransform(url, kind)` from the store before rendering, where `kind` says which attribute the URL is bound for:
+
+| `kind`  | Sink           | Default allowlist (`safeUrl`)   |
+| ------- | -------------- | ------------------------------- |
+| `link`  | `<a href>`     | `http`, `https`, `mailto`       |
+| `image` | `<img src>`    | `http`, `https`, `data:image/*` |
+| `frame` | `<iframe src>` | `http`, `https`                 |
+
+Relative / scheme-relative URLs pass through. Anything else returns `undefined`, which React renders as a missing attribute — an inert element rather than a `""` self-link. Scheme detection normalises the way the URL parser does (strips leading C0/space, strips tabs and newlines, lower-cases), so `" javascript:"`, `"JaVaScRiPt:"` and `"java\nscript:"` are all rejected; the original string is what gets rendered when allowed.
+
+```ts
+type UrlKind = "link" | "image" | "frame";
+type UrlTransform = (url: string, kind: UrlKind) => string | undefined;
+```
+
+`Message` accepts `urlTransform?: UrlTransform` and hands it to `GlobalProvider`, which wraps it to tolerate the `undefined`/`null`/`""` that optional block fields produce, so sinks call `urlTransform` unconditionally. Consumers who legitimately render `slack://` or `app://` wrap `safeUrl` rather than replacing it. The markdown block passes the same function to react-markdown's own `urlTransform` prop so markdown links and images follow the one allowlist. The video iframe writes `src` after the `iframeProps` spread so the spread cannot reintroduce an unfiltered URL. Tests: `test/url_safety.test.mjs`.
 
 ---
 
@@ -753,6 +780,7 @@ slack blocks to jsx library/
 │       ├── merge_classes.ts
 │       ├── numbers.ts
 │       ├── remark_slack_emoji.ts        # emoji rule for the markdown block (react-markdown/mdast)
+│       ├── safe_url.ts                   # URL scheme allowlist + UrlTransform types (see §7.4)
 │       ├── sanitize_for_slack.ts
 │       ├── emojis/{parser.ts, list.ts}
 │       └── markdown_parser/
@@ -771,6 +799,9 @@ slack blocks to jsx library/
 │               ├── slack_broadcast/
 │               ├── slack_date/
 │               └── slack_emoji/
+├── test/                                 # node --test suite, runs against dist/ (see §10.3)
+│   ├── container.test.mjs  data_visualization.test.mjs  markdown_emoji.test.mjs
+│   ├── rich_text_list.test.mjs  rich_text_section.test.mjs  url_safety.test.mjs
 ├── test-blocks/                          # JSON fixtures (see Ch. 12, gitignored)
 ├── playground/                           # Contributor preview app (see Ch. 15, not in npm)
 │   ├── package.json  vite.config.ts  tsconfig.json  tsconfig.node.json
@@ -800,6 +831,7 @@ Rules worth knowing before making changes:
 8. **Accessibility:** preserve the `accessibility_label` prop on buttons; use semantic tags (button, a, input) — this mirrors Slack's own a11y posture.
 9. **Type-first:** every block/element addition requires a matching interface in `src/types/` before the component lands.
 10. **Releasing:** versioning + publishing is a single local command, `pnpm release` (see Ch. 11 / `RELEASING.md`). No changeset files are needed.
+11. **URL sinks:** never write a block URL straight into `href`/`src`. Call `urlTransform(url, kind)` from `useGlobalData()` with the right `kind` (§7.4), and don't hand an unfiltered URL to a hook either.
 
 ---
 
@@ -884,4 +916,5 @@ The sidebar picks it up automatically on next HMR. Keep fixtures small (≤ 10 b
 | 2026-04-17 | Claude + Mash | Added Ch. 0 — How to use this knowledge base (usage, reading strategy, update triggers, update procedure, style rules, ownership).                                                                                                                                                                                                                                                                                                             |
 | 2026-04-17 | Claude + Mash | v1.1.0 release prep: added three new blocks (`alert`, `card`, `carousel`) matching Slack's 2026-04-16 Block Kit launch. Ch. 4 block count 14 → 17 (new §4.6 "Status & rich-container blocks"). Ch. 6.1 type list updated with `AlertBlock`, `CardBlock`, `CarouselBlock`, `CardImage`, `AlertLevel`. Ch. 12 gained `11-alert-card-carousel.json` fixture. Ch. 13 file tree updated. Changeset: `.changeset/add-alert-card-carousel-blocks.md`. |
 | 2026-04-17 | Claude + Mash | Added Ch. 15 — Playground. New `playground/` folder (Vite + React 18) that source-aliases `slack-blocks-to-jsx` to `../src/index.ts` for instant HMR. Committed to git, excluded from npm via `.npmignore`. Ch. 15 renumbered from change log → playground; change log moved to Ch. 16. Root `package.json` gained `playground`, `playground:install`, `playground:build` scripts. Ch. 13 file tree extended.                                  |
+| 2026-09-03 | Claude + Stephen | Added a per-sink URL scheme allowlist. New `src/utils/safe_url.ts` (`safeUrl`, `UrlKind`, `UrlTransform`), a `urlTransform` prop on `Message` / `GlobalProvider` / `GlobalStore`, and every `href`/`src` sink routed through it. New §7.4, §3.1 exports, §3.2 props, §7.2 hook note, Ch. 13 tree (`safe_url.ts`, `test/`), Ch. 14 rule 11. Tests: `test/url_safety.test.mjs`. |
 | 2026-06-06 | Claude + Mash | Replaced the Changesets release flow with a single local command `pnpm release` (`scripts/release.mjs`): checks → lint → build → bump → commit/tag → npm publish → push → GitHub release. Removed `.changeset/`, `@changesets/cli`, and `.github/workflows/publish.yml`; added `test`/`release`/`release:dry` scripts and `RELEASING.md`. Rewrote Ch. 11, updated §10.3/§10.5 scripts + hygiene, Ch. 13 file tree (`scripts/`), and Ch. 14 rule 10. Added first-class beta/alpha prereleases: `release:beta`/`release:alpha` scripts, `prepatch`/`preminor`/`premajor`/`prerelease` bump types + `--preid`, auto dist-tag per channel, prerelease graduation, and a "Trying a prerelease" section in `readme.md`. Added `.github/workflows/preview.yml` (pkg.pr.new) for automatic per-PR/per-commit preview installs (no npm token, fork-safe). |

@@ -4,4 +4,5 @@ export * from "./markdown_parser";
 export * from "./is_accessory_stacked";
 export * from "./merge_classes";
 export * from "./numbers";
+export * from "./safe_url";
 export * from "./sanitize_for_slack";

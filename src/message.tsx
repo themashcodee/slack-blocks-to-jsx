@@ -5,6 +5,7 @@ import { Header } from "./header";
 import { GlobalProvider, GlobalStore } from "./store";
 import { Block } from "./types";
 import { merge_classes, sanitizeBlocksForSlack } from "./utils";
+import type { UrlTransform } from "./utils";
 
 type Props = {
   /**
@@ -29,6 +30,14 @@ type Props = {
   };
   hooks?: GlobalStore["hooks"];
   /**
+   * Decides what every block URL becomes before it is written to an `href` or `src`.
+   *
+   * Defaults to `safeUrl`, which allows `http:`/`https:` everywhere, `mailto:` on links and
+   * `data:image/*` on images, and drops everything else (`javascript:`, `data:text/html`, …) so
+   * the element renders inert. Override it to allow custom schemes such as `slack://`.
+   */
+  urlTransform?: UrlTransform;
+  /**
    * If true, the header and the container which wraps the message will be removed and only the slack blocks will be returned.
    */
   withoutWrapper?: boolean;
@@ -48,6 +57,7 @@ export const Message = (props: Props) => {
     unstyled = false,
     data,
     hooks,
+    urlTransform,
     withoutWrapper = false,
     theme,
   } = props;
@@ -70,7 +80,7 @@ export const Message = (props: Props) => {
 
   if (withoutWrapper) {
     return (
-      <GlobalProvider data={data} hooks={hooks}>
+      <GlobalProvider data={data} hooks={hooks} urlTransform={urlTransform}>
         <div
           id="slack_blocks_to_jsx"
           data-theme={activeTheme}
@@ -97,7 +107,7 @@ export const Message = (props: Props) => {
   }
 
   return (
-    <GlobalProvider data={data} hooks={hooks}>
+    <GlobalProvider data={data} hooks={hooks} urlTransform={urlTransform}>
       <div
         id="slack_blocks_to_jsx"
         data-theme={activeTheme}

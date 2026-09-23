@@ -5,6 +5,9 @@ import {
   RichTextSectionBroadcast,
   RichTextSectionUsergroup,
 } from "../types";
+// Imported directly rather than through the utils barrel: the barrel pulls in the markdown parser,
+// which imports this store, and that would be an import cycle.
+import { UrlKind, UrlTransform, safeUrl } from "../utils/safe_url";
 
 type User = {
   id: string;
@@ -66,6 +69,9 @@ type Hooks = {
   /**
    *
    * This hook allows you to replace the anchor (a) tag with your own wrapper. It gets applied to rich_text_section links, links in mrkdown, slack date optional links, and video block title URLs.
+   *
+   * It is not called for a URL that `urlTransform` rejects — that link renders as an inert `<a>`
+   * with no `href` instead, so a hook never receives a `javascript:`-style URL.
    */
   link?: (input: LinkInput) => ReactNode;
 };
@@ -75,6 +81,12 @@ export type GlobalStore = {
   channels: Channel[];
   user_groups: UserGroup[];
   hooks: Hooks;
+  /**
+   * Every `href` / `src` sink passes its URL through this before rendering. It is the consumer's
+   * `urlTransform` (or `safeUrl` by default) wrapped to tolerate the missing/empty URLs that
+   * optional block fields produce, so components can call it unconditionally.
+   */
+  urlTransform: (url: string | null | undefined, kind: UrlKind) => string | undefined;
   setUsers: (users: User[]) => void;
   setChannels: (channels: Channel[]) => void;
   setUserGroups: (userGroups: UserGroup[]) => void;
@@ -92,12 +104,14 @@ type GlobalProviderProps = {
       }
     | undefined;
   hooks?: GlobalStore["hooks"] | undefined;
+  urlTransform?: UrlTransform | undefined;
   children: ReactNode;
 };
 
 export const GlobalProvider: React.FC<GlobalProviderProps> = ({
   data,
   hooks: defaultHooks,
+  urlTransform: customUrlTransform,
   children,
 }) => {
   const [users, setUsers] = useState<User[]>(data?.users || []);
@@ -105,11 +119,16 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({
   const [user_groups, setUserGroups] = useState<UserGroup[]>(data?.user_groups || []);
   const [hooks, setHooks] = useState<Hooks>(defaultHooks || {});
 
+  const transform = customUrlTransform ?? safeUrl;
+  const urlTransform: GlobalStore["urlTransform"] = (url, kind) =>
+    url ? transform(url, kind) : undefined;
+
   const value: GlobalStore = {
     users,
     channels,
     user_groups,
     hooks,
+    urlTransform,
     setUsers,
     setChannels,
     setUserGroups,
