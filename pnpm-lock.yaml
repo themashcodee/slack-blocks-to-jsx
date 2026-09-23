@@ -55,8 +55,8 @@ importers:
         specifier: ^11.0.0
         version: 11.0.1(jiti@1.21.7)(postcss@8.5.26)
       postcss-nesting:
-        specifier: ^12.0.2
-        version: 12.1.5(postcss@8.5.26)
+        specifier: ^14.0.0
+        version: 14.0.1(postcss@8.5.26)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17
@@ -76,17 +76,17 @@ packages:
   '@colordx/core@5.8.0':
     resolution: {integrity: sha512-cG0QJAO6VkaRUlIb0zOzX9gfJgs1pjoOL9gZ/PK1kfvBs0GCkADu5oQh6gPxXgQnZ3gV575h+lQRC0NlMDTclA==}
 
-  '@csstools/selector-resolve-nested@1.1.0':
-    resolution: {integrity: sha512-uWvSaeRcHyeNenKg8tp17EVDRkpflmdyvbE0DHo6D/GdBb6PDnCYYU6gRpXhtICMGMcahQmj2zGxwFM/WC8hCg==}
-    engines: {node: ^14 || ^16 || >=18}
+  '@csstools/selector-resolve-nested@4.0.1':
+    resolution: {integrity: sha512-j3vdQu0XwLME5qOTWxm8cnmvsf423R2YL6DbKklCHZwkDm7UdKNu6RPlw4REIJhSlKBICY3B70/7QZdicLqZgg==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
-      postcss-selector-parser: ^6.0.13
+      postcss-selector-parser: ^7.1.1
 
-  '@csstools/selector-specificity@3.1.1':
-    resolution: {integrity: sha512-a7cxGcJ2wIlMFLlh8z2ONm+715QkPHiyJcxwQlKOz/03GPw1COpfhcmC9wm4xlZfp//jWHNNMwzjtqHXVWU9KA==}
-    engines: {node: ^14 || ^16 || >=18}
+  '@csstools/selector-specificity@6.0.0':
+    resolution: {integrity: sha512-4sSgl78OtOXEX/2d++8A83zHNTgwCJMaR24FvsYL7Uf/VS8HZk9PTwR51elTbGqMuwH3szLvvOXEaVnqn0Z3zA==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
-      postcss-selector-parser: ^6.0.13
+      postcss-selector-parser: ^7.1.1
 
   '@esbuild/aix-ppc64@0.27.7':
     resolution: {integrity: sha512-EKX3Qwmhz1eMdEJokhALr0YiD0lhQNwDqkPYyPhiSwKrh7/4KRjQc04sZ8db+5DVVnZ1LmbNDI1uAMPEUBnQPg==}
@@ -1401,9 +1401,9 @@ packages:
     peerDependencies:
       postcss: ^8.2.14
 
-  postcss-nesting@12.1.5:
-    resolution: {integrity: sha512-N1NgI1PDCiAGWPTYrwqm8wpjv0bgDmkYHH72pNsqTCv9CObxjxftdYu6AKtGN+pnJa7FQjMm3v4sp8QJbFsYdQ==}
-    engines: {node: ^14 || ^16 || >=18}
+  postcss-nesting@14.0.1:
+    resolution: {integrity: sha512-80MH7KcmMtb7ffSBX82uZwnogltubaXF0sagu+OGD8M9jViR3ngRgCdoTzKCvKEtllB0MW2U7Rgfcub5fR1Bug==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
       postcss: ^8.4
 
@@ -1823,13 +1823,13 @@ snapshots:
 
   '@colordx/core@5.8.0': {}
 
-  '@csstools/selector-resolve-nested@1.1.0(postcss-selector-parser@6.1.2)':
+  '@csstools/selector-resolve-nested@4.0.1(postcss-selector-parser@7.1.6)':
     dependencies:
-      postcss-selector-parser: 6.1.2
+      postcss-selector-parser: 7.1.6
 
-  '@csstools/selector-specificity@3.1.1(postcss-selector-parser@6.1.2)':
+  '@csstools/selector-specificity@6.0.0(postcss-selector-parser@7.1.6)':
     dependencies:
-      postcss-selector-parser: 6.1.2
+      postcss-selector-parser: 7.1.6
 
   '@esbuild/aix-ppc64@0.27.7':
     optional: true
@@ -3362,12 +3362,12 @@ snapshots:
       postcss: 8.5.26
       postcss-selector-parser: 6.1.2
 
-  postcss-nesting@12.1.5(postcss@8.5.26):
+  postcss-nesting@14.0.1(postcss@8.5.26):
     dependencies:
-      '@csstools/selector-resolve-nested': 1.1.0(postcss-selector-parser@6.1.2)
-      '@csstools/selector-specificity': 3.1.1(postcss-selector-parser@6.1.2)
+      '@csstools/selector-resolve-nested': 4.0.1(postcss-selector-parser@7.1.6)
+      '@csstools/selector-specificity': 6.0.0(postcss-selector-parser@7.1.6)
       postcss: 8.5.26
-      postcss-selector-parser: 6.1.2
+      postcss-selector-parser: 7.1.6
 
   postcss-normalize-charset@7.0.3(postcss@8.5.26):
     dependencies:
