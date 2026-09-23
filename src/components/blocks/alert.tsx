@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { AlertBlock, AlertLevel } from "../../types";
 import { TextObject } from "../composition_objects";
 
