@@ -3,15 +3,20 @@
 /**
  * One-command release for slack-blocks-to-jsx.
  *
+ * This is the fallback path — the normal one is release-please (see RELEASING.md). If you do
+ * release with this, update .release-please-manifest.json to the version you shipped, or the
+ * next automated release PR proposes a version that is already on npm.
+ *
  * Does, in order:
  *   1. Pre-flight checks (clean tree, on main, up to date, npm + gh auth)
  *   2. Lint / typecheck  (pnpm run lint)
  *   3. Build             (pnpm run build)
- *   4. Bump the version in package.json
- *   5. Commit + tag (vX.Y.Z)
- *   6. Publish to npm    (pnpm publish)
- *   7. Push commit + tag to GitHub
- *   8. Create a GitHub release with auto-generated notes
+ *   4. Test              (pnpm test — runs against dist/, so after the build)
+ *   5. Bump the version in package.json
+ *   6. Commit + tag (vX.Y.Z)
+ *   7. Publish to npm    (pnpm publish)
+ *   8. Push commit + tag to GitHub
+ *   9. Create a GitHub release with auto-generated notes
  *
  * Usage:
  *   pnpm release                 # interactive: pick patch / minor / major / prerelease / custom
@@ -294,7 +299,7 @@ async function main() {
   log("");
 
   if (dryRun) {
-    warn("Dry run: will lint + build to verify, but make no other changes.");
+    warn("Dry run: will lint, build, and test to verify, but make no other changes.");
   } else if (!assumeYes) {
     const answer = await ask(`Proceed with the release? ${c.dim("[y/N]")} `);
     if (answer.toLowerCase() !== "y" && answer.toLowerCase() !== "yes") fail("Aborted.");
@@ -303,6 +308,8 @@ async function main() {
   // 4. verify it lints + builds (safe — run even in dry-run) -------------------
   step("Linting / typechecking", () => run("pnpm", ["run", "lint"]), { always: true });
   step("Building", () => run("pnpm", ["run", "build"]), { always: true });
+  // After the build: the suite runs against dist/, not src/.
+  step("Testing", () => run("pnpm", ["test"]), { always: true });
 
   if (dryRun) {
     log("");
