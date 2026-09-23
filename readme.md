@@ -1,5 +1,7 @@
 # Slack Blocks to JSX
 
+[![npm version](https://img.shields.io/npm/v/slack-blocks-to-jsx)](https://www.npmjs.com/package/slack-blocks-to-jsx)
+
 A React library that renders Slack Block Kit components as JSX with pixel-perfect styling. Full parity with Slack's Block Kit specification.
 
 **[🎮 Live Playground](https://slack-block-to-jsx-playground.vercel.app/)** | **[📖 Blog Post](https://themashcodee.hashnode.dev/how-to-effortlessly-render-slack-blocks-in-react-with-slack-blocks-to-jsx)** | **[📦 NPM](https://www.npmjs.com/package/slack-blocks-to-jsx)**
@@ -125,23 +127,28 @@ const blocks: Block[] = [
 
 ## Supported Blocks
 
-| Block Type      | Status  | Notes                                                        |
-| --------------- | ------- | ------------------------------------------------------------ |
-| Section         | ✅ Full | Text, fields, accessories, `expand` property                 |
-| Divider         | ✅ Full | Horizontal divider                                           |
-| Image           | ✅ Full | Collapsible with alt text, `slack_file` support              |
-| Context         | ✅ Full | Images and text elements                                     |
-| Header          | ✅ Full | Large bold text                                              |
-| Rich Text       | ✅ Full | Lists, quotes, preformatted, sections, color elements        |
-| Video           | ✅ Full | Collapsible video embed                                      |
-| Table           | ✅ Full | Rows, columns, alignment                                     |
-| Actions         | ✅ Full | All interactive element types supported                      |
-| Input           | ✅ Full | All input element types supported                            |
-| File            | ✅ Full | Remote file display                                          |
-| Context Actions | ✅ Full | Feedback buttons and icon buttons                            |
-| Markdown        | ✅ Full | Standard markdown with GFM (tables, task lists, code blocks) |
-| Plan            | ✅ Full | Sequential task display with status indicators               |
-| Task Card       | ✅ Full | Individual task with title, details, output, sources, status |
+| Block Type         | Status  | Notes                                                        |
+| ------------------ | ------- | ------------------------------------------------------------ |
+| Section            | ✅ Full | Text, fields, accessories, `expand` property                 |
+| Divider            | ✅ Full | Horizontal divider                                           |
+| Image              | ✅ Full | Collapsible with alt text, `slack_file` support              |
+| Context            | ✅ Full | Images and text elements                                     |
+| Header             | ✅ Full | Large bold text with `level` (H1–H4) heading sizes           |
+| Rich Text          | ✅ Full | Lists, quotes, preformatted, sections, color elements        |
+| Video              | ✅ Full | Collapsible video embed                                      |
+| Table              | ✅ Full | Rows, columns, alignment                                     |
+| Actions            | ✅ Full | All interactive element types supported                      |
+| Input              | ✅ Full | All input element types supported                            |
+| File               | ✅ Full | Remote file display                                          |
+| Context Actions    | ✅ Full | Feedback buttons and icon buttons                            |
+| Markdown           | ✅ Full | Standard markdown with GFM (tables, task lists, code blocks) |
+| Alert              | ✅ Full | Status banner with info / warning / error / success levels   |
+| Card               | ✅ Full | Title, subtitle, body, image, icon, and action buttons       |
+| Carousel           | ✅ Full | Horizontally-scrollable gallery of up to 10 cards            |
+| Container          | ✅ Full | Groups child blocks; title, icon, `width`, collapse/expand   |
+| Plan               | ✅ Full | Sequential task display with status indicators               |
+| Task Card          | ✅ Full | Individual task with title, details, output, sources, status |
+| Data Visualization | ✅ Full | Line, bar, area, and pie charts; legend, axes, table & CSV   |
 
 ## Supported Elements
 
@@ -408,11 +415,16 @@ import type {
   InputBlock,
   RichTextBlock,
   VideoBlock,
+  TableBlock,
   FileBlock,
   ContextActionsBlock,
   MarkdownBlock,
   PlanBlock,
   TaskCardBlock,
+  AlertBlock,
+  CardBlock,
+  CarouselBlock,
+  DataVisualizationBlock,
 
   // Element types
   ButtonElement,
@@ -702,4 +714,4 @@ Love this library? Consider supporting its development:
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE) for details.
+MIT License - see [LICENSE](./LICENSE.md) for details.

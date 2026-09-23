@@ -164,6 +164,8 @@ body.pg-dark .pg-theme-btn.is-active {
   padding: 10px 16px;
   display: flex;
   align-items: center;
+  /* The package field plus its buttons overflow a narrow viewport on one line. */
+  flex-wrap: wrap;
   gap: 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   background: #ffffff;
@@ -195,6 +197,21 @@ body.pg-dark .pg-toolbar {
 }
 
 body.pg-dark .pg-toolbar button {
+  border-color: #545454;
+}
+
+.pg-toolbar .pg-pkg-input {
+  width: min(280px, 100%);
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  background: transparent;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  color: inherit;
+}
+
+body.pg-dark .pg-toolbar .pg-pkg-input {
   border-color: #545454;
 }
 

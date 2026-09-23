@@ -11,14 +11,34 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
         with:
           version: 9
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v7
         with:
           node-version: 22.13
           cache: "pnpm"
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run lint && pnpm run build
+      - run: pnpm run lint && pnpm run build && pnpm test
+
+  # Separate check: the playground is its own npm project. Type-checking it
+  # (against the library's built types) catches breakage the library's own
+  # lint/build won't. `playground:build` builds the library first for the dist
+  # it consumes, so this job is self-contained.
+  playground:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 9
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22.13
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm playground:install
+      - run: pnpm playground:build

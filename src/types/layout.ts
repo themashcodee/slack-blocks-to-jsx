@@ -34,8 +34,10 @@ export type Block =
   | AlertBlock
   | CardBlock
   | CarouselBlock
+  | ContainerBlock
   | ContextBlock
   | ContextActionsBlock
+  | DataVisualizationBlock
   | DividerBlock
   | FileBlock
   | HeaderBlock
@@ -368,6 +370,9 @@ export type TableBlock = {
   /**
    * Available in surfaces: **Messages**
    *
+   * Note: Slack's blocks.json lists Home tabs too, but our testing shows the table block only
+   * renders in Messages — Modals and Home tabs don't support it.
+   *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/table-block/ View here}
    *
    * A ***table*** block displays data in a structured table format. It supports up to 100 rows with 20 cells each. Only one table is allowed per message.
@@ -433,18 +438,39 @@ export type RichTextBlock = {
 };
 
 export type ContextActionsBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/context-actions-block/ View here}
+   *
+   * Displays actions as contextual info, which can include both feedback buttons and icon buttons.
+   */
   type: "context_actions";
   elements: Element[];
   block_id?: string;
 };
 
 export type MarkdownBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/markdown-block/ View here}
+   *
+   * Displays formatted markdown text.
+   */
   type: "markdown";
   text: string;
   block_id?: string;
 };
 
 export type PlanBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/plan-block/ View here}
+   *
+   * Displays a plan made up of one or more {@link TaskCardBlock task cards}.
+   */
   type: "plan";
   title: string;
   tasks?: TaskCardBlock[];
@@ -452,6 +478,14 @@ export type PlanBlock = {
 };
 
 export type TaskCardBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/task-card-block/ View here}
+   *
+   * Displays a single task with a status, optional details, output, and sources. Task cards can
+   * stand alone or be nested inside a {@link PlanBlock}.
+   */
   type: "task_card";
   task_id: string;
   title: string;
@@ -469,7 +503,7 @@ export type AlertLevel = "default" | "info" | "warning" | "error" | "success";
 
 export type AlertBlock = {
   /**
-   * Available in surfaces: **Messages**
+   * Available in surfaces: **Modals**
    *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/alert-block/ View here}
    *
@@ -515,7 +549,7 @@ export type CardImage = {
 
 export type CardBlock = {
   /**
-   * Available in surfaces: **Messages**
+   * Available in surfaces: **Modals**, **Messages**, **Home tabs**
    *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/card-block/ View here}
    *
@@ -559,7 +593,7 @@ export type CardBlock = {
 
 export type CarouselBlock = {
   /**
-   * Available in surfaces: **Messages**
+   * Available in surfaces: **Messages**, **Home tabs**
    *
    * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/carousel-block/ View here}
    *
@@ -571,6 +605,188 @@ export type CarouselBlock = {
    * An array of {@link CardBlock} entries. Minimum 1, maximum 10.
    */
   elements: CardBlock[];
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+export type ContainerBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/container-block View here}
+   * * Changelog: {@link https://docs.slack.dev/changelog/2026/06/29/block-kit-container-block View here}
+   *
+   * A ***container*** block is a general-purpose wrapper that groups child blocks together
+   * with an optional title, subtitle and icon, a configurable ***width***, and optional
+   * collapse/expand behavior.
+   */
+  type: "container";
+  /**
+   * A plain-text title for the container, in the form of a {@link TextObject} of type
+   * ***plain_text***. Maximum length is 150 characters.
+   *
+   * Note: Slack's reference docs type this (and ***subtitle***) as a string, but the API
+   * actually expects a ***plain_text*** text object.
+   */
+  title: TextObject<"plain_text">;
+  /**
+   * An optional subtitle rendered below the title in a smaller, muted style. A
+   * {@link TextObject} of type ***plain_text*** or ***mrkdwn***. Maximum length is 150 characters.
+   */
+  subtitle?: TextObject;
+  /**
+   * An optional icon ({@link ImageElement}) rendered next to the title.
+   */
+  icon?: ImageElement;
+  /**
+   * The child blocks rendered inside the container. Maximum of 10 blocks.
+   */
+  child_blocks: Block[];
+  /**
+   * Controls the rendered width of the container. Defaults to ***standard***.
+   */
+  width?: "narrow" | "standard" | "wide" | "full";
+  /**
+   * When true, the container renders a clickable header that collapses and expands its
+   * content. Defaults to ***false***.
+   */
+  is_collapsible?: boolean;
+  /**
+   * When ***is_collapsible*** is true, controls whether the container starts collapsed.
+   * Defaults to ***false***.
+   */
+  default_collapsed?: boolean;
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+/**
+ * A single ⟨label, value⟩ pair plotted on a cartesian chart (line, bar, or area).
+ */
+export type DataVizDataPoint = {
+  /**
+   * The category this point belongs to. Matches an entry in
+   * {@link DataVizAxisConfig.categories}.
+   */
+  label: string;
+  /**
+   * The numeric value for this point. May be negative.
+   */
+  value: number;
+};
+
+/**
+ * A named collection of {@link DataVizDataPoint data points} rendered as one line,
+ * one set of bars, or one filled area. The ***name*** is shown in the chart legend.
+ */
+export type DataVizSeries = {
+  /**
+   * The series name, shown in the chart legend.
+   */
+  name: string;
+  /**
+   * The data points for this series — typically one per category.
+   */
+  data: DataVizDataPoint[];
+};
+
+/**
+ * Axis configuration for cartesian charts (***line***, ***bar***, ***area***). Pie charts
+ * do not use this object.
+ */
+export type DataVizAxisConfig = {
+  /**
+   * The ordered category labels rendered along the X axis.
+   */
+  categories?: string[];
+  /**
+   * A label for the X axis.
+   */
+  x_label?: string;
+  /**
+   * A label for the Y axis.
+   */
+  y_label?: string;
+};
+
+/**
+ * A single slice of a pie chart.
+ */
+export type DataVizSegment = {
+  /**
+   * The segment name, shown in the legend and used to compute its percentage.
+   */
+  label: string;
+  /**
+   * The segment value. Percentages are computed from the sum of all segment values.
+   */
+  value: number;
+};
+
+/**
+ * A ***line***, ***bar***, or ***area*** chart. These plot one or more {@link DataVizSeries series}
+ * against a shared set of categories described by {@link DataVizAxisConfig axis_config}.
+ */
+export type DataVizCartesianChart = {
+  type: "line" | "bar" | "area";
+  /**
+   * The series to plot. Each series is drawn in the next color from the palette and listed
+   * in the legend.
+   */
+  series: DataVizSeries[];
+  /**
+   * Axis configuration — categories and X / Y axis labels.
+   */
+  axis_config?: DataVizAxisConfig;
+};
+
+/**
+ * A ***pie*** chart. Pie charts render a set of {@link DataVizSegment segments} and do not use
+ * ***series*** or ***axis_config***.
+ */
+export type DataVizPieChart = {
+  type: "pie";
+  /**
+   * The pie segments. Each segment's percentage is computed from the sum of all values.
+   */
+  segments: DataVizSegment[];
+};
+
+/**
+ * The chart definition for a {@link DataVisualizationBlock}. The shape depends on the chart
+ * ***type***: ***line*** / ***bar*** / ***area*** use {@link DataVizCartesianChart}, while ***pie***
+ * uses {@link DataVizPieChart}.
+ */
+export type DataVizChart = DataVizCartesianChart | DataVizPieChart;
+
+export type DataVisualizationBlock = {
+  /**
+   * Available in surfaces: **Messages**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/data-visualization-block View here}
+   *
+   * A ***data_visualization*** block displays data visually as a ***pie***, ***bar***, ***area***,
+   * or ***line*** chart. Line, bar, and area charts plot one or more {@link DataVizSeries series}
+   * against a shared set of categories; pie charts render a set of {@link DataVizSegment segments}.
+   *
+   * Added to Block Kit in Slack's 2026-06-16 release
+   * ({@link https://docs.slack.dev/changelog/2026/06/16/block-kit-data-visualization-block changelog}).
+   */
+  type: "data_visualization";
+  /**
+   * A plain-text title rendered above the chart (as an ***h3***).
+   */
+  title?: string;
+  /**
+   * The chart definition. The shape depends on ***chart.type***.
+   */
+  chart: DataVizChart;
   /**
    * A string acting as a unique identifier for a block. If not specified, one will be generated.
    * Maximum length for this field is 255 characters.

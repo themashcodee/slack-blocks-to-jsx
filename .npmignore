@@ -1,8 +1,10 @@
 .github
+.claude
 scripts
 RELEASING.md
 node_modules
 src
+test
 .env
 .prettierrc
 CHANELOG.md

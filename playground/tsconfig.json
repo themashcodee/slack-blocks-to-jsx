@@ -15,8 +15,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    // Type-check the playground against the library's PUBLIC built types, not
+    // its source. Vite still aliases the import to ../src for runtime HMR (see
+    // vite.config.ts); this just keeps `tsc -b` from re-checking library
+    // internals under the playground's stricter flags + its own @types/react.
+    // Requires `dist/` to exist — `playground:build` builds the library first.
     "paths": {
-      "slack-blocks-to-jsx": ["../src/index.ts"]
+      "slack-blocks-to-jsx": ["../dist/index.d.ts"]
     }
   },
   "include": ["src"],

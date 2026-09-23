@@ -21,6 +21,24 @@ Then open <http://localhost:5173>. The left sidebar has a few fixtures, the
 middle pane is a live JSON editor, and the right pane renders the blocks
 through `<Message>`. A light/dark theme toggle sits in the sidebar footer.
 
+### Loading a different build
+
+By default the preview renders the local `../src`. The **Library package**
+field in the toolbar loads a **published or preview build** instead, at runtime
+via [esm.sh](https://esm.sh). Accepts:
+
+- a released version — `1.1.0`
+- a pkg.pr.new build URL — `https://pkg.pr.new/slack-blocks-to-jsx@123`
+- any ESM URL
+
+Click **Load build** (or **Use local build** to switch back). The current build
+is mirrored to the `?package=` query param, so the URL stays shareable. A
+`?pr=N` param adds a one-click **pkg.pr #N** preset — this is what the
+PR-preview bot comment links to.
+
+The override build runs in its own React root, fully isolated from the
+playground's React. The local `../src/style.css` still supplies the styling.
+
 ## Layout
 
 ```

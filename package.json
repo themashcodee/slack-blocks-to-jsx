@@ -11,7 +11,7 @@
   ],
   "repository": "https://github.com/themashcodee/slack-blocks-to-jsx.git",
   "license": "MIT",
-  "version": "1.0.4",
+  "version": "1.1.2",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -25,18 +25,18 @@
     "dev:css": "postcss ./src/style.css -o ./dist/style.css --watch",
     "dev": "tsup --watch",
     "lint": "tsc",
-    "test": "tsc",
+    "test": "node --test \"test/**/*.test.mjs\"",
     "release": "node scripts/release.mjs",
     "release:dry": "node scripts/release.mjs --dry-run",
     "release:beta": "node scripts/release.mjs prerelease --preid=beta",
     "release:alpha": "node scripts/release.mjs prerelease --preid=alpha",
     "playground:install": "cd playground && npm install",
     "playground": "cd playground && npm run dev",
-    "playground:build": "cd playground && npm run build"
+    "playground:build": "npm run build && cd playground && npm run build"
   },
   "dependencies": {
     "node-emoji": "^2.1.3",
-    "react-markdown": "^9.1.0",
+    "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1"
   },
   "peerDependencies": {
