@@ -29,40 +29,40 @@ importers:
         version: 17.0.93
       '@types/react-dom':
         specifier: ^17 || ^18 || ^19
-        version: 19.2.4(@types/react@17.0.93)
+        version: 19.3.0(@types/react@17.0.93)
       '@yozora/ast':
         specifier: ^2.3.2
-        version: 2.4.0
+        version: 2.4.1
       '@yozora/character':
         specifier: ^2.3.2
-        version: 2.4.0
+        version: 2.4.1
       '@yozora/core-tokenizer':
         specifier: ^2.3.2
-        version: 2.4.0
+        version: 2.4.1
       '@yozora/parser':
         specifier: ^2.3.2
-        version: 2.4.0
+        version: 2.4.1
       autoprefixer:
         specifier: ^10.4.17
-        version: 10.5.4(postcss@8.5.26)
+        version: 10.6.1(postcss@8.5.28)
       cssnano:
         specifier: ^7.1.5
-        version: 7.1.9(postcss@8.5.26)
+        version: 7.1.9(postcss@8.5.28)
       postcss:
         specifier: ^8.4.33
-        version: 8.5.26
+        version: 8.5.28
       postcss-cli:
         specifier: ^11.0.0
-        version: 11.0.1(jiti@1.21.7)(postcss@8.5.26)
+        version: 11.0.1(jiti@1.21.7)(postcss@8.5.28)
       postcss-nesting:
         specifier: ^14.0.0
-        version: 14.0.1(postcss@8.5.26)
+        version: 14.0.1(postcss@8.5.28)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17
       tsup:
         specifier: ^8.5.0
-        version: 8.5.1(jiti@1.21.7)(postcss@8.5.26)(typescript@5.9.2)(yaml@2.8.1)
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.28)(typescript@5.9.2)(yaml@2.8.1)
       typescript:
         specifier: ^5.2.2
         version: 5.9.2
@@ -266,6 +266,7 @@ packages:
     engines: {node: ^22.20 || ^24.12 || >=25}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -317,66 +318,79 @@ packages:
     resolution: {integrity: sha512-81wiiX3v7aqy+T+bT61TJ78yJjRquqFFTTbAPt08imfQQzkPIW8t6aJbkTagtCCrXMNc9D66+geqlK7ydLPNqA==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.62.4':
     resolution: {integrity: sha512-9kmDIvNZqdoHOBZgNtpTBeLWYO/LVipM3H/j62P8848/l/VPEQL6N3uxU9pvP1oZAsXyC2MEnFP3ovRjo7WYNQ==}
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.62.4':
     resolution: {integrity: sha512-CcnXHWnXg69g+DX5VWL3FHts3qMRN2uVEHX+BZvGLdd07/gXkn3ePjYtO1LDJvxkGKVHMclKBRa1QUTH+6toYQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.62.4':
     resolution: {integrity: sha512-iFOibiHnTRuhrWLlRsOQFdZJJIa7S8OwkneJr4ocALP16u5yk6lWLINFwhHaEqBFMsKDUZofLkGos7+CPzGB3g==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-loong64-gnu@4.62.4':
     resolution: {integrity: sha512-XnWYMI7euHlb5a871xPja+Gm7DRCFU+FGRrtS2sMq9N8FvqtpagUy6gD4YOemC5MRk9xbh8+jYMEJbigFQwsgA==}
     cpu: [loong64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-loong64-musl@4.62.4':
     resolution: {integrity: sha512-qGDAlO0U8xedCcsdRm9oaoQY8DAx/QT7uIxJWhCdx0ceIWX783UC9QSYkdpzAe29wNiVfp24+bZdQmn49o45SQ==}
     cpu: [loong64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-ppc64-gnu@4.62.4':
     resolution: {integrity: sha512-ru4H6ezD7ysA5EiEK6qkkaEb4modH8CTej6kUy/gQi20u3kB3G7Zn8snXXkeJSCOFKG/rbPPtM/+9Wgas1961w==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-ppc64-musl@4.62.4':
     resolution: {integrity: sha512-2W4MO5WQVJnbJaZdvDb9rhBDuFU1nKIepPFpJUBsTh2k1YY2g+ODViaWuyOAjQ5cOP7NvrvLzt3wvHOoiAvc7w==}
     cpu: [ppc64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-riscv64-gnu@4.62.4':
     resolution: {integrity: sha512-+fxjfuoAmVMCYV5QyjoIpu0cp5DOiOTeqYFk1AVaxGr+/ravWLX89XfQmptsoWcaVy/TGf2hexzbUOrCQIL1CQ==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-musl@4.62.4':
     resolution: {integrity: sha512-jTn8JfHGL4djjFxPuM06LmNUJDsst2jeVlsd9OmIH6zc5sC9K6rIuO4YajXatLUpBmBKl6b35ro1QZocLi+tcA==}
     cpu: [riscv64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-s390x-gnu@4.62.4':
     resolution: {integrity: sha512-oCJCJL4pXsoDcP2QZ+JVlPTIRc6266zsIaeJJsWImmF7HO0W8nb6HuSgZlMWxJwaPf8ehbSw8yo0EUw925hKsA==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.62.4':
     resolution: {integrity: sha512-W69hukhZ3KKNRCaMIEzKvcFye42hh0FE1+YoYaf5+Ikacuftoco6yO/xouz0hc5d5W/s3yBro5jRiuEE/Q5vUw==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.62.4':
     resolution: {integrity: sha512-qiXbGG2jkjXhzXpsFZSR2Xpb8DN/UaxYsbb/STbuR/6fpaDgRmmaq1B/LmtF2wQFOFOSsK2jdE0RZ3a0zHn4QA==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-openbsd-x64@4.62.4':
     resolution: {integrity: sha512-nWeM//hxv8mIo6jD7Hu4o48DVmV9pbV6gsKaWU+4NFyqHoPKwrkRiZGLKUhOBk8qNmDmpwFtPKg80Bo/Tn4xiQ==}
@@ -433,10 +447,10 @@ packages:
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
 
-  '@types/react-dom@19.2.4':
-    resolution: {integrity: sha512-Bsc+QHgp+P/F02XDzNCY9jnZNCUuLki36KT7VKrTXXLdHf+vHMNZnW1rVu5DNW/rCK+fya3DATySbLM4yhtKUw==}
+  '@types/react-dom@19.3.0':
+    resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
     peerDependencies:
-      '@types/react': ^19.2.0
+      '@types/react': ^19.3.0
 
   '@types/react@17.0.93':
     resolution: {integrity: sha512-KM4Ty/ZTLZupiYxZVAlP+InNJS3De6uBMdq0ePa6/04+eG9Y7ftnWfst1xTLQ5rwAhgHwQ4momt/O4KepdGBTw==}
@@ -454,116 +468,116 @@ packages:
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
     deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
-  '@yozora/ast@2.4.0':
-    resolution: {integrity: sha512-xkLMOB/5NKCp3SlGFnMCkXbtR+ttEz9nR+du26qyITXx8piDF0CLPmg/7oH5LiVDHIEHyweC3LTzTSKRxVHYeg==}
+  '@yozora/ast@2.4.1':
+    resolution: {integrity: sha512-MCyWiT+RRez2lNcvfDsonTDRQDZEav21eC7cEfRtIoH7fTFiFOddMPROrqD42TeMiEBzgARWVAGg0jlggtIFqQ==}
 
-  '@yozora/character@2.4.0':
-    resolution: {integrity: sha512-Svq1RNZYNjYUomADhpgzm7Id2qf8snyg0n3stZf8kw5thrttNRV+UDLV599DaXMmbFwTUxPDfCjgLheRLcVllg==}
+  '@yozora/character@2.4.1':
+    resolution: {integrity: sha512-gjdGgmlSpVRqIb7pCD0rUPCK1TPV7n37gVxxuP5B1Tb74NZMqPhGGiQ3XxaTVj/3zBNV/V34GkMZpCT9XQ6kmA==}
 
-  '@yozora/core-parser@2.4.0':
-    resolution: {integrity: sha512-mxmEk4VAA7E+l9qTHYIHo/kUH/5/a+Tsks1/fn9NTlV1D9rCVM4NeVa3ZHJWAIa0QlDSf8r1sBoL7/OrvOfAPA==}
+  '@yozora/core-parser@2.4.1':
+    resolution: {integrity: sha512-YaCAJYnFQOuv7n7CvvQ5JC0ETpnyLE/wLe/x4nOXRT7x9dHq6oiinr5rHNzqTN9Db1idZdmmJ7cfj6utwxBc8w==}
 
-  '@yozora/core-tokenizer@2.4.0':
-    resolution: {integrity: sha512-vsydDPF3HS/vxORJU5zYS0VhWBVoFl8UcVwodiN5bdyz43difrcwv6Gzvv6tT4CVs4ls8E/Q2azYdO7jelNBSg==}
+  '@yozora/core-tokenizer@2.4.1':
+    resolution: {integrity: sha512-JAgvgzkAQDNX7RVz6v9Dj3HxTU3O/RJytYS9IFyNgjxNRhZ735KSkTSqlXROQwc5DP9HeNWqqs7ppmqDhLTjTg==}
 
-  '@yozora/invariant@2.4.0':
-    resolution: {integrity: sha512-hkzvE1PSAeC7dKRiqCWF+kxOQMCyLpY2MnqqS8JVyOOwlc4IguZKrie8LVQ0qowuyEi6NNTaNaRpc3uZOjGavQ==}
+  '@yozora/invariant@2.4.1':
+    resolution: {integrity: sha512-KgxbL2UglQS1dWQUrHznGx/0krap7RYhhSL7Mbaj44sch08BHK6k2hEUskrKbbpIBNgHL82lNp5Z4k44TBmhSA==}
 
-  '@yozora/parser@2.4.0':
-    resolution: {integrity: sha512-AJLbQ2Ng3N5ZkeqB0HW/gwwJO+/YCh6MOP5M4KrB4NGnEVLOg52QrH5cSvkVaZR8kltGRljNhc0W31G/Zsgeyw==}
+  '@yozora/parser@2.4.1':
+    resolution: {integrity: sha512-ANyM2zPK+FG5k+gVZo8GLehHYpQ3ETtwSdvfPucOSyLQO69yKTgQnQDcD9xbIABN6JN2eGIzrH+llPEMLSxRlQ==}
 
-  '@yozora/tokenizer-admonition@2.4.0':
-    resolution: {integrity: sha512-5nd9q95bcPdkQ8wuLw9BaPN51pjYz7N8WyZxZTTlDa7YJ7wSCdOkYMAGrgBZbOdnzFGzOGN90juVhr85bSO42A==}
+  '@yozora/tokenizer-admonition@2.4.1':
+    resolution: {integrity: sha512-Flt/zhDalhIHkXpHTF4oVVKjZETJsrQDkAafRxXQTIbZ//R70R5jaI1ye62CgOtD/S5lv9cF1nc9zUaKgBT+/Q==}
 
-  '@yozora/tokenizer-autolink-extension@2.4.0':
-    resolution: {integrity: sha512-CM6W2OU8yCI83X/85C5G1k9nYulE86DHcffd2zTxTM5GtbpRpRg/oHgggAdEeO2Fqizw3gsjfa6lSZYWnV1XQA==}
+  '@yozora/tokenizer-autolink-extension@2.4.1':
+    resolution: {integrity: sha512-CT+lbx+SVIzxFKBsQE1EOw2iqJiQD+izZAW1lxOpfHYtKcME16q4dBSVYzwZpilc2pSESAeKZ0lbKi1ZV9a97g==}
 
-  '@yozora/tokenizer-autolink@2.4.0':
-    resolution: {integrity: sha512-NDBmGhNPCovP1mBaEq+c3lkK4+okHYeafx+p2WnjCLdQKVNK4MXoHpiRc19h/hk6Q13Ajvd8sbrVMnPbWqG/tg==}
+  '@yozora/tokenizer-autolink@2.4.1':
+    resolution: {integrity: sha512-HM7YF/riiPvaQIxwk3fqVZE7jJdo2NlCQIcoQdI2/9iiX8IqVEF+eS/RAuqJ/zcVhIcsN1nVuttq3Q6GpbdMaw==}
 
-  '@yozora/tokenizer-blockquote@2.4.0':
-    resolution: {integrity: sha512-93QGbsKwozm6z8avvkiSaJI0gYkPNewRWcumKCEDZIIyxXdCP2KZQSZLK4S/B2pyZ13inbWGBnoQM7bWSE+ZEA==}
+  '@yozora/tokenizer-blockquote@2.4.1':
+    resolution: {integrity: sha512-2D/2zB/J9hW4dAKs1nVPZoI2cxfPeM9NWda2F+co0C/omG1nVyUtJwUOxSiFfmysBZVWtxRHVeNeWbMmxUI3ig==}
 
-  '@yozora/tokenizer-break@2.4.0':
-    resolution: {integrity: sha512-v1M0T3DNDXCZDSDC27QIv3Z92gAt1ZUZpa4sdi28eXwd4qKcVJOo0stkLO2K2xI0ohb5Gtl0/jMo4A52/u9rtQ==}
+  '@yozora/tokenizer-break@2.4.1':
+    resolution: {integrity: sha512-LK0c8SObdWviF90Mkjhd4MB1+K70K8ElV+m02GttJPl9IpSv/zjRfwmQ4ccBh/BXY7PPZPUugA4lmmkW2YURvw==}
 
-  '@yozora/tokenizer-definition@2.4.0':
-    resolution: {integrity: sha512-y6uS3BJUiULLNjP8d6PZnMvjqH7twqNWsJHk+aYqZGuekDxTi8MtlqsY0nUyJUcSJ0mKLE3se0p3yVBG3Rr5Pg==}
+  '@yozora/tokenizer-definition@2.4.1':
+    resolution: {integrity: sha512-tJUompvfTJYlb9pj6M4ZzNqsKXKCVyJf1SMv5PT6oUxxR+tmx2Vhuotu+P2sjnFFyRTnpU3Vt0dvuPW/kWbqFQ==}
 
-  '@yozora/tokenizer-delete@2.4.0':
-    resolution: {integrity: sha512-A0ICmzBX0qjI8HAj6uagyySRRman81q/6JIR1IpyMhf1fnW2trOggO92goXLO8cNvGE02vtA/CIHQ1+DyzuWMA==}
+  '@yozora/tokenizer-delete@2.4.1':
+    resolution: {integrity: sha512-fmVisruZnXqlv2ZxT9IRdFgYRsSCTBgjFdkQc4hqAnOqS+TN1fBQAuILwkPSgc1IYqyuAW/dUKIioqo/GSPrqQ==}
 
-  '@yozora/tokenizer-ecma-import@2.4.0':
-    resolution: {integrity: sha512-gm0kyy6zqwIhaPm3Ifvy5CAMogR4vClNmHk2YU0MB5SfWzZTi6LOYeGF56S/Ie2i6dmrPZ9orASfCELH06fWkA==}
+  '@yozora/tokenizer-ecma-import@2.4.1':
+    resolution: {integrity: sha512-6jgiAMGO6YopAEKnC/L9A8XhSOM4LT8cNffuMHWi9En+Heq71Ud5OUt4ZTxakUUdUQw9yMI6MyLo5V8tURk7mg==}
 
-  '@yozora/tokenizer-emphasis@2.4.0':
-    resolution: {integrity: sha512-rS3IGnI59rX1PV+6b3GOAnhi+6aLNP6ZUaOJVBIb3+K0MxYahpa+o53XRdhDnyet0vpUdHu6y/a0BcXMFR2YmA==}
+  '@yozora/tokenizer-emphasis@2.4.1':
+    resolution: {integrity: sha512-2fU1RitlZUBtF398vrCE8FklQLyXrHR3xPAB494NtEqJSOVOZLbrDQCLvhpSQRqorANDKdBIJv1G878U3aUkgw==}
 
-  '@yozora/tokenizer-fenced-block@2.4.0':
-    resolution: {integrity: sha512-DM2+g/INvL4Jj0tS6Sz2pi2Cdps9LNwDGd1mxUx+ORoz+eO+b3MVqLWEWa1g1D+j4dyQ4fjvqgy/RzWOPsy6Uw==}
+  '@yozora/tokenizer-fenced-block@2.4.1':
+    resolution: {integrity: sha512-VGm1U5nO5VXKug32ShCJ9aNSw/0IcVLMhxhfwe7fcqCrk4Z/3i7x6pir+lDsFjxGakipIrWWsfueJ2hM5RYnaA==}
 
-  '@yozora/tokenizer-fenced-code@2.4.0':
-    resolution: {integrity: sha512-+9fCjv/mLJ8RgsPYOYA4jPeVKHGbVRDumlk3kIKFpa6pQxUvzOcIaKXbVpGOPNd9W4WfHVJSf77AdJZuXSO7/g==}
+  '@yozora/tokenizer-fenced-code@2.4.1':
+    resolution: {integrity: sha512-TX66ttnLVZTHBqa1yCwg9rXdj/sOFIoitPTt5gLFtpkgGdlopiUubHwTAEk6uXHQyWoWy6I5P2pOYkRmlt9Dmg==}
 
-  '@yozora/tokenizer-footnote-definition@2.4.0':
-    resolution: {integrity: sha512-yb5OjEkPMn1QWv2YA+x3HHbcbRImGaHVn9jwouT7AXRG3lR1UbX2WDA0UaYsGayJ/Ro1w3TfkTVxb0/tLjArZg==}
+  '@yozora/tokenizer-footnote-definition@2.4.1':
+    resolution: {integrity: sha512-KcNTvKUTfCCZYkd54DEL3h08pap24ERlWNRksK7egQledSM/rx5jpTFUp4pdxTz4h4AOgOAzSjIuS6RBDqCbNg==}
 
-  '@yozora/tokenizer-footnote-reference@2.4.0':
-    resolution: {integrity: sha512-C14SOXhicIQ5f2KJhUHnRGi8mDXIg025q+MRSrkdHRMerpEOcKw7GqfSILauTXsD2xcZRZoqb6XV+71nJZzEUA==}
+  '@yozora/tokenizer-footnote-reference@2.4.1':
+    resolution: {integrity: sha512-XP+2NQ+TVJPZPMzRJXWZY6C1rAHD/2CzASFLiij+xhQCs6/FAgaDqto/DPshfMC7mhcmI1p83V/Jp72SitVzjQ==}
 
-  '@yozora/tokenizer-footnote@2.4.0':
-    resolution: {integrity: sha512-RLT1egilEXw0bYKMKVxF7RSYn89xAcxUsphw+dsWDAsdDxoJzlfHReq6Da9QfpkbEdWd09GxadJ+lpDQBfjPPg==}
+  '@yozora/tokenizer-footnote@2.4.1':
+    resolution: {integrity: sha512-oC966BDTh00/aipw1OyfNYrGz76ytz0r2WlmLeesF9Hmwhu8qVFaqjFv16DxiMcVfcCWCBC14ZWpeHlJEMU5aA==}
 
-  '@yozora/tokenizer-heading@2.4.0':
-    resolution: {integrity: sha512-p3/5ra7gmWlo9OqsXjEN92emC1VipJFxOrU/vjg+29An3OSkORafVN3e2thaGarU1QBar2WRXv/JYWxywCtR0w==}
+  '@yozora/tokenizer-heading@2.4.1':
+    resolution: {integrity: sha512-aQg7O5MTNczV8x2jvyS+YXFPewfuZ4oks0py246ITjikOdIeSEZt4HwFp4OdhIYE2TysEry57QPgdwxERw79bw==}
 
-  '@yozora/tokenizer-html-block@2.4.0':
-    resolution: {integrity: sha512-tivDgHYq+jXj6qluUVUEfXWxvBlZqBQtKd2unAio4/4pO7aHBbKYFdPO39K9ZWiINuRR9ItlQ7oNQzyIgF3e7Q==}
+  '@yozora/tokenizer-html-block@2.4.1':
+    resolution: {integrity: sha512-Ip2/d66zSevqB/Ft/De17yEIWuDSl3Pul+S5kLn2mrTyNJ3j1mIYVgaMa2fCv7NcgXYIqHuyz50Ln/nekGD9Hw==}
 
-  '@yozora/tokenizer-html-inline@2.4.0':
-    resolution: {integrity: sha512-YtaBC5XbPZIxyNXOow+5s7yrcm7CUfTjAfpv3ELI+fMZHSKeX6sxcg3lbLfQSAVzbLLDZNTAGStUJSaLZlJ6oA==}
+  '@yozora/tokenizer-html-inline@2.4.1':
+    resolution: {integrity: sha512-Df5e7RSeqIftwcXbRANmPMRurvA9IzViLydd+I18M7kr4RAaDbBZWJfUelmOeqdCYU6zXzjRyXJpfalCXZ7PCA==}
 
-  '@yozora/tokenizer-image-reference@2.4.0':
-    resolution: {integrity: sha512-MxMTOfitsEDWw6pbhJOlXEo5Qv93k0sJz/WJvs/uyL2w2L60bxpBm0bnwdaGCToZ+MQGGHZpnk9FcpxM7b55jw==}
+  '@yozora/tokenizer-image-reference@2.4.1':
+    resolution: {integrity: sha512-dxh5flpYqfV0xPFAZvLHmwRJfbIydh5hFeSFiCf/8RkLf+DxDofTaPaS7HLiVT17hr81NoF9Y4oqoE7Mm5AqmA==}
 
-  '@yozora/tokenizer-image@2.4.0':
-    resolution: {integrity: sha512-psfMRhsZhgugS+KqaXNnN4+6oqdHadcutmbXDQnnLzI3o2ZhFrFrnN4Y/CjvWFWo8mmLrfFDsf+ISnsVadISjA==}
+  '@yozora/tokenizer-image@2.4.1':
+    resolution: {integrity: sha512-6B5VNitMvAeVPeeytTQiFCpqdmy1rKqy/11pyZKGRpC7DFx3JX7ESvBBXHsqnC8O3ms9zaXTi6Mm0/YU6iHdlA==}
 
-  '@yozora/tokenizer-indented-code@2.4.0':
-    resolution: {integrity: sha512-QIJVc2pXjFWPJKaU/xZxWoFzupo4EFJpDSJnHJYyuLl+am34bcvdIf3q5HA3jBwAtJvQtPQQAG9YXrBwGsLbTQ==}
+  '@yozora/tokenizer-indented-code@2.4.1':
+    resolution: {integrity: sha512-yxyC94KXhz60REwJaRyRthssvgShBtn5BTndbXWcu+vjqOrCiEAJheGpM4rCXzFs5urBEr9sDb8FeRV6DduOpQ==}
 
-  '@yozora/tokenizer-inline-code@2.4.0':
-    resolution: {integrity: sha512-oeDBnl/SNQ7qZxbG6ul1RL5dmkpMqW7TuX80L8hTVVnvtAPK/a+eZnbWTregBe0gtwPzCtidUV+9KRw5+XlPbQ==}
+  '@yozora/tokenizer-inline-code@2.4.1':
+    resolution: {integrity: sha512-tJgaegQHpcqIMqd06ikRASG8qTBK9G8N3d5fKqa3qc/CSHdMAS3mTEybLelwjyP523xqd00EgJ40VHpCQBeL8g==}
 
-  '@yozora/tokenizer-inline-math@2.4.0':
-    resolution: {integrity: sha512-VeOzSflo3cIuCqxx3Zmm3nA/bsQ5cF+LlfIl/sMbydg5lqxzr+IXoeCMhq0WPxMs1Dh/pEZIxOMr8TQcJoT/sw==}
+  '@yozora/tokenizer-inline-math@2.4.1':
+    resolution: {integrity: sha512-m9kWav+4Mpr8m+5BHuneuSrl8vtRzRZI9HbsWEHWioLjrP58PF61EpMx60voKgQR0rhVZFY9SVuga6amCS3hfg==}
 
-  '@yozora/tokenizer-link-reference@2.4.0':
-    resolution: {integrity: sha512-/eskjyNCdlNDI2G5CPZLi5B8JbkA1SXoNMDkuuHGqcvizCXeIi6zDAOiZRzbf3BIz7lncknylyURgVcgiaKd6g==}
+  '@yozora/tokenizer-link-reference@2.4.1':
+    resolution: {integrity: sha512-cozzxjRvxTzvK4C5pgCWlX5Lw5CQcKA6vFiFGJ9aOoyY4maEVjCxmeNT5EGjDrYreKVyAhhmcqNAkPtI0iRuiA==}
 
-  '@yozora/tokenizer-link@2.4.0':
-    resolution: {integrity: sha512-vgpIgNaKFD8aS1ZAfiwMkTBpWn2JLbCjA5yYm17CfMTBeSiHOdzEW4XNU0kGlncuUzOqXXYGLVlPcR9aL6EONw==}
+  '@yozora/tokenizer-link@2.4.1':
+    resolution: {integrity: sha512-kyGotAGJ3Vh7TIxrvgVjLFOvfEYow+KO7RR3iC2+da+sIRsNs2QYgDrTDTD2ENUM5jWqypZJUsgOHl9/DCJQYg==}
 
-  '@yozora/tokenizer-list@2.4.0':
-    resolution: {integrity: sha512-Pgd/wLGyzq/sEtiawxNzgh1vW2/tWvsMdNf0ZQvR+U3n6l4/CHtzpqrF0JsPc3utpJd9+y3l6SLtt421uryo7Q==}
+  '@yozora/tokenizer-list@2.4.1':
+    resolution: {integrity: sha512-cAzPQg9TCgWrIzV2SnNQQHob/3Ty1Nd+lmEm3Fpf3GMsc/hjYB4PyP1vSWlpsHVlshPOu18Xk8Qun8KaaP/wgg==}
 
-  '@yozora/tokenizer-math@2.4.0':
-    resolution: {integrity: sha512-vRO0GVos6NqTHL1n6dlXGT3WPdOlR4tYZsPCqdBa8ewdUwAzUu7fTGRRSAEGQfnNDnd9Y/BdUphhzxqlTdV4ew==}
+  '@yozora/tokenizer-math@2.4.1':
+    resolution: {integrity: sha512-09N5/OYEP/xoPfa+W/gck4vh3pBBwiiRduUL4spG0TCHaM6zKLW+qW+FxeSRw5rbwTKwOncfj+6KDe57SRnmow==}
 
-  '@yozora/tokenizer-paragraph@2.4.0':
-    resolution: {integrity: sha512-OBEEl91rnFExlzmjrY/X+uBVX7ClqX4flWdQGgaDKesnw5bP2xD2UC3nQYzcpWFTWWfrdbkoFvhf0KGXhTcfhA==}
+  '@yozora/tokenizer-paragraph@2.4.1':
+    resolution: {integrity: sha512-TaHxlhlCthr9KZXNSjBd19PgT2woS7GSA+WNL61ntrQ6BT1YlF3BFRYhF5hjMt4XZpq/guvN+pWkLAM3n5zDsQ==}
 
-  '@yozora/tokenizer-setext-heading@2.4.0':
-    resolution: {integrity: sha512-iMlq7d23Xls9M4NH4fH1V7a93orD/rzSHpSUBoGkhJv/CNbdRqTDxFvlVTduTx0rv44m8pqWEgMcIuLBGXCjIg==}
+  '@yozora/tokenizer-setext-heading@2.4.1':
+    resolution: {integrity: sha512-EmVCxZ76PRPfh5y2rfmNe6TBbxlu259jxnu53EcftG08Nc4vIvDQQOCXsfQ++zOVZAhlYMxQd8x5uOytFpVDdg==}
 
-  '@yozora/tokenizer-table@2.4.0':
-    resolution: {integrity: sha512-PY1bcOhqkzfHNvwFBoy5IjWYKXghIoiv80DYZIBoR1Yivt2YrNamUsBRIpmee5h0IC6og2D3sEoYnQ0aiDFy8g==}
+  '@yozora/tokenizer-table@2.4.1':
+    resolution: {integrity: sha512-Kjt2xC3ggC4GoHOtI4gjhYYVkilrIyFBdDyui0Sqb6T+jJLOxLGjGR57nUzYitapx0oIpiJAh78wIXN1hXas5Q==}
 
-  '@yozora/tokenizer-text@2.4.0':
-    resolution: {integrity: sha512-RHPKxlYxqqXGKFx14Z2J9+rCZYPGjpf4agigSUUB4fLxYlmF/inzpSUfaGuQghs8vrLcpeV3JoWQcrKqfvTq2A==}
+  '@yozora/tokenizer-text@2.4.1':
+    resolution: {integrity: sha512-vmpt496d67KHWm8k+YhR4hEzThqNkadG15+ZISqM43h3CC/OiBHVTKRjkY7hImsEvseybyCYG3WLhnaKOI7Wmg==}
 
-  '@yozora/tokenizer-thematic-break@2.4.0':
-    resolution: {integrity: sha512-fCwx4Sna7comlwI13ctLxuxc/dU8n7I4PzP7eHocW6KDJlTx4DfA6nutymWTxDbW76AFtHVOOk5zV3qFmWpmrg==}
+  '@yozora/tokenizer-thematic-break@2.4.1':
+    resolution: {integrity: sha512-SCXt8KKS2sIFltmBD67Aw8cCPK0+gferv7xLGSieV5BEYNxjwKt3wpGciMCf2fenqwidEeah55F7kVUETRi0Zw==}
 
   acorn@8.18.0:
     resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
@@ -596,8 +610,8 @@ packages:
   arg@5.0.2:
     resolution: {integrity: sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==}
 
-  autoprefixer@10.5.4:
-    resolution: {integrity: sha512-MaU0U/za7N3r6brxD4YB/l4NSrFzLPlANv6wEuQVaIPlD3L4W9rFcQPbL/EilY9BHhHvhfcz3gInDLrEtWT4EA==}
+  autoprefixer@10.6.1:
+    resolution: {integrity: sha512-cL1Qz6ADZhcEbny/8HPfe99J6HhNoYtpX2LFLIbhgGE7Q1hlQVkYFdetDN7Id3KiQxhDrHwzlHr/YQCnZ8+xSA==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
@@ -611,6 +625,11 @@ packages:
 
   baseline-browser-mapping@2.11.15:
     resolution: {integrity: sha512-FwMjJJ7HnyZpWe+oWxegG0fezZyBZUagI5LZEoO3GCbtbKNwRfMH9Ue5d5v01PNePBy1QSfPSDTTeVL0Hb9EzA==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  baseline-browser-mapping@2.11.25:
+    resolution: {integrity: sha512-gMmEShwwq7FJqMwvfRwvCl00v4kN+KOfJqXn+f4nrufak5gNHJOksd/60Dvjuz7sI8Y5WiSFBa8FEYr+zoyqCw==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -633,6 +652,11 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
+  browserslist@4.29.0:
+    resolution: {integrity: sha512-3GSvyjvDI4Dur1Meg2BekJquu5uF+9R9a1+5M1Mde192eZoXbeXjzgOsgqPS2V8D5wrrip0gR5Hf/GhWQ9ZzaA==}
+    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
+    hasBin: true
+
   bundle-require@5.1.0:
     resolution: {integrity: sha512-3WrrOuZiyaaZPWiEt4G3+IffISVC9HYlWueJEBWED4ZH4aIAC2PnkdnuRrR94M+w6yGWn4AglWtJtBI8YqvgoA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -652,6 +676,9 @@ packages:
 
   caniuse-lite@1.0.30001809:
     resolution: {integrity: sha512-xxWVywk6a6Arlk+hymeycyn/VgqEfLDxupvhH/xiY5SJ/18kmi9o6MiO320DCUzypORHLtvh0I4i04tUhCNHNQ==}
+
+  caniuse-lite@1.0.30001810:
+    resolution: {integrity: sha512-TITQPUkaz+aVk5GL6NhOdwk1aEaNTSDPsGFWrTuhKGtjTF70jL/Oht2W4c6rXUe5fu7Ie19VIahAXHIIiWWNeg==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -811,6 +838,9 @@ packages:
 
   electron-to-chromium@1.5.411:
     resolution: {integrity: sha512-gglkxzokjHfawpGxq75XdBV2/l3BAPzrsMs70qgaZdTW5rpV1tC4MdgJVP9fN126bODA4ZJQkn1wryEzJyQXIg==}
+
+  electron-to-chromium@1.5.438:
+    resolution: {integrity: sha512-AN9xMU1hJiT65LkCUPL1DZm5TCbOPb2Qsm5pYwFLEXp6/qj9SdT4yMiqs7Qqstwvkn1zF7l36SRGt+s6XcJ0FA==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1188,6 +1218,10 @@ packages:
     resolution: {integrity: sha512-D9UOmYG3UH1V+ENW56t5QXBwJw1YEY18ruVeus89Rw+SyIgjPkCO84bRzO3uNIYosJbNwiabWVn48o3uJLjxFQ==}
     engines: {node: '>=18'}
 
+  node-releases@2.0.57:
+    resolution: {integrity: sha512-kQK9LGGFiHtrWiNhZtA7Qbw17AQz+dmsEKODRIVTXA9+e5MS/2gZEBhYJt13GrAz5/IOZKddH/0Z3TP/Zgo+yw==}
+    engines: {node: '>=18'}
+
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -1508,8 +1542,8 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.26:
-    resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
+  postcss@8.5.28:
+    resolution: {integrity: sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A==}
     engines: {node: ^10 || ^12 || >=14}
 
   pretty-hrtime@1.0.3:
@@ -1771,6 +1805,12 @@ packages:
 
   update-browserslist-db@1.3.1:
     resolution: {integrity: sha512-ZZ61DsRsOnakl74HAmp3oSN4aXUmEWXf+i/yv0h7tIBfICc3VdrFErQKUUKPgu3AMsTUMbcongALEN4l6GSUrQ==}
+    hasBin: true
+    peerDependencies:
+      browserslist: '>= 4.21.0'
+
+  update-browserslist-db@1.3.3:
+    resolution: {integrity: sha512-pJ2sYawQS0R/WI928Gj5GlPhTGzbMelq0+4INtSYNDV9ErKJcX6xjGWkoG/VnB3dpUm00zALaqkrUD77pO5TDQ==}
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
@@ -2049,7 +2089,7 @@ snapshots:
 
   '@types/prop-types@15.7.15': {}
 
-  '@types/react-dom@19.2.4(@types/react@17.0.93)':
+  '@types/react-dom@19.3.0(@types/react@17.0.93)':
     dependencies:
       '@types/react': 17.0.93
 
@@ -2067,255 +2107,255 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@yozora/ast@2.4.0': {}
+  '@yozora/ast@2.4.1': {}
 
-  '@yozora/character@2.4.0': {}
+  '@yozora/character@2.4.1': {}
 
-  '@yozora/core-parser@2.4.0':
+  '@yozora/core-parser@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/invariant': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/invariant': 2.4.1
 
-  '@yozora/core-tokenizer@2.4.0':
+  '@yozora/core-tokenizer@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
 
-  '@yozora/invariant@2.4.0': {}
+  '@yozora/invariant@2.4.1': {}
 
-  '@yozora/parser@2.4.0':
+  '@yozora/parser@2.4.1':
     dependencies:
-      '@yozora/core-parser': 2.4.0
-      '@yozora/tokenizer-admonition': 2.4.0
-      '@yozora/tokenizer-autolink': 2.4.0
-      '@yozora/tokenizer-autolink-extension': 2.4.0
-      '@yozora/tokenizer-blockquote': 2.4.0
-      '@yozora/tokenizer-break': 2.4.0
-      '@yozora/tokenizer-definition': 2.4.0
-      '@yozora/tokenizer-delete': 2.4.0
-      '@yozora/tokenizer-ecma-import': 2.4.0
-      '@yozora/tokenizer-emphasis': 2.4.0
-      '@yozora/tokenizer-fenced-code': 2.4.0
-      '@yozora/tokenizer-footnote': 2.4.0
-      '@yozora/tokenizer-footnote-definition': 2.4.0
-      '@yozora/tokenizer-footnote-reference': 2.4.0
-      '@yozora/tokenizer-heading': 2.4.0
-      '@yozora/tokenizer-html-block': 2.4.0
-      '@yozora/tokenizer-html-inline': 2.4.0
-      '@yozora/tokenizer-image': 2.4.0
-      '@yozora/tokenizer-image-reference': 2.4.0
-      '@yozora/tokenizer-indented-code': 2.4.0
-      '@yozora/tokenizer-inline-code': 2.4.0
-      '@yozora/tokenizer-inline-math': 2.4.0
-      '@yozora/tokenizer-link': 2.4.0
-      '@yozora/tokenizer-link-reference': 2.4.0
-      '@yozora/tokenizer-list': 2.4.0
-      '@yozora/tokenizer-math': 2.4.0
-      '@yozora/tokenizer-paragraph': 2.4.0
-      '@yozora/tokenizer-setext-heading': 2.4.0
-      '@yozora/tokenizer-table': 2.4.0
-      '@yozora/tokenizer-text': 2.4.0
-      '@yozora/tokenizer-thematic-break': 2.4.0
+      '@yozora/core-parser': 2.4.1
+      '@yozora/tokenizer-admonition': 2.4.1
+      '@yozora/tokenizer-autolink': 2.4.1
+      '@yozora/tokenizer-autolink-extension': 2.4.1
+      '@yozora/tokenizer-blockquote': 2.4.1
+      '@yozora/tokenizer-break': 2.4.1
+      '@yozora/tokenizer-definition': 2.4.1
+      '@yozora/tokenizer-delete': 2.4.1
+      '@yozora/tokenizer-ecma-import': 2.4.1
+      '@yozora/tokenizer-emphasis': 2.4.1
+      '@yozora/tokenizer-fenced-code': 2.4.1
+      '@yozora/tokenizer-footnote': 2.4.1
+      '@yozora/tokenizer-footnote-definition': 2.4.1
+      '@yozora/tokenizer-footnote-reference': 2.4.1
+      '@yozora/tokenizer-heading': 2.4.1
+      '@yozora/tokenizer-html-block': 2.4.1
+      '@yozora/tokenizer-html-inline': 2.4.1
+      '@yozora/tokenizer-image': 2.4.1
+      '@yozora/tokenizer-image-reference': 2.4.1
+      '@yozora/tokenizer-indented-code': 2.4.1
+      '@yozora/tokenizer-inline-code': 2.4.1
+      '@yozora/tokenizer-inline-math': 2.4.1
+      '@yozora/tokenizer-link': 2.4.1
+      '@yozora/tokenizer-link-reference': 2.4.1
+      '@yozora/tokenizer-list': 2.4.1
+      '@yozora/tokenizer-math': 2.4.1
+      '@yozora/tokenizer-paragraph': 2.4.1
+      '@yozora/tokenizer-setext-heading': 2.4.1
+      '@yozora/tokenizer-table': 2.4.1
+      '@yozora/tokenizer-text': 2.4.1
+      '@yozora/tokenizer-thematic-break': 2.4.1
 
-  '@yozora/tokenizer-admonition@2.4.0':
+  '@yozora/tokenizer-admonition@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-fenced-block': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-fenced-block': 2.4.1
 
-  '@yozora/tokenizer-autolink-extension@2.4.0':
+  '@yozora/tokenizer-autolink-extension@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-autolink': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-autolink': 2.4.1
 
-  '@yozora/tokenizer-autolink@2.4.0':
+  '@yozora/tokenizer-autolink@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-blockquote@2.4.0':
+  '@yozora/tokenizer-blockquote@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-break@2.4.0':
+  '@yozora/tokenizer-break@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-definition@2.4.0':
+  '@yozora/tokenizer-definition@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-delete@2.4.0':
+  '@yozora/tokenizer-delete@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-ecma-import@2.4.0':
+  '@yozora/tokenizer-ecma-import@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-emphasis@2.4.0':
+  '@yozora/tokenizer-emphasis@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-fenced-block@2.4.0':
+  '@yozora/tokenizer-fenced-block@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-fenced-code@2.4.0':
+  '@yozora/tokenizer-fenced-code@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-fenced-block': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-fenced-block': 2.4.1
 
-  '@yozora/tokenizer-footnote-definition@2.4.0':
+  '@yozora/tokenizer-footnote-definition@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-footnote-reference@2.4.0':
+  '@yozora/tokenizer-footnote-reference@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-footnote-definition': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-footnote-definition': 2.4.1
 
-  '@yozora/tokenizer-footnote@2.4.0':
+  '@yozora/tokenizer-footnote@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-link': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-link': 2.4.1
 
-  '@yozora/tokenizer-heading@2.4.0':
+  '@yozora/tokenizer-heading@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-html-block@2.4.0':
+  '@yozora/tokenizer-html-block@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-html-inline@2.4.0':
+  '@yozora/tokenizer-html-inline@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-html-block': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-html-block': 2.4.1
 
-  '@yozora/tokenizer-image-reference@2.4.0':
+  '@yozora/tokenizer-image-reference@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-image': 2.4.0
-      '@yozora/tokenizer-link': 2.4.0
-      '@yozora/tokenizer-link-reference': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-image': 2.4.1
+      '@yozora/tokenizer-link': 2.4.1
+      '@yozora/tokenizer-link-reference': 2.4.1
 
-  '@yozora/tokenizer-image@2.4.0':
+  '@yozora/tokenizer-image@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-link': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-link': 2.4.1
 
-  '@yozora/tokenizer-indented-code@2.4.0':
+  '@yozora/tokenizer-indented-code@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-inline-code@2.4.0':
+  '@yozora/tokenizer-inline-code@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-inline-math@2.4.0':
+  '@yozora/tokenizer-inline-math@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-link-reference@2.4.0':
+  '@yozora/tokenizer-link-reference@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-link': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-link': 2.4.1
 
-  '@yozora/tokenizer-link@2.4.0':
+  '@yozora/tokenizer-link@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-list@2.4.0':
+  '@yozora/tokenizer-list@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-math@2.4.0':
+  '@yozora/tokenizer-math@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
-      '@yozora/tokenizer-fenced-block': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
+      '@yozora/tokenizer-fenced-block': 2.4.1
 
-  '@yozora/tokenizer-paragraph@2.4.0':
+  '@yozora/tokenizer-paragraph@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-setext-heading@2.4.0':
+  '@yozora/tokenizer-setext-heading@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-table@2.4.0':
+  '@yozora/tokenizer-table@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-text@2.4.0':
+  '@yozora/tokenizer-text@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
-  '@yozora/tokenizer-thematic-break@2.4.0':
+  '@yozora/tokenizer-thematic-break@2.4.1':
     dependencies:
-      '@yozora/ast': 2.4.0
-      '@yozora/character': 2.4.0
-      '@yozora/core-tokenizer': 2.4.0
+      '@yozora/ast': 2.4.1
+      '@yozora/character': 2.4.1
+      '@yozora/core-tokenizer': 2.4.1
 
   acorn@8.18.0: {}
 
@@ -2338,13 +2378,13 @@ snapshots:
 
   arg@5.0.2: {}
 
-  autoprefixer@10.5.4(postcss@8.5.26):
+  autoprefixer@10.6.1(postcss@8.5.28):
     dependencies:
-      browserslist: 4.28.8
-      caniuse-lite: 1.0.30001809
+      browserslist: 4.29.0
+      caniuse-lite: 1.0.30001810
       fraction.js: 5.3.4
       picocolors: 1.1.1
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
   bail@2.0.2: {}
@@ -2352,6 +2392,8 @@ snapshots:
   balanced-match@1.0.2: {}
 
   baseline-browser-mapping@2.11.15: {}
+
+  baseline-browser-mapping@2.11.25: {}
 
   binary-extensions@2.3.0: {}
 
@@ -2373,6 +2415,14 @@ snapshots:
       node-releases: 2.0.53
       update-browserslist-db: 1.3.1(browserslist@4.28.8)
 
+  browserslist@4.29.0:
+    dependencies:
+      baseline-browser-mapping: 2.11.25
+      caniuse-lite: 1.0.30001810
+      electron-to-chromium: 1.5.438
+      node-releases: 2.0.57
+      update-browserslist-db: 1.3.3(browserslist@4.29.0)
+
   bundle-require@5.1.0(esbuild@0.27.7):
     dependencies:
       esbuild: 0.27.7
@@ -2390,6 +2440,8 @@ snapshots:
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001809: {}
+
+  caniuse-lite@1.0.30001810: {}
 
   ccount@2.0.1: {}
 
@@ -2447,9 +2499,9 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-declaration-sorter@7.2.0(postcss@8.5.26):
+  css-declaration-sorter@7.2.0(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
 
   css-select@6.0.0:
     dependencies:
@@ -2473,49 +2525,49 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  cssnano-preset-default@7.0.17(postcss@8.5.26):
+  cssnano-preset-default@7.0.17(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
-      css-declaration-sorter: 7.2.0(postcss@8.5.26)
-      cssnano-utils: 5.0.3(postcss@8.5.26)
-      postcss: 8.5.26
-      postcss-calc: 10.1.1(postcss@8.5.26)
-      postcss-colormin: 7.0.10(postcss@8.5.26)
-      postcss-convert-values: 7.0.12(postcss@8.5.26)
-      postcss-discard-comments: 7.0.8(postcss@8.5.26)
-      postcss-discard-duplicates: 7.0.4(postcss@8.5.26)
-      postcss-discard-empty: 7.0.3(postcss@8.5.26)
-      postcss-discard-overridden: 7.0.3(postcss@8.5.26)
-      postcss-merge-longhand: 7.0.7(postcss@8.5.26)
-      postcss-merge-rules: 7.0.11(postcss@8.5.26)
-      postcss-minify-font-values: 7.0.3(postcss@8.5.26)
-      postcss-minify-gradients: 7.0.5(postcss@8.5.26)
-      postcss-minify-params: 7.0.9(postcss@8.5.26)
-      postcss-minify-selectors: 7.1.2(postcss@8.5.26)
-      postcss-normalize-charset: 7.0.3(postcss@8.5.26)
-      postcss-normalize-display-values: 7.0.3(postcss@8.5.26)
-      postcss-normalize-positions: 7.0.4(postcss@8.5.26)
-      postcss-normalize-repeat-style: 7.0.4(postcss@8.5.26)
-      postcss-normalize-string: 7.0.3(postcss@8.5.26)
-      postcss-normalize-timing-functions: 7.0.3(postcss@8.5.26)
-      postcss-normalize-unicode: 7.0.9(postcss@8.5.26)
-      postcss-normalize-url: 7.0.3(postcss@8.5.26)
-      postcss-normalize-whitespace: 7.0.3(postcss@8.5.26)
-      postcss-ordered-values: 7.0.4(postcss@8.5.26)
-      postcss-reduce-initial: 7.0.9(postcss@8.5.26)
-      postcss-reduce-transforms: 7.0.3(postcss@8.5.26)
-      postcss-svgo: 7.1.3(postcss@8.5.26)
-      postcss-unique-selectors: 7.0.7(postcss@8.5.26)
+      css-declaration-sorter: 7.2.0(postcss@8.5.28)
+      cssnano-utils: 5.0.3(postcss@8.5.28)
+      postcss: 8.5.28
+      postcss-calc: 10.1.1(postcss@8.5.28)
+      postcss-colormin: 7.0.10(postcss@8.5.28)
+      postcss-convert-values: 7.0.12(postcss@8.5.28)
+      postcss-discard-comments: 7.0.8(postcss@8.5.28)
+      postcss-discard-duplicates: 7.0.4(postcss@8.5.28)
+      postcss-discard-empty: 7.0.3(postcss@8.5.28)
+      postcss-discard-overridden: 7.0.3(postcss@8.5.28)
+      postcss-merge-longhand: 7.0.7(postcss@8.5.28)
+      postcss-merge-rules: 7.0.11(postcss@8.5.28)
+      postcss-minify-font-values: 7.0.3(postcss@8.5.28)
+      postcss-minify-gradients: 7.0.5(postcss@8.5.28)
+      postcss-minify-params: 7.0.9(postcss@8.5.28)
+      postcss-minify-selectors: 7.1.2(postcss@8.5.28)
+      postcss-normalize-charset: 7.0.3(postcss@8.5.28)
+      postcss-normalize-display-values: 7.0.3(postcss@8.5.28)
+      postcss-normalize-positions: 7.0.4(postcss@8.5.28)
+      postcss-normalize-repeat-style: 7.0.4(postcss@8.5.28)
+      postcss-normalize-string: 7.0.3(postcss@8.5.28)
+      postcss-normalize-timing-functions: 7.0.3(postcss@8.5.28)
+      postcss-normalize-unicode: 7.0.9(postcss@8.5.28)
+      postcss-normalize-url: 7.0.3(postcss@8.5.28)
+      postcss-normalize-whitespace: 7.0.3(postcss@8.5.28)
+      postcss-ordered-values: 7.0.4(postcss@8.5.28)
+      postcss-reduce-initial: 7.0.9(postcss@8.5.28)
+      postcss-reduce-transforms: 7.0.3(postcss@8.5.28)
+      postcss-svgo: 7.1.3(postcss@8.5.28)
+      postcss-unique-selectors: 7.0.7(postcss@8.5.28)
 
-  cssnano-utils@5.0.3(postcss@8.5.26):
+  cssnano-utils@5.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  cssnano@7.1.9(postcss@8.5.26):
+  cssnano@7.1.9(postcss@8.5.28):
     dependencies:
-      cssnano-preset-default: 7.0.17(postcss@8.5.26)
+      cssnano-preset-default: 7.0.17(postcss@8.5.28)
       lilconfig: 3.1.3
-      postcss: 8.5.26
+      postcss: 8.5.28
 
   csso@5.0.5:
     dependencies:
@@ -2564,6 +2616,8 @@ snapshots:
   eastasianwidth@0.2.0: {}
 
   electron-to-chromium@1.5.411: {}
+
+  electron-to-chromium@1.5.438: {}
 
   emoji-regex@8.0.0: {}
 
@@ -3173,6 +3227,8 @@ snapshots:
 
   node-releases@2.0.53: {}
 
+  node-releases@2.0.57: {}
+
   normalize-path@3.0.0: {}
 
   nth-check@2.1.1:
@@ -3226,21 +3282,21 @@ snapshots:
       mlly: 1.8.2
       pathe: 2.0.3
 
-  postcss-calc@10.1.1(postcss@8.5.26):
+  postcss-calc@10.1.1(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.6
       postcss-value-parser: 4.2.0
 
-  postcss-cli@11.0.1(jiti@1.21.7)(postcss@8.5.26):
+  postcss-cli@11.0.1(jiti@1.21.7)(postcss@8.5.28):
     dependencies:
       chokidar: 3.6.0
       dependency-graph: 1.0.0
       fs-extra: 11.3.1
       picocolors: 1.1.1
-      postcss: 8.5.26
-      postcss-load-config: 5.1.0(jiti@1.21.7)(postcss@8.5.26)
-      postcss-reporter: 7.1.0(postcss@8.5.26)
+      postcss: 8.5.28
+      postcss-load-config: 5.1.0(jiti@1.21.7)(postcss@8.5.28)
+      postcss-reporter: 7.1.0(postcss@8.5.28)
       pretty-hrtime: 1.0.3
       read-cache: 1.0.0
       slash: 5.1.0
@@ -3250,191 +3306,191 @@ snapshots:
       - jiti
       - tsx
 
-  postcss-colormin@7.0.10(postcss@8.5.26):
+  postcss-colormin@7.0.10(postcss@8.5.28):
     dependencies:
       '@colordx/core': 5.8.0
       browserslist: 4.28.8
       caniuse-api: 3.0.0
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-convert-values@7.0.12(postcss@8.5.26):
+  postcss-convert-values@7.0.12(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-discard-comments@7.0.8(postcss@8.5.26):
+  postcss-discard-comments@7.0.8(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.6
 
-  postcss-discard-duplicates@7.0.4(postcss@8.5.26):
+  postcss-discard-duplicates@7.0.4(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-discard-empty@7.0.3(postcss@8.5.26):
+  postcss-discard-empty@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-discard-overridden@7.0.3(postcss@8.5.26):
+  postcss-discard-overridden@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-import@15.1.0(postcss@8.5.26):
+  postcss-import@15.1.0(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.10
 
-  postcss-js@4.0.1(postcss@8.5.26):
+  postcss-js@4.0.1(postcss@8.5.28):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-load-config@4.0.2(postcss@8.5.26):
+  postcss-load-config@4.0.2(postcss@8.5.28):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.8.1
     optionalDependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-load-config@5.1.0(jiti@1.21.7)(postcss@8.5.26):
+  postcss-load-config@5.1.0(jiti@1.21.7)(postcss@8.5.28):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.8.1
     optionalDependencies:
       jiti: 1.21.7
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.26)(yaml@2.8.1):
+  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.28)(yaml@2.8.1):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 1.21.7
-      postcss: 8.5.26
+      postcss: 8.5.28
       yaml: 2.8.1
 
-  postcss-merge-longhand@7.0.7(postcss@8.5.26):
+  postcss-merge-longhand@7.0.7(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
-      stylehacks: 7.0.11(postcss@8.5.26)
+      stylehacks: 7.0.11(postcss@8.5.28)
 
-  postcss-merge-rules@7.0.11(postcss@8.5.26):
+  postcss-merge-rules@7.0.11(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
       caniuse-api: 3.0.0
-      cssnano-utils: 5.0.3(postcss@8.5.26)
-      postcss: 8.5.26
+      cssnano-utils: 5.0.3(postcss@8.5.28)
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.6
 
-  postcss-minify-font-values@7.0.3(postcss@8.5.26):
+  postcss-minify-font-values@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-minify-gradients@7.0.5(postcss@8.5.26):
+  postcss-minify-gradients@7.0.5(postcss@8.5.28):
     dependencies:
       '@colordx/core': 5.8.0
-      cssnano-utils: 5.0.3(postcss@8.5.26)
-      postcss: 8.5.26
+      cssnano-utils: 5.0.3(postcss@8.5.28)
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-minify-params@7.0.9(postcss@8.5.26):
+  postcss-minify-params@7.0.9(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
-      cssnano-utils: 5.0.3(postcss@8.5.26)
-      postcss: 8.5.26
+      cssnano-utils: 5.0.3(postcss@8.5.28)
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-minify-selectors@7.1.2(postcss@8.5.26):
+  postcss-minify-selectors@7.1.2(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
       caniuse-api: 3.0.0
       cssesc: 3.0.0
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.6
 
-  postcss-nested@6.2.0(postcss@8.5.26):
+  postcss-nested@6.2.0(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-selector-parser: 6.1.2
 
-  postcss-nesting@14.0.1(postcss@8.5.26):
+  postcss-nesting@14.0.1(postcss@8.5.28):
     dependencies:
       '@csstools/selector-resolve-nested': 4.0.1(postcss-selector-parser@7.1.6)
       '@csstools/selector-specificity': 6.0.0(postcss-selector-parser@7.1.6)
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.6
 
-  postcss-normalize-charset@7.0.3(postcss@8.5.26):
+  postcss-normalize-charset@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-normalize-display-values@7.0.3(postcss@8.5.26):
+  postcss-normalize-display-values@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-positions@7.0.4(postcss@8.5.26):
+  postcss-normalize-positions@7.0.4(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-repeat-style@7.0.4(postcss@8.5.26):
+  postcss-normalize-repeat-style@7.0.4(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-string@7.0.3(postcss@8.5.26):
+  postcss-normalize-string@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-timing-functions@7.0.3(postcss@8.5.26):
+  postcss-normalize-timing-functions@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-unicode@7.0.9(postcss@8.5.26):
+  postcss-normalize-unicode@7.0.9(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-url@7.0.3(postcss@8.5.26):
+  postcss-normalize-url@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-whitespace@7.0.3(postcss@8.5.26):
+  postcss-normalize-whitespace@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-ordered-values@7.0.4(postcss@8.5.26):
+  postcss-ordered-values@7.0.4(postcss@8.5.28):
     dependencies:
-      cssnano-utils: 5.0.3(postcss@8.5.26)
-      postcss: 8.5.26
+      cssnano-utils: 5.0.3(postcss@8.5.28)
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-reduce-initial@7.0.9(postcss@8.5.26):
+  postcss-reduce-initial@7.0.9(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
       caniuse-api: 3.0.0
-      postcss: 8.5.26
+      postcss: 8.5.28
 
-  postcss-reduce-transforms@7.0.3(postcss@8.5.26):
+  postcss-reduce-transforms@7.0.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
 
-  postcss-reporter@7.1.0(postcss@8.5.26):
+  postcss-reporter@7.1.0(postcss@8.5.28):
     dependencies:
       picocolors: 1.1.1
-      postcss: 8.5.26
+      postcss: 8.5.28
       thenby: 1.3.4
 
   postcss-selector-parser@6.1.2:
@@ -3447,20 +3503,20 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-svgo@7.1.3(postcss@8.5.26):
+  postcss-svgo@7.1.3(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-value-parser: 4.2.0
       svgo: 4.1.0
 
-  postcss-unique-selectors@7.0.7(postcss@8.5.26):
+  postcss-unique-selectors@7.0.7(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.6
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.5.26:
+  postcss@8.5.28:
     dependencies:
       nanoid: 3.3.18
       picocolors: 1.1.1
@@ -3651,10 +3707,10 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.7
 
-  stylehacks@7.0.11(postcss@8.5.26):
+  stylehacks@7.0.11(postcss@8.5.28):
     dependencies:
       browserslist: 4.28.8
-      postcss: 8.5.26
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.6
 
   sucrase@3.35.0:
@@ -3705,11 +3761,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.26
-      postcss-import: 15.1.0(postcss@8.5.26)
-      postcss-js: 4.0.1(postcss@8.5.26)
-      postcss-load-config: 4.0.2(postcss@8.5.26)
-      postcss-nested: 6.2.0(postcss@8.5.26)
+      postcss: 8.5.28
+      postcss-import: 15.1.0(postcss@8.5.28)
+      postcss-js: 4.0.1(postcss@8.5.28)
+      postcss-load-config: 4.0.2(postcss@8.5.28)
+      postcss-nested: 6.2.0(postcss@8.5.28)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
       sucrase: 3.35.0
@@ -3750,7 +3806,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tsup@8.5.1(jiti@1.21.7)(postcss@8.5.26)(typescript@5.9.2)(yaml@2.8.1):
+  tsup@8.5.1(jiti@1.21.7)(postcss@8.5.28)(typescript@5.9.2)(yaml@2.8.1):
     dependencies:
       bundle-require: 5.1.0(esbuild@0.27.7)
       cac: 6.7.14
@@ -3761,7 +3817,7 @@ snapshots:
       fix-dts-default-cjs-exports: 1.0.1
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.26)(yaml@2.8.1)
+      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.28)(yaml@2.8.1)
       resolve-from: 5.0.0
       rollup: 4.62.4
       source-map: 0.7.6
@@ -3770,7 +3826,7 @@ snapshots:
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
     optionalDependencies:
-      postcss: 8.5.26
+      postcss: 8.5.28
       typescript: 5.9.2
     transitivePeerDependencies:
       - jiti
@@ -3822,6 +3878,12 @@ snapshots:
   update-browserslist-db@1.3.1(browserslist@4.28.8):
     dependencies:
       browserslist: 4.28.8
+      escalade: 3.2.0
+      picocolors: 1.1.1
+
+  update-browserslist-db@1.3.3(browserslist@4.29.0):
+    dependencies:
+      browserslist: 4.29.0
       escalade: 3.2.0
       picocolors: 1.1.1
 
