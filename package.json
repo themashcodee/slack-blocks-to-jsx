@@ -51,7 +51,7 @@
     "@types/react": "^17 || ^18 || ^19",
     "@types/react-dom": "^17 || ^18 || ^19",
     "autoprefixer": "^10.4.17",
-    "cssnano": "^7.1.5",
+    "cssnano": "^9.0.2",
     "postcss": "^8.4.33",
     "postcss-cli": "^11.0.0",
     "postcss-nesting": "^14.0.0",
