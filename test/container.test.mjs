@@ -75,3 +75,12 @@ test("default_collapsed: starts collapsed so child content is not rendered, icon
   assert.doesNotMatch(out, /hidden until expanded/);
   assert.match(out, /<img[^>]*src="https:\/\/example.com\/icon.png"/);
 });
+
+test("collapsed caret rotates with an inline transform, not a rotate-* utility", () => {
+  const collapsed = render([defaultCollapsed]);
+  assert.match(collapsed, /slack_blocks_to_jsx__container_caret" style="transform:rotate\(-90deg\)"/);
+  assert.doesNotMatch(collapsed, /-rotate-90/);
+
+  const expanded = render([collapsible]);
+  assert.doesNotMatch(expanded, /slack_blocks_to_jsx__container_caret" style=/);
+});

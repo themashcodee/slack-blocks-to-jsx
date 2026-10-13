@@ -125,12 +125,22 @@ const DataTableCellContent = (props: { cell: DataTableCell }) => {
   }
 };
 
-const Chevron = (props: { className?: string }) => (
+// Inline transforms, not rotate-* utilities: a host app's Tailwind v4 `rotate`
+// property stacks on our v3 `transform` and doubles the angle.
+const CHEVRON_ROTATION = {
+  down: undefined,
+  up: "rotate(180deg)",
+  left: "rotate(90deg)",
+  right: "rotate(-90deg)",
+} as const;
+
+const Chevron = (props: { direction: keyof typeof CHEVRON_ROTATION; className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     aria-hidden="true"
     className={merge_classes(["w-4 h-4 shrink-0", props.className || ""])}
+    style={{ transform: CHEVRON_ROTATION[props.direction] }}
   >
     <path
       fill="currentColor"
@@ -221,12 +231,12 @@ export const DataTable = (props: DataTableProps) => {
                     >
                       {cellText(cell)}
                       <Chevron
-                        className={merge_classes([
+                        direction={direction === "ascending" ? "up" : "down"}
+                        className={
                           direction
                             ? ""
-                            : "opacity-0 group-hover:opacity-50 group-focus:opacity-50",
-                          direction === "ascending" ? "rotate-180" : "",
-                        ])}
+                            : "opacity-0 group-hover:opacity-50 group-focus:opacity-50"
+                        }
                       />
                     </button>
                   </th>
@@ -276,7 +286,7 @@ export const DataTable = (props: DataTableProps) => {
             onClick={() => setPage(currentPage - 1)}
             className={PAGE_BUTTON_CLASSES}
           >
-            <Chevron className="rotate-90" />
+            <Chevron direction="left" />
           </button>
           <button
             type="button"
@@ -285,7 +295,7 @@ export const DataTable = (props: DataTableProps) => {
             onClick={() => setPage(currentPage + 1)}
             className={PAGE_BUTTON_CLASSES}
           >
-            <Chevron className="-rotate-90" />
+            <Chevron direction="right" />
           </button>
         </div>
       )}
