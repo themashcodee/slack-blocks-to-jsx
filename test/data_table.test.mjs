@@ -220,6 +220,22 @@ test("sorting resets to the first page", async () => {
   assert.deepEqual(bodyColumn(container), ["T-12", "T-11", "T-10", "T-9", "T-8"]);
 });
 
+// Inline transforms, so a host app's own rotate-* utilities can't stack on them.
+const chevronTransform = (element) => element.querySelector("svg").style.transform;
+
+test("chevrons point the way they act: left/right for paging, up/down for sort order", async () => {
+  const container = await mount([twelveRows()]);
+  assert.equal(chevronTransform(button(container, "Previous page")), "rotate(90deg)");
+  assert.equal(chevronTransform(button(container, "Next page")), "rotate(-90deg)");
+
+  await click(button(container, "Points"));
+  assert.equal(chevronTransform(button(container, "Points")), "rotate(180deg)");
+  await click(button(container, "Points"));
+  assert.equal(chevronTransform(button(container, "Points")), "");
+
+  assert.doesNotMatch(container.innerHTML, /\brotate-(90|180)\b/);
+});
+
 test("a data table with no rows renders nothing", () => {
   const out = render([{ type: "data_table", caption: "Empty", rows: [] }]);
   assert.doesNotMatch(out, /slack_blocks_to_jsx__data_table/);

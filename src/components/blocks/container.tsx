@@ -58,10 +58,8 @@ export const Container = (props: ContainerProps) => {
       {is_collapsible && (
         <span
           aria-hidden="true"
-          className={merge_classes([
-            "shrink-0 transition-transform slack_blocks_to_jsx__container_caret",
-            collapsed ? "-rotate-90" : "",
-          ])}
+          className="shrink-0 transition-transform slack_blocks_to_jsx__container_caret"
+          style={{ transform: collapsed ? "rotate(-90deg)" : undefined }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" className="w-4 h-4">
             <path
