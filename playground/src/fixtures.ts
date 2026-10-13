@@ -9,6 +9,28 @@ export type Fixture = {
   blocks: unknown[];
 };
 
+function rawText(text: string) {
+  return { type: "raw_text", text };
+}
+
+function richText(elements: unknown[]) {
+  return { type: "rich_text", elements: [{ type: "rich_text_section", elements }] };
+}
+
+function actionCell(label: string, actionId: string, value: string, style?: "primary") {
+  return {
+    type: "action_cell",
+    element: {
+      type: "button",
+      text: { type: "plain_text", text: label },
+      action_id: actionId,
+      value,
+      ...(style ? { style } : {}),
+    },
+    fallback: rawText(label),
+  };
+}
+
 export const FIXTURES: Fixture[] = [
   {
     id: "hello",
@@ -350,6 +372,63 @@ export const FIXTURES: Fixture[] = [
             { label: "Enterprise", value: 480 },
           ],
         },
+      },
+    ],
+  },
+  {
+    id: "data-table",
+    label: "Data table · sort + pages",
+    blocks: [
+      {
+        type: "data_table",
+        block_id: "data-table-docs",
+        caption: "A Fabulous Table",
+        rows: [
+          [rawText("Name"), rawText("Department"), rawText("Badge")],
+          [
+            rawText("Data Refinement Department"),
+            rawText("MDR"),
+            richText([{ type: "text", text: "Blue", style: { bold: true } }]),
+          ],
+          [
+            rawText("Art Sourcing Department"),
+            rawText("O&D"),
+            richText([
+              { type: "text", text: "Green" },
+              { type: "text", text: "review", style: { italic: true } },
+            ]),
+          ],
+          [
+            rawText("Wellness Department"),
+            rawText("Wellness Center"),
+            richText([{ type: "text", text: "Limited", style: { bold: true } }]),
+          ],
+        ],
+      },
+      {
+        type: "data_table",
+        block_id: "data-table-deals",
+        caption: "Open deals",
+        page_size: 5,
+        rows: [
+          [rawText("Deal"), rawText("Amount"), rawText("Seats"), rawText("Action")],
+          ...(
+            [
+              ["Acme Expansion Deal", 1200000, "$1.2M", 450],
+              ["Weather Forecast Integration", 85000, "$85K", 40],
+              ["Retail Partner Portal", 310000, "$310K", 120],
+              ["Sustainable Materials Sourcing", 42000, "$42K", 15],
+              ["Global Distribution Network", 2400000, "$2.4M", 900],
+              ["Clinic Scheduling Pilot", 9500, "$9.5K", 8],
+              ["Fleet Telemetry Rollout", 640000, "$640K", 260],
+            ] as const
+          ).map(([deal, amount, amountText, seats], i) => [
+            rawText(deal),
+            { type: "raw_number", value: amount, text: amountText },
+            { type: "raw_number", value: seats },
+            actionCell("Open", "open_deal", `deal_${i + 1}`, i === 0 ? "primary" : undefined),
+          ]),
+        ],
       },
     ],
   },

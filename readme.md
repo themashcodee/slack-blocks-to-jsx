@@ -137,6 +137,7 @@ const blocks: Block[] = [
 | Rich Text          | ✅ Full | Lists, quotes, preformatted, sections, color elements        |
 | Video              | ✅ Full | Collapsible video embed                                      |
 | Table              | ✅ Full | Rows, columns, alignment                                     |
+| Data Table         | ✅ Full | Sortable, paginated rows; number and button (action) cells   |
 | Actions            | ✅ Full | All interactive element types supported                      |
 | Input              | ✅ Full | All input element types supported                            |
 | File               | ✅ Full | Remote file display                                          |
@@ -416,6 +417,7 @@ import type {
   RichTextBlock,
   VideoBlock,
   TableBlock,
+  DataTableBlock,
   FileBlock,
   ContextActionsBlock,
   MarkdownBlock,
@@ -501,6 +503,7 @@ The library uses a consistent BEM-like naming convention:
 | `.slack_blocks_to_jsx__rich_text`       | Rich text block       |
 | `.slack_blocks_to_jsx__video`           | Video block           |
 | `.slack_blocks_to_jsx__table`           | Table block           |
+| `.slack_blocks_to_jsx__data_table`      | Data table block      |
 | `.slack_blocks_to_jsx__context_actions` | Context actions block |
 | `.slack_blocks_to_jsx__markdown_block`  | Markdown block        |
 | `.slack_blocks_to_jsx__plan`            | Plan block            |
