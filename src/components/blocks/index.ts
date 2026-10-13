@@ -5,6 +5,7 @@ export * from "./carousel";
 export * from "./container";
 export * from "./context";
 export * from "./context_actions";
+export * from "./data_table";
 export * from "./data_visualization";
 export * from "./divider";
 export * from "./file";

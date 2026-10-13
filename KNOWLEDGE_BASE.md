@@ -36,7 +36,7 @@
 | 4   | [§4.1](#41-layout--structure-blocks)                                   | Layout & structure blocks (section, divider, header)    |
 | 4   | [§4.2](#42-media-blocks)                                               | Media blocks (image, video, file)                       |
 | 4   | [§4.3](#43-interactive-blocks)                                         | Interactive blocks (actions, input, context_actions)    |
-| 4   | [§4.4](#44-content-blocks)                                             | Content blocks (context, table, markdown)               |
+| 4   | [§4.4](#44-content-blocks)                                             | Content blocks (context, table, data_table, markdown)   |
 | 4   | [§4.5](#45-ai-workflow-blocks)                                         | AI/workflow blocks (plan, task_card)                    |
 | 4   | [§4.6](#46-status--rich-container-blocks-added-v110--slack-2026-04-16) | Status & rich-container blocks (alert, card, carousel)  |
 | 4   | [§4.7](#47-rich-text-block)                                            | Rich text block (deep dive)                             |
@@ -325,6 +325,7 @@ All block components live in `src/components/blocks/`. 17 block types are suppor
 | ---------- | -------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `context`  | `context.tsx`        | Up to 10 mixed text + image elements                                                                            |
 | `table`    | `table.tsx`          | `cells: Cell[][]`, optional `size`; cell alignment; bordered                                                    |
+| `data_table` | `data_table.tsx`   | `rows: DataTableCell[][]` (first row is the header), `caption`, `page_size?` (1-100, default 5), `row_header_column_index?` (default 0). Semantic `<table>` with `<caption>`, `th scope="col"` headers and a `th scope="row"` row header. Clicking a header sorts the body client-side (numeric when every body cell in the column is `raw_number`, else alphabetical; toggles asc/desc; resets to page 1). Prev/next pagination with an "X–Y of N" indicator, hidden for a single page. `raw_text`/`rich_text` cells reuse `TableCellContent` from `table.tsx`; `action_cell` renders `ButtonElement`. No filter UI. |
 | `markdown` | `markdown_block.tsx` | Renders **standard** GFM via `react-markdown` + `remark-gfm`; tables, task lists, code blocks, syntax highlight. Emoji shortcodes are interpolated by the `remarkSlackEmoji` plugin, reusing the same `<SlackEmoji>` component (and `hooks.emoji`) as the mrkdwn parser |
 
 ### 4.5 AI/workflow blocks
@@ -443,7 +444,7 @@ Types live in `src/types/` and are re-exported from `index.ts`.
 
 ### 6.1 `types/layout.ts`
 
-Defines the `Block` union: `ActionsBlock | AlertBlock | CardBlock | CarouselBlock | ContextBlock | ContextActionsBlock | DividerBlock | FileBlock | HeaderBlock | ImageBlock | InputBlock | MarkdownBlock | PlanBlock | SectionBlock | TableBlock | TaskCardBlock | VideoBlock | RichTextBlock`. Each interface documents props with JSDoc pointing to Slack's official API docs.
+Defines the `Block` union: `ActionsBlock | AlertBlock | CardBlock | CarouselBlock | ContextBlock | ContextActionsBlock | DataTableBlock | DividerBlock | FileBlock | HeaderBlock | ImageBlock | InputBlock | MarkdownBlock | PlanBlock | SectionBlock | TableBlock | TaskCardBlock | VideoBlock | RichTextBlock`. Each interface documents props with JSDoc pointing to Slack's official API docs.
 
 Added in v1.1.0 to cover Slack's 2026-04-16 block launch:
 
@@ -452,6 +453,13 @@ Added in v1.1.0 to cover Slack's 2026-04-16 block launch:
 - `CardImage = { image_url?: string; slack_file?: SlackFileObject; alt_text: string }` (shared helper for hero + icon)
 - `CardBlock = { type: "card"; title?; subtitle?; body?; hero_image?: CardImage; icon?: CardImage; actions?: ButtonElement[]; block_id? }`
 - `CarouselBlock = { type: "carousel"; elements: CardBlock[]; block_id? }`
+
+Data table (Slack `data_table` block):
+
+- `DataTableBlock = { type: "data_table"; rows: DataTableCell[][]; caption: string; page_size?; row_header_column_index?; block_id? }`
+- `DataTableCell = DataTableRawTextCell | DataTableRawNumberCell | DataTableActionCell | RichTextBlock`
+- `DataTableRawTextCell = { type: "raw_text"; text }`, `DataTableRawNumberCell = { type: "raw_number"; value: number; text? }`
+- `DataTableActionCell = { type: "action_cell"; element: ButtonElement; fallback?: DataTableRawTextCell | DataTableRawNumberCell }`
 
 ### 6.2 `types/elements.ts`
 
@@ -612,7 +620,7 @@ Input: `src/style.css`. Output: `dist/style.css` (~40 KB).
 | `dev`                       | tsup watch                                 |
 | `dev:css`                   | PostCSS watch                              |
 | `lint`                      | `tsc --noEmit`                             |
-| `test`                      | `tsc --noEmit` (typecheck; no unit tests)  |
+| `test`                      | `node --test` over `test/**/*.test.mjs` against the built `dist/` (run `build` first); interaction tests mount into `happy-dom` |
 | `release`                   | `node scripts/release.mjs` (see Ch. 11)    |
 | `release:dry`               | Preview a release; changes nothing         |
 | `release:beta`              | Publish next `beta` prerelease (tag: beta) |
@@ -726,6 +734,7 @@ slack blocks to jsx library/
 │   │   │   ├── section.tsx  divider.tsx  image.tsx  context.tsx
 │   │   │   ├── header.tsx   actions.tsx  input.tsx   video.tsx
 │   │   │   ├── file.tsx     table.tsx    markdown_block.tsx
+│   │   │   ├── data_table.tsx
 │   │   │   ├── plan.tsx     task_card.tsx  context_actions.tsx
 │   │   │   ├── alert.tsx    card.tsx     carousel.tsx     (new in v1.1.0)
 │   │   │   └── rich_text/
@@ -885,3 +894,4 @@ The sidebar picks it up automatically on next HMR. Keep fixtures small (≤ 10 b
 | 2026-04-17 | Claude + Mash | v1.1.0 release prep: added three new blocks (`alert`, `card`, `carousel`) matching Slack's 2026-04-16 Block Kit launch. Ch. 4 block count 14 → 17 (new §4.6 "Status & rich-container blocks"). Ch. 6.1 type list updated with `AlertBlock`, `CardBlock`, `CarouselBlock`, `CardImage`, `AlertLevel`. Ch. 12 gained `11-alert-card-carousel.json` fixture. Ch. 13 file tree updated. Changeset: `.changeset/add-alert-card-carousel-blocks.md`. |
 | 2026-04-17 | Claude + Mash | Added Ch. 15 — Playground. New `playground/` folder (Vite + React 18) that source-aliases `slack-blocks-to-jsx` to `../src/index.ts` for instant HMR. Committed to git, excluded from npm via `.npmignore`. Ch. 15 renumbered from change log → playground; change log moved to Ch. 16. Root `package.json` gained `playground`, `playground:install`, `playground:build` scripts. Ch. 13 file tree extended.                                  |
 | 2026-06-06 | Claude + Mash | Replaced the Changesets release flow with a single local command `pnpm release` (`scripts/release.mjs`): checks → lint → build → bump → commit/tag → npm publish → push → GitHub release. Removed `.changeset/`, `@changesets/cli`, and `.github/workflows/publish.yml`; added `test`/`release`/`release:dry` scripts and `RELEASING.md`. Rewrote Ch. 11, updated §10.3/§10.5 scripts + hygiene, Ch. 13 file tree (`scripts/`), and Ch. 14 rule 10. Added first-class beta/alpha prereleases: `release:beta`/`release:alpha` scripts, `prepatch`/`preminor`/`premajor`/`prerelease` bump types + `--preid`, auto dist-tag per channel, prerelease graduation, and a "Trying a prerelease" section in `readme.md`. Added `.github/workflows/preview.yml` (pkg.pr.new) for automatic per-PR/per-commit preview installs (no npm token, fork-safe). |
+| 2026-10-12 | Claude + Stephen | Added the `data_table` block: §4.4 row, §6.1 `DataTableBlock` and cell types, §10.3 `test` script (node:test + `happy-dom` for interaction tests), Ch. 13 file tree. |

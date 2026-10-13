@@ -1,5 +1,5 @@
 import { useGlobalData } from "../../store";
-import { TableBlock } from "../../types";
+import { TableBlock, TableCell } from "../../types";
 import { markdown_parser, merge_classes } from "../../utils";
 import { RichText } from "./rich_text";
 
@@ -7,9 +7,28 @@ type TableProps = {
   data: TableBlock;
 };
 
+/** Renders a raw_text or rich_text cell; shared by the table and data_table blocks. */
+export const TableCellContent = (props: { cell: TableCell }) => {
+  const { cell } = props;
+  const { channels, users, hooks } = useGlobalData();
+
+  if (cell.type !== "raw_text") return <RichText data={cell} />;
+
+  return (
+    <div>
+      {markdown_parser(cell.text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<"), {
+        markdown: false,
+        verbatim: false,
+        users,
+        channels,
+        hooks,
+      })}
+    </div>
+  );
+};
+
 export const Table = (props: TableProps) => {
   const { rows, column_settings, block_id } = props.data;
-  const { channels, users, hooks } = useGlobalData();
 
   if (!rows || rows.length === 0) {
     return null;
@@ -46,19 +65,7 @@ export const Table = (props: TableProps) => {
 
                 return (
                   <td key={cellIndex} className={cellClasses}>
-                    {cell.type === "raw_text" ? (
-                      <div>
-                        {markdown_parser(cell.text.replace(/&gt;/g, "> ").replace(/&lt;/g, "<"), {
-                          markdown: false,
-                          verbatim: false,
-                          users,
-                          channels,
-                          hooks,
-                        })}
-                      </div>
-                    ) : (
-                      <RichText data={cell} />
-                    )}
+                    <TableCellContent cell={cell} />
                   </td>
                 );
               })}

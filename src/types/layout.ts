@@ -37,6 +37,7 @@ export type Block =
   | ContainerBlock
   | ContextBlock
   | ContextActionsBlock
+  | DataTableBlock
   | DataVisualizationBlock
   | DividerBlock
   | FileBlock
@@ -415,6 +416,84 @@ export type TableColumnSetting = {
    */
   is_wrapped?: boolean;
 };
+
+export type DataTableBlock = {
+  /**
+   * Available in surfaces: **Messages**, **Home tabs**
+   *
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/data-table-block View here}
+   *
+   * A ***data_table*** block is a rich table that supports pagination, sorting, and interactive
+   * {@link DataTableActionCell action cells}. The first row is the header (it cannot contain
+   * ***rich_text*** cells). A table has 2 to 201 rows (1 header plus up to 200 rows) and 1 to 20
+   * columns, and every row must have the same number of cells.
+   *
+   * Sorting is alphabetical by default, and numeric when every cell in the column is
+   * ***raw_number***.
+   */
+  type: "data_table";
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+  /**
+   * An array of table rows, each an array of cells. The first row is the header.
+   */
+  rows: DataTableCell[][];
+  /**
+   * A caption for the table, used as the value of the HTML ***caption*** element.
+   */
+  caption: string;
+  /**
+   * Number of rows per page. Minimum 1, maximum 100. Defaults to 5.
+   */
+  page_size?: number;
+  /**
+   * The 0-based index of the column that uniquely identifies each row (the row header), which
+   * screen readers treat as the row's primary identifier. Defaults to 0.
+   */
+  row_header_column_index?: number;
+};
+
+export type DataTableRawTextCell = {
+  type: "raw_text";
+  /**
+   * The text content of the cell. Minimum length 1.
+   */
+  text: string;
+};
+
+export type DataTableRawNumberCell = {
+  type: "raw_number";
+  /**
+   * The numeric value of the cell, used for numeric sorting.
+   */
+  value: number;
+  /**
+   * Optional display text shown instead of ***value***. Minimum length 1.
+   */
+  text?: string;
+};
+
+export type DataTableActionCell = {
+  type: "action_cell";
+  /**
+   * The {@link ButtonElement button} rendered in the cell. Set its ***value*** to identify the row
+   * so your app can tell which row was clicked.
+   */
+  element: ButtonElement;
+  /**
+   * A cell displayed in place of the button on clients that don't support action cells.
+   */
+  fallback?: DataTableRawTextCell | DataTableRawNumberCell;
+};
+
+export type DataTableCell =
+  | DataTableRawTextCell
+  | DataTableRawNumberCell
+  | DataTableActionCell
+  | RichTextBlock;
 
 export type RichTextBlock = {
   /**
