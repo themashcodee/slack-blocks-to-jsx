@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.2.0...v1.2.1) (2026-10-13)
+
+
+### Bug Fixes
+
+* 🐛 rotate chevrons with inline transforms so Tailwind v4 hosts don't double them ([850c22e](https://github.com/themashcodee/slack-blocks-to-jsx/commit/850c22e039da748e963eddae40c3303f5aa1ce46))
+* rotate chevrons with inline transforms so Tailwind v4 hosts don't double them ([76e6e1a](https://github.com/themashcodee/slack-blocks-to-jsx/commit/76e6e1a4e96d7eee6f66670d945dde01f6d3a6f3))
+
 ## [1.2.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.1.2...v1.2.0) (2026-10-13)
 
 
