@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ContainerBlock } from "../../types";
+import { useGlobalData } from "../../store";
 import { TextObject } from "../composition_objects";
 import { getBlockComponent } from "../index";
 import { merge_classes } from "../../utils";
@@ -29,16 +30,14 @@ export const Container = (props: ContainerProps) => {
 
   const [expanded, setExpanded] = useState(!(is_collapsible && default_collapsed));
   const collapsed = is_collapsible && !expanded;
+  const { urlTransform } = useGlobalData();
+  const iconUrl = urlTransform(icon?.image_url, "image");
 
   const header = (
     <>
-      {icon?.image_url && (
+      {iconUrl && (
         <span className="shrink-0 slack_blocks_to_jsx__container_icon">
-          <img
-            src={icon.image_url}
-            alt={icon.alt_text || ""}
-            className="w-5 h-5 rounded object-cover"
-          />
+          <img src={iconUrl} alt={icon?.alt_text || ""} className="w-5 h-5 rounded object-cover" />
         </span>
       )}
 

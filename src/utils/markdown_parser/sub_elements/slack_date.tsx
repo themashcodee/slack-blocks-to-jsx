@@ -9,7 +9,8 @@ type Props = {
 export const SlackDate = (props: Props) => {
   const { element } = props;
   const { fallbackText, optionalLink, timestamp, tokenString } = element.value;
-  const { hooks } = useGlobalData();
+  const { hooks, urlTransform } = useGlobalData();
+  const link = urlTransform(optionalLink, "link");
 
   if (hooks.date)
     return (
@@ -18,7 +19,7 @@ export const SlackDate = (props: Props) => {
           fallback: fallbackText,
           timestamp,
           format: tokenString,
-          link: optionalLink || null,
+          link: link ?? null,
         })}
       </>
     );
@@ -51,17 +52,16 @@ export const SlackDate = (props: Props) => {
 
   return (
     <span className="slack_date">
-      <WrapWithLink wrap={!!optionalLink} href={optionalLink}>
-        {date_text}
-      </WrapWithLink>
+      <WrapWithLink href={link}>{date_text}</WrapWithLink>
     </span>
   );
 };
 
-const WrapWithLink = (props: { wrap: boolean; href: string; children: ReactNode }) => {
+// `href` is the already-filtered link: undefined when the date had no link or its URL was rejected.
+const WrapWithLink = (props: { href: string | undefined; children: ReactNode }) => {
   const { hooks } = useGlobalData();
 
-  if (!props.wrap) return <>{props.children}</>;
+  if (props.href === undefined) return <>{props.children}</>;
 
   if (hooks.link) {
     return (

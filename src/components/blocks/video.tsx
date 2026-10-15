@@ -20,6 +20,7 @@ export const Video = (props: VideoProps) => {
   } = props.data;
 
   const [showVideo, setShowVideo] = useState(true);
+  const { urlTransform } = useGlobalData();
 
   return (
     <div className="py-2 slack_blocks_to_jsx__video" id={block_id}>
@@ -78,8 +79,9 @@ export const Video = (props: VideoProps) => {
           <iframe
             title={alt_text}
             className="max-w-[360px] bg-gray-100 dark:bg-dark-bg-secondary w-full aspect-video"
-            src={video_url}
             {...iframeProps}
+            // Last on purpose: the filtered URL must win over anything `iframeProps` carries.
+            src={urlTransform(video_url, "frame")}
           />
         )}
       </div>
@@ -88,13 +90,14 @@ export const Video = (props: VideoProps) => {
 };
 
 const RenderLink = ({ url, title }: { url: string; title: TextObjectType<"plain_text"> }) => {
-  const { hooks } = useGlobalData();
+  const { hooks, urlTransform } = useGlobalData();
+  const href = urlTransform(url, "link");
 
-  if (hooks.link) {
+  if (hooks.link && href !== undefined) {
     return (
       <>
         {hooks.link({
-          href: url,
+          href,
           children: <TextObject data={title} />,
           className: "text-blue-primary dark:text-dark-link",
           rel: "noopener noreferrer",
@@ -106,7 +109,7 @@ const RenderLink = ({ url, title }: { url: string; title: TextObjectType<"plain_
 
   return (
     <a
-      href={url}
+      href={href}
       className="text-blue-primary dark:text-dark-link"
       target="_blank"
       rel="noopener noreferrer"

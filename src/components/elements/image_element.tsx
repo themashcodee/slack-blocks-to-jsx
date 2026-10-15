@@ -1,4 +1,5 @@
 import type { ImageElement as ImageElementType } from "../../types";
+import { useGlobalData } from "../../store";
 
 type ImageElementProps = {
   inside?: "context" | "section";
@@ -8,11 +9,12 @@ type ImageElementProps = {
 export const ImageElement = (props: ImageElementProps) => {
   const { inside = "section" } = props;
   const { alt_text, image_url } = props.data;
+  const { urlTransform } = useGlobalData();
 
   return (
     <div className="relative">
       <img
-        src={image_url}
+        src={urlTransform(image_url, "image")}
         alt={alt_text}
         className={`overflow-hidden object-cover slack_blocks_to_jsx__image_element ${
           inside === "context"
