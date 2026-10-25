@@ -2,13 +2,12 @@ import { useMemo, useState } from "react";
 import {
   DataTableBlock,
   DataTableCell,
-  DataTableRawNumberCell,
   RichTextBlockElement,
   RichTextSectionElement,
 } from "../../types";
 import { merge_classes } from "../../utils";
 import { ButtonElement } from "../elements/button_element";
-import { TableCellContent } from "./table";
+import { formatNumber, TableCellContent } from "./table";
 
 type DataTableProps = {
   data: DataTableBlock;
@@ -28,7 +27,6 @@ const DEFAULT_PAGE_SIZE = 5;
 const MAX_PAGE_SIZE = 100;
 
 const collator = new Intl.Collator("en-US");
-const numberFormat = new Intl.NumberFormat("en-US", { maximumFractionDigits: 20 });
 
 const resolvePageSize = (pageSize: number | undefined) =>
   typeof pageSize === "number" && Number.isFinite(pageSize)
@@ -37,8 +35,6 @@ const resolvePageSize = (pageSize: number | undefined) =>
 
 const resolveRowHeaderIndex = (index: number | undefined, columns: number) =>
   typeof index === "number" && Number.isInteger(index) && index >= 0 && index < columns ? index : 0;
-
-const formatNumber = (cell: DataTableRawNumberCell) => cell.text || numberFormat.format(cell.value);
 
 const sectionElementText = (element: RichTextSectionElement): string => {
   switch (element.type) {
@@ -114,10 +110,9 @@ const DataTableCellContent = (props: { cell: DataTableCell }) => {
 
   switch (cell.type) {
     case "raw_text":
+    case "raw_number":
     case "rich_text":
       return <TableCellContent cell={cell} />;
-    case "raw_number":
-      return <>{formatNumber(cell)}</>;
     case "action_cell":
       return <ButtonElement data={cell.element} />;
     default:

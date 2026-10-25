@@ -404,6 +404,7 @@ export type TableCell =
        */
       text: string;
     }
+  | DataTableRawNumberCell
   | RichTextBlock;
 
 export type TableColumnSetting = {
