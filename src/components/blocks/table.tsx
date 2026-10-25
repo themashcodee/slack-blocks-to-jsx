@@ -1,5 +1,5 @@
 import { useGlobalData } from "../../store";
-import { TableBlock, TableCell } from "../../types";
+import { DataTableRawNumberCell, TableBlock, TableCell } from "../../types";
 import { markdown_parser, merge_classes } from "../../utils";
 import { RichText } from "./rich_text";
 
@@ -7,12 +7,18 @@ type TableProps = {
   data: TableBlock;
 };
 
-/** Renders a raw_text or rich_text cell; shared by the table and data_table blocks. */
+const numberFormat = new Intl.NumberFormat("en-US", { maximumFractionDigits: 20 });
+
+export const formatNumber = (cell: DataTableRawNumberCell) =>
+  cell.text || numberFormat.format(cell.value);
+
+/** Renders a raw_text, raw_number or rich_text cell; shared by the table and data_table blocks. */
 export const TableCellContent = (props: { cell: TableCell }) => {
   const { cell } = props;
   const { channels, users, hooks } = useGlobalData();
 
-  if (cell.type !== "raw_text") return <RichText data={cell} />;
+  if (cell.type === "rich_text") return <RichText data={cell} />;
+  if (cell.type === "raw_number") return <>{formatNumber(cell)}</>;
 
   return (
     <div>
