@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.2.1...v1.3.0) (2026-10-25)
+
+
+### Features
+
+* ✨ render raw_number cells in the table block ([56bbc24](https://github.com/themashcodee/slack-blocks-to-jsx/commit/56bbc24c37dc4cee9b1cfd1ef951fbe732b41f81))
+* ✨ render raw_number cells in the table block ([e25d390](https://github.com/themashcodee/slack-blocks-to-jsx/commit/e25d3908dae98a062d8eb773584a5d6e5a7e6c99))
+
+
+### Bug Fixes
+
+* type alert icons as ReactElement for @types/react 19 ([3079c29](https://github.com/themashcodee/slack-blocks-to-jsx/commit/3079c293422365c6ac5c6ec4c06629ea42e82027))
+
 ## [1.2.1](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.2.0...v1.2.1) (2026-10-13)
 
 
