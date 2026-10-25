@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { AlertBlock, AlertLevel } from "../../types";
 import { TextObject } from "../composition_objects";
 
@@ -8,7 +9,7 @@ type AlertProps = {
 type LevelConfig = {
   containerClass: string;
   iconClass: string;
-  icon: JSX.Element;
+  icon: ReactElement;
   label: string;
 };
 
