@@ -45,6 +45,17 @@ const sanitizeBlock = (block: Block): unknown => {
     };
   }
 
+  // Recursively sanitize the blocks inside a layout block's items
+  if (block.type === "layout") {
+    return {
+      ...block,
+      rows: block.rows.map((row) => ({
+        ...row,
+        items: row.items.map((item) => ({ ...item, block: sanitizeBlock(item.block) })),
+      })),
+    };
+  }
+
   // Sanitize element in input blocks
   if (block.type === "input") {
     return {

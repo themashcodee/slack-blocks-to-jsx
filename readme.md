@@ -147,6 +147,8 @@ const blocks: Block[] = [
 | Card               | ✅ Full | Title, subtitle, body, image, icon, and action buttons       |
 | Carousel           | ✅ Full | Horizontally-scrollable gallery of up to 10 cards            |
 | Container          | ✅ Full | Groups child blocks; title, icon, `width`, collapse/expand   |
+| Layout             | ✅ Full | Up to 3 side-by-side blocks per row; widths, grid lines      |
+| Auth Provider      | ✅ Full | Provider icon, name, connection state; Connect / overflow    |
 | Plan               | ✅ Full | Sequential task display with status indicators               |
 | Task Card          | ✅ Full | Individual task with title, details, output, sources, status |
 | Data Visualization | ✅ Full | Line, bar, area, and pie charts; legend, axes, table & CSV   |
@@ -427,6 +429,8 @@ import type {
   CardBlock,
   CarouselBlock,
   DataVisualizationBlock,
+  LayoutBlock,
+  AuthProviderBlock,
 
   // Element types
   ButtonElement,
@@ -504,6 +508,8 @@ The library uses a consistent BEM-like naming convention:
 | `.slack_blocks_to_jsx__video`           | Video block           |
 | `.slack_blocks_to_jsx__table`           | Table block           |
 | `.slack_blocks_to_jsx__data_table`      | Data table block      |
+| `.slack_blocks_to_jsx__layout`          | Layout block          |
+| `.slack_blocks_to_jsx__auth_provider`   | Auth provider block   |
 | `.slack_blocks_to_jsx__context_actions` | Context actions block |
 | `.slack_blocks_to_jsx__markdown_block`  | Markdown block        |
 | `.slack_blocks_to_jsx__plan`            | Plan block            |

@@ -4,6 +4,7 @@ import { Block, Element } from "../types";
 import {
   Actions,
   Alert,
+  AuthProvider,
   Card,
   Carousel,
   Container,
@@ -16,6 +17,7 @@ import {
   Header,
   Image,
   Input,
+  Layout,
   MarkdownBlockComponent,
   Plan,
   RichText,
@@ -77,6 +79,8 @@ export const getBlockComponent = (block: Block): ReactNode => {
   if (block.type === "container") return <Container data={block} />;
   if (block.type === "data_visualization") return <DataVisualization data={block} />;
   if (block.type === "data_table") return <DataTable data={block} />;
+  if (block.type === "layout") return <Layout data={block} />;
+  if (block.type === "auth_provider") return <AuthProvider data={block} />;
 
   return null;
 };

@@ -25,6 +25,7 @@ import {
   FileInputElement,
   RichTextInputElement,
   UrlSourceElement,
+  OverflowMenuElement,
 } from ".";
 import { RichTextBlockElement } from "../types";
 import { ComponentPropsWithoutRef } from "react";
@@ -32,6 +33,7 @@ import { ComponentPropsWithoutRef } from "react";
 export type Block =
   | ActionsBlock
   | AlertBlock
+  | AuthProviderBlock
   | CardBlock
   | CarouselBlock
   | ContainerBlock
@@ -44,6 +46,7 @@ export type Block =
   | HeaderBlock
   | ImageBlock
   | InputBlock
+  | LayoutBlock
   | MarkdownBlock
   | PlanBlock
   | SectionBlock
@@ -739,6 +742,139 @@ export type ContainerBlock = {
    * Defaults to ***false***.
    */
   default_collapsed?: boolean;
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+export type LayoutBlock = {
+  /**
+   * * Docs: {@link https://docs.slack.dev/reference/block-kit/blocks/layout-block View here}
+   * * Changelog: {@link https://docs.slack.dev/changelog/2026/10/29/block-kit-layout-block View here}
+   *
+   * A ***layout*** block arranges other blocks into a grid of rows, each holding up to three
+   * side-by-side {@link LayoutItem items}. It is purely visual: it adds no grid, table or group
+   * semantics, and reading order follows source order.
+   */
+  type: "layout";
+  /**
+   * Describes the layout block. Shown above the grid as bold text only when
+   * ***is_label_visible*** is true. Maximum length is 150 characters.
+   */
+  label: string;
+  /**
+   * The rows of the grid. Minimum 1, maximum 5.
+   */
+  rows: LayoutRow[];
+  /**
+   * When true, renders the ***label*** as bold text above the grid. Defaults to ***false***.
+   */
+  is_label_visible?: boolean;
+  /**
+   * Borders drawn around and between rows. ***none*** (default) draws nothing, ***rows*** draws an
+   * outer border plus a horizontal divider between rows, and ***outer*** draws the outer border
+   * only. There are never vertical dividers between items.
+   */
+  grid_lines?: "none" | "rows" | "outer";
+  /**
+   * Stable top-level blocks rendered by clients that don't support layout blocks. Not rendered by
+   * this library, which supports layout blocks.
+   */
+  fallback?: Block[];
+  /**
+   * A string acting as a unique identifier for a block. If not specified, one will be generated.
+   * Maximum length for this field is 255 characters.
+   */
+  block_id?: string;
+};
+
+export type LayoutRow = {
+  /**
+   * The items rendered side by side in this row, in order. Minimum 1, maximum 3.
+   */
+  items: LayoutItem[];
+};
+
+export type LayoutItem = {
+  /**
+   * The child block rendered in this item. Allowed types are ***actions***, ***alert***,
+   * ***card***, ***carousel***, ***container***, ***context***, ***data_table***,
+   * ***data_visualization***, ***divider***, ***file***, ***header***, ***image***, ***input***,
+   * ***rich_text***, ***section***, ***table*** and ***video***.
+   */
+  block: Block;
+  /**
+   * The item's proportional share of the row: ***narrow*** (weight 1), ***standard*** (weight 2,
+   * the default) or ***wide*** (weight 3). A narrow item next to a wide item splits the row 1:3.
+   */
+  width?: "narrow" | "standard" | "wide";
+  /**
+   * Positions the item's content within its cell, following the text direction. Omit it to let
+   * the content fill the cell.
+   */
+  horizontal_alignment?: "start" | "center" | "end";
+};
+
+export type AuthProviderBlock = {
+  /**
+   * Not yet in Slack's reference docs. Fields follow the Java Slack SDK's
+   * {@link https://github.com/slackapi/java-slack-sdk/blob/v1.53.0/slack-api-model/src/main/java/com/slack/api/model/block/AuthProviderBlock.java AuthProviderBlock}.
+   *
+   * An ***auth_provider*** block displays an authentication provider: its icon, name and
+   * connection state, with a Connect button when the user isn't connected.
+   */
+  type: "auth_provider";
+  /**
+   * Unique identifier for this provider within the app. Included in interaction payloads and used
+   * to derive the connect button's ***action_id*** (***auth_provider_connect_<value>***). Maximum
+   * length is 150 characters.
+   */
+  value: string;
+  /**
+   * Human-readable name of the provider. Maximum length is 75 characters.
+   */
+  name: TextObject<"plain_text">;
+  /**
+   * Whether this provider is currently connected for the user.
+   */
+  is_connected: boolean;
+  /**
+   * Brief description of what this connection enables. Maximum length is 150 characters.
+   */
+  description?: TextObject<"plain_text">;
+  /**
+   * HTTPS URL of the provider icon. Falls back to the app's avatar when absent.
+   */
+  icon_url?: string;
+  /**
+   * OAuth URL opened when the user clicks Connect.
+   */
+  auth_url?: string;
+  /**
+   * URL opened when the user clicks Disconnect.
+   */
+  disconnect_url?: string;
+  /**
+   * Display name of the connected account, shown when ***is_connected*** is true. Maximum length
+   * is 75 characters.
+   */
+  connected_identity?: TextObject<"plain_text">;
+  /**
+   * Additional context about the connection, such as an org or workspace name. Maximum length is
+   * 75 characters.
+   */
+  connected_context?: TextObject<"plain_text">;
+  /**
+   * Overflow menu shown when connected (for example Disconnect or Re-authenticate).
+   */
+  accessory?: OverflowMenuElement;
+  /**
+   * Stable blocks rendered by clients that don't recognize ***auth_provider***. Not rendered by
+   * this library.
+   */
+  fallback?: Block[];
   /**
    * A string acting as a unique identifier for a block. If not specified, one will be generated.
    * Maximum length for this field is 255 characters.
