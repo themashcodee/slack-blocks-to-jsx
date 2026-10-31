@@ -1,5 +1,6 @@
 export * from "./actions";
 export * from "./alert";
+export * from "./auth_provider";
 export * from "./card";
 export * from "./carousel";
 export * from "./container";
@@ -12,6 +13,7 @@ export * from "./file";
 export * from "./header";
 export * from "./image";
 export * from "./input";
+export * from "./layout";
 export * from "./markdown_block";
 export * from "./plan";
 export * from "./rich_text";

@@ -432,4 +432,196 @@ export const FIXTURES: Fixture[] = [
       },
     ],
   },
+  {
+    id: "layout",
+    label: "Layout · rows + widths",
+    blocks: [
+      {
+        type: "layout",
+        block_id: "deal_summary_layout",
+        label: "Deal summary for Borant Corp",
+        is_label_visible: true,
+        rows: [
+          {
+            items: [
+              {
+                block: { type: "section", text: { type: "mrkdwn", text: "*Stage*\nNegotiation" } },
+              },
+              { block: { type: "section", text: { type: "mrkdwn", text: "*Amount*\n$125,000" } } },
+              { block: { type: "section", text: { type: "mrkdwn", text: "*Close*\n2026-08-15" } } },
+            ],
+          },
+          {
+            items: [
+              {
+                block: {
+                  type: "section",
+                  text: {
+                    type: "mrkdwn",
+                    text: "*Next Steps*\nSchedule sponsor meeting and finalize agreement",
+                  },
+                },
+              },
+            ],
+          },
+          {
+            items: [
+              {
+                width: "narrow",
+                horizontal_alignment: "end",
+                block: {
+                  type: "actions",
+                  elements: [
+                    {
+                      type: "button",
+                      text: { type: "plain_text", text: "View in Salesforce" },
+                      action_id: "view_in_salesforce",
+                      style: "primary",
+                    },
+                    {
+                      type: "button",
+                      text: { type: "plain_text", text: "Update Stage" },
+                      action_id: "update_stage",
+                      style: "danger",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+        fallback: [
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "*Deal summary for Borant Corp*\nStage: Negotiation · Amount: $125,000 · Close: 2026-08-15",
+            },
+          },
+        ],
+      },
+      {
+        type: "layout",
+        block_id: "weekly_metrics_layout",
+        label: "Weekly metrics",
+        is_label_visible: true,
+        grid_lines: "rows",
+        rows: [
+          {
+            items: [
+              {
+                width: "narrow",
+                horizontal_alignment: "center",
+                block: { type: "section", text: { type: "mrkdwn", text: "*Signups*\n1,284" } },
+              },
+              {
+                width: "narrow",
+                horizontal_alignment: "center",
+                block: { type: "section", text: { type: "mrkdwn", text: "*Churn*\n0.8%" } },
+              },
+              {
+                width: "wide",
+                block: {
+                  type: "context",
+                  elements: [
+                    {
+                      type: "mrkdwn",
+                      text: "Signups are up 12% week over week, driven by the new onboarding flow.",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            items: [
+              {
+                block: {
+                  type: "container",
+                  title: { type: "plain_text", text: "Top accounts" },
+                  child_blocks: [
+                    { type: "section", text: { type: "mrkdwn", text: "Borant Corp · Initech" } },
+                  ],
+                },
+              },
+              {
+                horizontal_alignment: "end",
+                block: {
+                  type: "actions",
+                  elements: [
+                    {
+                      type: "button",
+                      text: { type: "plain_text", text: "Open dashboard" },
+                      action_id: "open_dashboard",
+                      url: "https://example.com/dashboard",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "layout",
+        block_id: "outer_grid_layout",
+        label: "Outer border only",
+        grid_lines: "outer",
+        rows: [
+          {
+            items: [
+              { block: { type: "section", text: { type: "mrkdwn", text: "*Owner*\nAvery" } } },
+              { block: { type: "section", text: { type: "mrkdwn", text: "*Region*\nEMEA" } } },
+            ],
+          },
+          {
+            items: [
+              {
+                block: {
+                  type: "section",
+                  text: { type: "mrkdwn", text: "No divider between these rows." },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "auth-provider",
+    label: "Auth provider · connect states",
+    blocks: [
+      {
+        type: "auth_provider",
+        block_id: "auth_github",
+        value: "github",
+        name: { type: "plain_text", text: "GitHub" },
+        is_connected: true,
+        description: { type: "plain_text", text: "Link pull requests and issues to channels" },
+        icon_url: "https://avatars.githubusercontent.com/u/9919?s=72&v=4",
+        disconnect_url: "https://example.com/oauth/github/disconnect",
+        connected_identity: { type: "plain_text", text: "octocat" },
+        connected_context: { type: "plain_text", text: "acme-org" },
+        accessory: {
+          type: "overflow",
+          action_id: "auth_github_menu",
+          options: [
+            { text: { type: "plain_text", text: "Re-authenticate" }, value: "reauth" },
+            { text: { type: "plain_text", text: "Disconnect" }, value: "disconnect" },
+          ],
+        },
+      },
+      { type: "divider" },
+      {
+        type: "auth_provider",
+        block_id: "auth_jira",
+        value: "jira",
+        name: { type: "plain_text", text: "Jira" },
+        is_connected: false,
+        description: { type: "plain_text", text: "Create and update issues from Slack" },
+        auth_url: "https://example.com/oauth/jira",
+      },
+    ],
+  },
 ];

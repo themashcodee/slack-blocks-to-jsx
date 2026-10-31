@@ -343,6 +343,13 @@ All block components live in `src/components/blocks/`. 17 block types are suppor
 | `card`     | `card.tsx`     | `title?`, `subtitle?`, `body?`, `hero_image?: CardImage`, `icon?: CardImage`, `actions?: ButtonElement[]` (≤5), `block_id?`; supports `inCarousel` prop when nested | Rich container. Actions reuse the existing `ButtonElement` renderer (so `primary`/`danger` styles and `confirm` dialogs work for free). Hero image renders in a 16:9 frame above the title; icon renders inline next to the title. |
 | `carousel` | `carousel.tsx` | `elements: CardBlock[]` (1–10), `block_id?`                                                                                                                         | Horizontally-scrollable gallery using CSS scroll-snap. Slides cap at 10; extra elements are dropped silently. Each slide passes `inCarousel` to the `Card` component for a fixed-width variant.                                    |
 
+### 4.6.1 Layout & auth provider blocks (Slack 2026-10-29)
+
+| Block           | File                | Notes |
+| --------------- | ------------------- | ----- |
+| `layout`        | `layout.tsx`        | `label`, `is_label_visible?`, `rows: LayoutRow[]` (1-5, each with 1-3 `items`), `grid_lines?: "none" \| "rows" \| "outer"`, `fallback?`, `block_id?`. Each row is a wrapping flex row; items grow by weight (narrow 1, standard 2, wide 3, flex-basis 0) and have a per-width min width (96/144/192px), so they wrap in source order when the row is too narrow, and take a full line each below the `sm` breakpoint (Slack stacks on mobile). `horizontal_alignment` uses `items-start/center/end` with a `w-fit` content box; omitted, the content fills the cell. Child blocks render through `getBlockComponent` (so containers nest). `rows` draws an outer border plus `border-t` between rows; `outer` the border only; never vertical dividers. `fallback` is ignored. No grid/table ARIA. |
+| `auth_provider` | `auth_provider.tsx` | Not on docs.slack.dev yet; fields follow the Java SDK's `AuthProviderBlock` (v1.53.0). Icon (`icon_url`, else a placeholder with the name's initial), `name`, `description`. Connected: a green dot with `connected_identity` · `connected_context`, plus the `accessory` overflow menu. Not connected: a Connect `ButtonElement` with `action_id: auth_provider_connect_<value>` opening `auth_url`. `disconnect_url` and `fallback` aren't rendered. |
+
 ### 4.7 Rich text block
 
 Folder: `src/components/blocks/rich_text/`. The most involved block by far.
@@ -444,7 +451,7 @@ Types live in `src/types/` and are re-exported from `index.ts`.
 
 ### 6.1 `types/layout.ts`
 
-Defines the `Block` union: `ActionsBlock | AlertBlock | CardBlock | CarouselBlock | ContextBlock | ContextActionsBlock | DataTableBlock | DividerBlock | FileBlock | HeaderBlock | ImageBlock | InputBlock | MarkdownBlock | PlanBlock | SectionBlock | TableBlock | TaskCardBlock | VideoBlock | RichTextBlock`. Each interface documents props with JSDoc pointing to Slack's official API docs.
+Defines the `Block` union: `ActionsBlock | AlertBlock | CardBlock | CarouselBlock | ContextBlock | ContextActionsBlock | DataTableBlock | DividerBlock | FileBlock | HeaderBlock | ImageBlock | InputBlock | LayoutBlock | AuthProviderBlock | MarkdownBlock | PlanBlock | SectionBlock | TableBlock | TaskCardBlock | VideoBlock | RichTextBlock`. Each interface documents props with JSDoc pointing to Slack's official API docs.
 
 Added in v1.1.0 to cover Slack's 2026-04-16 block launch:
 
@@ -460,6 +467,12 @@ Data table (Slack `data_table` block):
 - `DataTableCell = DataTableRawTextCell | DataTableRawNumberCell | DataTableActionCell | RichTextBlock`
 - `DataTableRawTextCell = { type: "raw_text"; text }`, `DataTableRawNumberCell = { type: "raw_number"; value: number; text? }`
 - `DataTableActionCell = { type: "action_cell"; element: ButtonElement; fallback?: DataTableRawTextCell | DataTableRawNumberCell }`
+
+Layout and auth provider (Slack `layout` and `auth_provider` blocks):
+
+- `LayoutBlock = { type: "layout"; label: string; rows: LayoutRow[]; is_label_visible?; grid_lines?: "none" | "rows" | "outer"; fallback?: Block[]; block_id? }`
+- `LayoutRow = { items: LayoutItem[] }`, `LayoutItem = { block: Block; width?: "narrow" | "standard" | "wide"; horizontal_alignment?: "start" | "center" | "end" }`
+- `AuthProviderBlock = { type: "auth_provider"; value; name: TextObject<"plain_text">; is_connected: boolean; description?; icon_url?; auth_url?; disconnect_url?; connected_identity?; connected_context?; accessory?: OverflowMenuElement; fallback?: Block[]; block_id? }`
 
 ### 6.2 `types/elements.ts`
 
@@ -735,6 +748,7 @@ slack blocks to jsx library/
 │   │   │   ├── header.tsx   actions.tsx  input.tsx   video.tsx
 │   │   │   ├── file.tsx     table.tsx    markdown_block.tsx
 │   │   │   ├── data_table.tsx
+│   │   │   ├── layout.tsx   auth_provider.tsx
 │   │   │   ├── plan.tsx     task_card.tsx  context_actions.tsx
 │   │   │   ├── alert.tsx    card.tsx     carousel.tsx     (new in v1.1.0)
 │   │   │   └── rich_text/
@@ -895,3 +909,4 @@ The sidebar picks it up automatically on next HMR. Keep fixtures small (≤ 10 b
 | 2026-04-17 | Claude + Mash | Added Ch. 15 — Playground. New `playground/` folder (Vite + React 18) that source-aliases `slack-blocks-to-jsx` to `../src/index.ts` for instant HMR. Committed to git, excluded from npm via `.npmignore`. Ch. 15 renumbered from change log → playground; change log moved to Ch. 16. Root `package.json` gained `playground`, `playground:install`, `playground:build` scripts. Ch. 13 file tree extended.                                  |
 | 2026-06-06 | Claude + Mash | Replaced the Changesets release flow with a single local command `pnpm release` (`scripts/release.mjs`): checks → lint → build → bump → commit/tag → npm publish → push → GitHub release. Removed `.changeset/`, `@changesets/cli`, and `.github/workflows/publish.yml`; added `test`/`release`/`release:dry` scripts and `RELEASING.md`. Rewrote Ch. 11, updated §10.3/§10.5 scripts + hygiene, Ch. 13 file tree (`scripts/`), and Ch. 14 rule 10. Added first-class beta/alpha prereleases: `release:beta`/`release:alpha` scripts, `prepatch`/`preminor`/`premajor`/`prerelease` bump types + `--preid`, auto dist-tag per channel, prerelease graduation, and a "Trying a prerelease" section in `readme.md`. Added `.github/workflows/preview.yml` (pkg.pr.new) for automatic per-PR/per-commit preview installs (no npm token, fork-safe). |
 | 2026-10-12 | Claude + Stephen | Added the `data_table` block: §4.4 row, §6.1 `DataTableBlock` and cell types, §10.3 `test` script (node:test + `happy-dom` for interaction tests), Ch. 13 file tree. |
+| 2026-10-30 | Claude + Stephen | Added the `layout` and `auth_provider` blocks: §4.6.1, §6.1 `LayoutBlock`, `LayoutRow`, `LayoutItem` and `AuthProviderBlock`, Ch. 13 file tree. `sanitizeBlocksForSlack` recurses into layout items. |
