@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ImageBlock } from "../../types";
+import { useGlobalData } from "../../store";
 
 type ImageProps = {
   data: ImageBlock;
@@ -16,7 +17,8 @@ export const Image = (props: ImageProps) => {
     image_width,
     title,
   } = props.data;
-  const resolvedUrl = image_url || slack_file?.url;
+  const { urlTransform } = useGlobalData();
+  const resolvedUrl = urlTransform(image_url || slack_file?.url, "image");
   const [showImage, setShowImage] = useState(true);
   const captionText = title?.text;
 
