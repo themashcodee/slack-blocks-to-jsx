@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.3.0...v1.4.0) (2026-10-31)
+
+
+### Features
+
+* ✨ support the Slack layout and auth_provider blocks ([ac069c4](https://github.com/themashcodee/slack-blocks-to-jsx/commit/ac069c4d6a3b4fcedca4c6c490bea77e7b1645d5))
+* ✨ support the Slack layout and auth_provider blocks ([e597fc4](https://github.com/themashcodee/slack-blocks-to-jsx/commit/e597fc4dc68f2f762f8dc873b36ac84aa2630c35))
+* 🔒 allowlist URL schemes at every href/src sink ([74393b8](https://github.com/themashcodee/slack-blocks-to-jsx/commit/74393b81a61d69383396c7c9d42fb11c4f293e8f))
+
 ## [1.3.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.2.1...v1.3.0) (2026-10-25)
 
 
