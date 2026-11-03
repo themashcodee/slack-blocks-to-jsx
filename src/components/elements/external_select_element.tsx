@@ -25,7 +25,7 @@ export const ExternalSelectElement = (props: ExternalSelectElementProps) => {
         />
       </div>
 
-      <div className="absolute right-1 top-1/2 flex justify-center items-center w-5 -translate-y-1/2 text-black-secondary dark:text-dark-text-secondary z-10 h-full">
+      <div className="absolute right-1 inset-y-0 flex justify-center items-center w-5 text-black-secondary dark:text-dark-text-secondary z-10">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

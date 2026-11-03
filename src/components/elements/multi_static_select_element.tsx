@@ -118,7 +118,7 @@ export const MultiStaticSelectElement = (props: MultiStaticSelectElementProps) =
 
       <button
         type="button"
-        className="absolute right-1 top-1/2 flex justify-center items-center w-5 -translate-y-1/2 text-black-secondary dark:text-dark-text-secondary z-10 h-full"
+        className="absolute right-1 inset-y-0 flex justify-center items-center w-5 text-black-secondary dark:text-dark-text-secondary z-10"
         id="static_select_dropdown_button"
         onClick={() => {
           setVisible((prev) => !prev);
