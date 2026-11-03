@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.4.0...v1.4.1) (2026-11-03)
+
+
+### Bug Fixes
+
+* centre picker carets and input placeholders without translate ([1cafb12](https://github.com/themashcodee/slack-blocks-to-jsx/commit/1cafb127e11f33ab7b642177cbd817325432ec08))
+* centre picker carets and input placeholders without translate ([06413b7](https://github.com/themashcodee/slack-blocks-to-jsx/commit/06413b7dc06b5760ed9a660007abe69741b29813))
+
 ## [1.4.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.3.0...v1.4.0) (2026-10-31)
 
 
