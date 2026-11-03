@@ -70,7 +70,7 @@ export const Carousel = (props: CarouselProps) => {
           type="button"
           aria-label="Scroll left"
           onClick={() => scrollBy("left")}
-          className="absolute left-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white-primary dark:bg-dark-bg-secondary text-black-primary dark:text-dark-text-primary border border-black-primary/[0.13] dark:border-dark-border shadow-md hover:bg-gray-secondary dark:hover:bg-dark-bg-primary slack_blocks_to_jsx__carousel_arrow slack_blocks_to_jsx__carousel_arrow--left"
+          className="absolute left-1 inset-y-0 my-auto w-8 h-8 rounded-full flex items-center justify-center bg-white-primary dark:bg-dark-bg-secondary text-black-primary dark:text-dark-text-primary border border-black-primary/[0.13] dark:border-dark-border shadow-md hover:bg-gray-secondary dark:hover:bg-dark-bg-primary slack_blocks_to_jsx__carousel_arrow slack_blocks_to_jsx__carousel_arrow--left"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,7 @@ export const Carousel = (props: CarouselProps) => {
           type="button"
           aria-label="Scroll right"
           onClick={() => scrollBy("right")}
-          className="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-white-primary dark:bg-dark-bg-secondary text-black-primary dark:text-dark-text-primary border border-black-primary/[0.13] dark:border-dark-border shadow-md hover:bg-gray-secondary dark:hover:bg-dark-bg-primary slack_blocks_to_jsx__carousel_arrow slack_blocks_to_jsx__carousel_arrow--right"
+          className="absolute right-1 inset-y-0 my-auto w-8 h-8 rounded-full flex items-center justify-center bg-white-primary dark:bg-dark-bg-secondary text-black-primary dark:text-dark-text-primary border border-black-primary/[0.13] dark:border-dark-border shadow-md hover:bg-gray-secondary dark:hover:bg-dark-bg-primary slack_blocks_to_jsx__carousel_arrow slack_blocks_to_jsx__carousel_arrow--right"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

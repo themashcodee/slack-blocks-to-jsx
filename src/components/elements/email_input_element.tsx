@@ -23,13 +23,13 @@ export const EmailInputElement = (props: EmailInputElementProps) => {
       className="relative text-small w-full slack_blocks_to_jsx__email_input_element"
     >
       {!value && placeholder && (
-        <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none text-black-primary.3 dark:text-dark-text-secondary">
+        <div className="absolute left-2 inset-y-0 flex items-center pointer-events-none text-black-primary.3 dark:text-dark-text-secondary">
           <TextObject data={placeholder} />
         </div>
       )}
 
       {!value && !placeholder && (
-        <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none text-black-primary.3 dark:text-dark-text-secondary">
+        <div className="absolute left-2 inset-y-0 flex items-center pointer-events-none text-black-primary.3 dark:text-dark-text-secondary">
           <TextObject
             data={{
               type: "plain_text",

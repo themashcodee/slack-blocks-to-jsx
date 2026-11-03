@@ -622,6 +622,8 @@ Folder: `src/components/composition_objects/`.
 
 Theme extensions include Slack-accurate grays, blacks, blues, greens, reds, broadcast colors — all with dark-mode variants. Font sizes: `small: 13px`, `base: 15px`, `header: 18px`. Tailwind scans `./src/**/*.{js,ts,jsx,tsx,mdx}`.
 
+Don't centre with `translate-*` utilities. Host apps on Tailwind v4 emit their own `.-translate-y-1/2` rule using the `translate` property, which stacks on this library's v3 `transform` and moves the element twice. Use `inset-y-0` with `flex items-center` (or `my-auto` for fixed-height elements) instead. Tests: `test/input_centering.test.mjs`.
+
 ### 9.2 Dark mode
 
 `darkMode: ["selector", '[data-theme="dark"]']`. Toggled at runtime via the `theme` prop on `Message` which writes `data-theme="dark"` on the outer wrapper.
@@ -943,3 +945,4 @@ The sidebar picks it up automatically on next HMR. Keep fixtures small (≤ 10 b
 | 2026-06-06 | Claude + Mash | Replaced the Changesets release flow with a single local command `pnpm release` (`scripts/release.mjs`): checks → lint → build → bump → commit/tag → npm publish → push → GitHub release. Removed `.changeset/`, `@changesets/cli`, and `.github/workflows/publish.yml`; added `test`/`release`/`release:dry` scripts and `RELEASING.md`. Rewrote Ch. 11, updated §10.3/§10.5 scripts + hygiene, Ch. 13 file tree (`scripts/`), and Ch. 14 rule 10. Added first-class beta/alpha prereleases: `release:beta`/`release:alpha` scripts, `prepatch`/`preminor`/`premajor`/`prerelease` bump types + `--preid`, auto dist-tag per channel, prerelease graduation, and a "Trying a prerelease" section in `readme.md`. Added `.github/workflows/preview.yml` (pkg.pr.new) for automatic per-PR/per-commit preview installs (no npm token, fork-safe). |
 | 2026-10-12 | Claude + Stephen | Added the `data_table` block: §4.4 row, §6.1 `DataTableBlock` and cell types, §10.3 `test` script (node:test + `happy-dom` for interaction tests), Ch. 13 file tree. |
 | 2026-10-30 | Claude + Stephen | Added the `layout` and `auth_provider` blocks: §4.6.1, §6.1 `LayoutBlock`, `LayoutRow`, `LayoutItem` and `AuthProviderBlock`, Ch. 13 file tree. `sanitizeBlocksForSlack` recurses into layout items. |
+| 2026-11-03 | Claude + Stephen | Select carets, input placeholders and carousel arrows now centre with `inset-y-0` + flex instead of `top-1/2 -translate-y-1/2`, which a Tailwind v4 host doubled. Date/time picker placeholders hide the native field text while empty. New §9.1 rule, `test/input_centering.test.mjs`. |
