@@ -42,6 +42,8 @@ const sectionElementText = (element: RichTextSectionElement): string => {
       return element.text;
     case "link":
       return element.text || element.url;
+    case "message_mention":
+      return element.url;
     case "emoji":
       return element.name;
     case "user":
