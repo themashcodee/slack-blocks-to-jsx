@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.4.1...v1.5.0) (2026-11-07)
+
+
+### Features
+
+* ✨ render message_mention rich text elements as links ([46b2ef7](https://github.com/themashcodee/slack-blocks-to-jsx/commit/46b2ef7dad2368292c7e5d312ad864ca39104236))
+* ✨ render message_mention rich text elements as links ([1081f70](https://github.com/themashcodee/slack-blocks-to-jsx/commit/1081f70e0f89cc0d0abb4286bcd4f70632e935b9))
+
 ## [1.4.1](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.4.0...v1.4.1) (2026-11-03)
 
 
