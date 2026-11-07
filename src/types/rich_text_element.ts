@@ -55,6 +55,7 @@ export type RichTextSectionElement =
   | RichTextSectionUser
   | RichTextSectionEmoji
   | RichTextSectionLink
+  | RichTextSectionMessageMention
   | RichTextSectionUsergroup
   | RichTextSectionBroadcast
   | RichTextSectionDate
@@ -102,6 +103,22 @@ export type RichTextSectionLink = {
   url: string;
   text?: string;
   unsafe?: boolean;
+  style?: RichTextSectionElementStyleCode;
+};
+
+/**
+ * A link to another Slack message, which Slack sends in place of a `link` when someone pastes a
+ * message's permalink.
+ */
+export type RichTextSectionMessageMention = {
+  type: "message_mention";
+  /** The message's permalink. */
+  url: string;
+  /** Slack sets this to the permalink too. */
+  text?: string;
+  message_ts?: string;
+  channel_id?: string;
+  author_id?: string;
   style?: RichTextSectionElementStyleCode;
 };
 

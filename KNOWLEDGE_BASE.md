@@ -360,7 +360,7 @@ Folder: `src/components/blocks/rich_text/`. The most involved block by far.
 
 Dispatcher: `rich_text.tsx` switches on each entry of `elements: RichTextBlockElement[]` and delegates to:
 
-- `rich_text_section.tsx` — text elements (text, link, emoji, user, usergroup, channel, broadcast, color, preformatted)
+- `rich_text_section.tsx` — text elements (text, link, message_mention, emoji, user, usergroup, channel, broadcast, color, preformatted)
 - `rich_text_list_wrapper.tsx` — ordered/unordered lists, nesting
 - `rich_text_section_color.tsx` — colored background text
 - `rich_text_section_emoji.tsx` — emoji + skin tone
@@ -368,6 +368,8 @@ Dispatcher: `rich_text.tsx` switches on each entry of `elements: RichTextBlockEl
 - `rich_text_section_user.tsx`, `..._usergroup.tsx`, `..._channel.tsx`, `..._broadcast.tsx`
 
 Each text sub-element supports a `style: { code?, bold?, italic?, strike? }` map. Broadcasts are `@channel`, `@here`, `@everyone`.
+
+A `message_mention` (what Slack sends when someone pastes a message's permalink) renders through `rich_text_section_link.tsx` as a bare link to its `url`, so it gets the same `urlTransform` check, `link` hook and styling as a `link`. Slack's "Private message" tag for viewers who can't open the source isn't shown: the library has no access data.
 
 ---
 
@@ -498,7 +500,7 @@ Composition objects:
 
 ### 6.4 `types/rich_text_element.ts`
 
-`RichTextBlockElement` union: `text`, `link`, `emoji`, `user`, `usergroup`, `channel`, `broadcast`, `color`, `preformatted`, `rich_text_list`, `rich_text_quote`, `rich_text_section`. Shared `Style = { code?, bold?, italic?, strike? }`.
+`RichTextBlockElement` union: `text`, `link`, `message_mention`, `emoji`, `user`, `usergroup`, `channel`, `broadcast`, `color`, `preformatted`, `rich_text_list`, `rich_text_quote`, `rich_text_section`. Shared `Style = { code?, bold?, italic?, strike? }`.
 
 ---
 
@@ -538,7 +540,7 @@ type Hooks = {
 
 Useful for wiring mentions to internal routing or using Next.js `<Link>` for URLs.
 
-`link` and `date` only receive URLs that passed `urlTransform` (§7.4). A rejected link skips the `link` hook and renders as an inert `<a>` with no `href`; a rejected date link reaches the `date` hook as `link: null`.
+`link` (which also renders `message_mention` elements) and `date` only receive URLs that passed `urlTransform` (§7.4). A rejected link skips the `link` hook and renders as an inert `<a>` with no `href`; a rejected date link reaches the `date` hook as `link: null`.
 
 ### 7.3 `useGlobalData` hook
 

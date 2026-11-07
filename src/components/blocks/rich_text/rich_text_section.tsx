@@ -23,6 +23,10 @@ export const RichTextSectionElement = (props: RichTextSectionElementProps) => {
   if (element.type === "emoji") return <RichTextSectionEmoji {...element} />;
   if (element.type === "usergroup") return <RichTextSectionUserGroup {...element} />;
   if (element.type === "link") return <RichTextSectionLink {...element} />;
+  // Rendered as a bare link to the permalink; Slack's "Private message" tag for viewers who
+  // can't open the source needs access data this library doesn't have.
+  if (element.type === "message_mention")
+    return <RichTextSectionLink type="link" url={element.url} style={element.style} />;
 
   if (element.type === "text") {
     const { text, style } = element;
