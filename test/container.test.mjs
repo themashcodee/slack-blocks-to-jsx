@@ -84,3 +84,79 @@ test("collapsed caret rotates with an inline transform, not a rotate-* utility",
   const expanded = render([collapsible]);
   assert.doesNotMatch(expanded, /slack_blocks_to_jsx__container_caret" style=/);
 });
+
+// Slack shows `rich_text_title` in place of `title` when both are set, and a container may
+// carry only the rich one. A plain title is shown as typed: Slack leaves its `:emoji:` codes
+// and `<@U…>`-style markup as text.
+const richTitle = (elements) => ({
+  type: "rich_text",
+  elements: [{ type: "rich_text_section", elements }],
+});
+
+const titleOf = (out) =>
+  out.match(/slack_blocks_to_jsx__container_title">(.*?)<\/span><\/span>/)?.[1] ?? "";
+
+test("rich_text_title: renders as the title when the container has no plain title", () => {
+  const out = render([
+    {
+      type: "container",
+      rich_text_title: richTitle([
+        { type: "emoji", name: "rocket", unicode: "1f680" },
+        { type: "text", text: " Improvements", style: { bold: true } },
+      ]),
+      child_blocks: [child("body")],
+    },
+  ]);
+  const title = titleOf(out);
+  assert.match(title, /🚀/);
+  assert.match(title, /class="[^"]*font-semibold[^"]*">\s*Improvements/);
+  assert.match(out, /role="group" aria-label="Improvements"/);
+});
+
+test("rich_text_title: shown in place of a plain title", () => {
+  const out = render([
+    {
+      type: "container",
+      title: { type: "plain_text", text: "Plain fallback" },
+      rich_text_title: richTitle([{ type: "text", text: "Rich title" }]),
+      child_blocks: [child("body")],
+    },
+  ]);
+  assert.match(titleOf(out), /Rich title/);
+  assert.doesNotMatch(out, /Plain fallback/);
+  assert.match(out, /aria-label="Rich title"/);
+});
+
+test("rich_text_title: sections and list items join on one line", () => {
+  const out = render([
+    {
+      type: "container",
+      rich_text_title: {
+        type: "rich_text",
+        elements: [
+          { type: "rich_text_section", elements: [{ type: "text", text: "First" }] },
+          {
+            type: "rich_text_list",
+            style: "bullet",
+            elements: [{ type: "rich_text_section", elements: [{ type: "text", text: "Second" }] }],
+          },
+        ],
+      },
+      child_blocks: [child("body")],
+    },
+  ]);
+  assert.match(out, /aria-label="First Second"/);
+  assert.doesNotMatch(titleOf(out), /<(p|li|ul)\b/);
+});
+
+test("plain title: :emoji: codes stay as typed", () => {
+  const out = render([
+    {
+      type: "container",
+      title: { type: "plain_text", text: ":rocket: Launch" },
+      child_blocks: [child("body")],
+    },
+  ]);
+  assert.match(titleOf(out), /:rocket: Launch/);
+  assert.doesNotMatch(titleOf(out), /🚀/);
+});

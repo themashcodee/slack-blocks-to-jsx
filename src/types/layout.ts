@@ -712,9 +712,15 @@ export type ContainerBlock = {
    * ***plain_text***. Maximum length is 150 characters.
    *
    * Note: Slack's reference docs type this (and ***subtitle***) as a string, but the API
-   * actually expects a ***plain_text*** text object.
+   * actually expects a ***plain_text*** text object. Slack shows it as typed, so `:emoji:`
+   * codes stay text. Optional when ***rich_text_title*** is set.
    */
-  title: TextObject<"plain_text">;
+  title?: TextObject<"plain_text">;
+  /**
+   * A title in the form of a {@link RichTextBlock}, for formatting, emoji, mentions and
+   * links. Slack shows it in place of ***title*** when both are set.
+   */
+  rich_text_title?: RichTextBlock;
   /**
    * An optional subtitle rendered below the title in a smaller, muted style. A
    * {@link TextObject} of type ***plain_text*** or ***mrkdwn***. Maximum length is 150 characters.
