@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { ContainerBlock } from "../../types";
+import type {
+  ContainerBlock,
+  RichTextBlock,
+  RichTextSectionElement as RichTextSectionElementType,
+} from "../../types";
 import { useGlobalData } from "../../store";
 import { TextObject } from "../composition_objects";
 import { getBlockComponent } from "../index";
 import { merge_classes } from "../../utils";
+import { RichTextSectionElement } from "./rich_text/rich_text_section";
 
 type ContainerProps = {
   data: ContainerBlock;
@@ -16,9 +21,36 @@ const WIDTH_CLASSES: Record<NonNullable<ContainerBlock["width"]>, string> = {
   full: "w-full",
 };
 
+/**
+ * A rich text title's inline elements on one line, its sections, quotes and list items
+ * separated by a space.
+ */
+const titleElements = (title: RichTextBlock): RichTextSectionElementType[] => {
+  const runs = title.elements.flatMap((element) =>
+    element.type === "rich_text_list"
+      ? element.elements.map((item) => item.elements)
+      : [element.elements],
+  );
+  return runs.flatMap((run, i) =>
+    i === 0 ? run : [{ type: "text", text: " " } as RichTextSectionElementType, ...run],
+  );
+};
+
+/** The readable text of a rich text title, for the group's accessible label. */
+const titleLabel = (elements: RichTextSectionElementType[]): string =>
+  elements
+    .map((element) => {
+      if (element.type === "text") return element.text;
+      if (element.type === "link") return element.text || element.url;
+      return "";
+    })
+    .join("")
+    .trim();
+
 export const Container = (props: ContainerProps) => {
   const {
     title,
+    rich_text_title,
     subtitle,
     icon,
     child_blocks,
@@ -32,6 +64,7 @@ export const Container = (props: ContainerProps) => {
   const collapsed = is_collapsible && !expanded;
   const { urlTransform } = useGlobalData();
   const iconUrl = urlTransform(icon?.image_url, "image");
+  const richTitle = rich_text_title?.elements?.length ? titleElements(rich_text_title) : null;
 
   const header = (
     <>
@@ -42,10 +75,19 @@ export const Container = (props: ContainerProps) => {
       )}
 
       <span className="flex flex-col min-w-0 flex-1 slack_blocks_to_jsx__container_title_group">
-        {title && (
+        {richTitle ? (
           <span className="font-bold text-black-primary dark:text-dark-text-primary truncate slack_blocks_to_jsx__container_title">
-            <TextObject data={title} />
+            {richTitle.map((element, i) => (
+              <RichTextSectionElement key={`${element.type}__${i}`} element={element} />
+            ))}
           </span>
+        ) : (
+          title && (
+            <span className="font-bold text-black-primary dark:text-dark-text-primary truncate slack_blocks_to_jsx__container_title">
+              {/* Slack shows a plain title as typed, without turning :emoji: codes into emoji. */}
+              <TextObject data={{ ...title, verbatim: true }} />
+            </span>
+          )
         )}
         {subtitle && (
           <span className="text-small text-black-secondary dark:text-dark-text-secondary truncate slack_blocks_to_jsx__container_subtitle">
@@ -77,7 +119,7 @@ export const Container = (props: ContainerProps) => {
     <div
       id={block_id}
       role="group"
-      aria-label={title?.text}
+      aria-label={richTitle ? titleLabel(richTitle) || undefined : title?.text}
       className={merge_classes([
         "my-2 rounded-lg border border-black-primary/[0.13] dark:border-dark-border bg-white-primary dark:bg-dark-bg-secondary overflow-hidden slack_blocks_to_jsx__container",
         WIDTH_CLASSES[width],
