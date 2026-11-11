@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.5.0...v1.5.1) (2026-11-11)
+
+
+### Bug Fixes
+
+* 🐛 render a container's rich_text_title and show a plain title as typed ([c4ddb46](https://github.com/themashcodee/slack-blocks-to-jsx/commit/c4ddb46b35a6bc800565c172791ab7bac55fa227))
+* 🐛 render a container's rich_text_title and show a plain title as typed ([4029149](https://github.com/themashcodee/slack-blocks-to-jsx/commit/40291493fd53760f7b9a882f7480d134c12f7d71))
+
 ## [1.5.0](https://github.com/themashcodee/slack-blocks-to-jsx/compare/v1.4.1...v1.5.0) (2026-11-07)
 
 
